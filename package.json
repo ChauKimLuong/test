@@ -1,0 +1,14 @@
+{
+  "name": "flowpilot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "docker:up": "docker compose up -d --build --wait",
+    "docker:stop": "docker compose stop",
+    "test": "docker compose exec api node tests/run.mjs",
+    "format": "npx prettier@3.6.2 --write \"backend/server/**/*.ts\" \"backend/tests/*.mjs\" \"frontend/app/**/*.{ts,tsx,css}\" \"frontend/components/**/*.{ts,tsx}\" \"frontend/lib/*.ts\""
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

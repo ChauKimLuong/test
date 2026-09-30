@@ -1,0 +1,38 @@
+{
+  "name": "flowpilot-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node dev.mjs",
+    "start:dev": "node dev.mjs",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.js",
+    "lint": "tsc --noEmit",
+    "test:integration": "node tests/run.mjs",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio --port 5555 --browser none"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/platform-express": "^11.1.0",
+    "@prisma/adapter-pg": "7.9.1",
+    "@prisma/client": "7.9.1",
+    "express": "^5.2.1",
+    "pg": "^8.23.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.0",
+    "prisma": "7.9.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "overrides": {
+    "deepmerge-ts": "8.0.2",
+    "mysql2": "3.24.5"
+  }
+}
