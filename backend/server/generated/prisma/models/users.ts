@@ -198,7 +198,8 @@ export type usersWhereInput = {
   status?: Prisma.StringFilter<"users"> | string
   last_login_at?: Prisma.DateTimeNullableFilter<"users"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"users"> | Date | string
-  employee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
+  approval_tasks?: Prisma.Approval_tasksListRelationFilter
+  employee_assignments?: Prisma.Employee_assignmentsListRelationFilter
   sessions?: Prisma.SessionsListRelationFilter
 }
 
@@ -210,7 +211,8 @@ export type usersOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   last_login_at?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  employee_assignments?: Prisma.employee_assignmentsOrderByWithRelationInput
+  approval_tasks?: Prisma.approval_tasksOrderByRelationAggregateInput
+  employee_assignments?: Prisma.employee_assignmentsOrderByRelationAggregateInput
   sessions?: Prisma.sessionsOrderByRelationAggregateInput
 }
 
@@ -225,7 +227,8 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"users"> | string
   last_login_at?: Prisma.DateTimeNullableFilter<"users"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"users"> | Date | string
-  employee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
+  approval_tasks?: Prisma.Approval_tasksListRelationFilter
+  employee_assignments?: Prisma.Employee_assignmentsListRelationFilter
   sessions?: Prisma.SessionsListRelationFilter
 }, "id" | "email">
 
@@ -263,7 +266,8 @@ export type usersCreateInput = {
   status?: string
   last_login_at?: Date | string | null
   created_at?: Date | string
-  employee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutUsersInput
+  approval_tasks?: Prisma.approval_tasksCreateNestedManyWithoutUsersInput
+  employee_assignments?: Prisma.employee_assignmentsCreateNestedManyWithoutUsersInput
   sessions?: Prisma.sessionsCreateNestedManyWithoutUsersInput
 }
 
@@ -275,7 +279,8 @@ export type usersUncheckedCreateInput = {
   status?: string
   last_login_at?: Date | string | null
   created_at?: Date | string
-  employee_assignments?: Prisma.employee_assignmentsUncheckedCreateNestedOneWithoutUsersInput
+  approval_tasks?: Prisma.approval_tasksUncheckedCreateNestedManyWithoutUsersInput
+  employee_assignments?: Prisma.employee_assignmentsUncheckedCreateNestedManyWithoutUsersInput
   sessions?: Prisma.sessionsUncheckedCreateNestedManyWithoutUsersInput
 }
 
@@ -287,7 +292,8 @@ export type usersUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutUsersNestedInput
+  approval_tasks?: Prisma.approval_tasksUpdateManyWithoutUsersNestedInput
+  employee_assignments?: Prisma.employee_assignmentsUpdateManyWithoutUsersNestedInput
   sessions?: Prisma.sessionsUpdateManyWithoutUsersNestedInput
 }
 
@@ -299,7 +305,8 @@ export type usersUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee_assignments?: Prisma.employee_assignmentsUncheckedUpdateOneWithoutUsersNestedInput
+  approval_tasks?: Prisma.approval_tasksUncheckedUpdateManyWithoutUsersNestedInput
+  employee_assignments?: Prisma.employee_assignmentsUncheckedUpdateManyWithoutUsersNestedInput
   sessions?: Prisma.sessionsUncheckedUpdateManyWithoutUsersNestedInput
 }
 
@@ -396,6 +403,20 @@ export type usersUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutSessionsInput, Prisma.usersUpdateWithoutSessionsInput>, Prisma.usersUncheckedUpdateWithoutSessionsInput>
 }
 
+export type usersCreateNestedOneWithoutApproval_tasksInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutApproval_tasksInput, Prisma.usersUncheckedCreateWithoutApproval_tasksInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutApproval_tasksInput
+  connect?: Prisma.usersWhereUniqueInput
+}
+
+export type usersUpdateOneRequiredWithoutApproval_tasksNestedInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutApproval_tasksInput, Prisma.usersUncheckedCreateWithoutApproval_tasksInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutApproval_tasksInput
+  upsert?: Prisma.usersUpsertWithoutApproval_tasksInput
+  connect?: Prisma.usersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutApproval_tasksInput, Prisma.usersUpdateWithoutApproval_tasksInput>, Prisma.usersUncheckedUpdateWithoutApproval_tasksInput>
+}
+
 export type usersCreateWithoutEmployee_assignmentsInput = {
   id?: string
   full_name: string
@@ -404,6 +425,7 @@ export type usersCreateWithoutEmployee_assignmentsInput = {
   status?: string
   last_login_at?: Date | string | null
   created_at?: Date | string
+  approval_tasks?: Prisma.approval_tasksCreateNestedManyWithoutUsersInput
   sessions?: Prisma.sessionsCreateNestedManyWithoutUsersInput
 }
 
@@ -415,6 +437,7 @@ export type usersUncheckedCreateWithoutEmployee_assignmentsInput = {
   status?: string
   last_login_at?: Date | string | null
   created_at?: Date | string
+  approval_tasks?: Prisma.approval_tasksUncheckedCreateNestedManyWithoutUsersInput
   sessions?: Prisma.sessionsUncheckedCreateNestedManyWithoutUsersInput
 }
 
@@ -442,6 +465,7 @@ export type usersUpdateWithoutEmployee_assignmentsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approval_tasks?: Prisma.approval_tasksUpdateManyWithoutUsersNestedInput
   sessions?: Prisma.sessionsUpdateManyWithoutUsersNestedInput
 }
 
@@ -453,6 +477,7 @@ export type usersUncheckedUpdateWithoutEmployee_assignmentsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  approval_tasks?: Prisma.approval_tasksUncheckedUpdateManyWithoutUsersNestedInput
   sessions?: Prisma.sessionsUncheckedUpdateManyWithoutUsersNestedInput
 }
 
@@ -464,7 +489,8 @@ export type usersCreateWithoutSessionsInput = {
   status?: string
   last_login_at?: Date | string | null
   created_at?: Date | string
-  employee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutUsersInput
+  approval_tasks?: Prisma.approval_tasksCreateNestedManyWithoutUsersInput
+  employee_assignments?: Prisma.employee_assignmentsCreateNestedManyWithoutUsersInput
 }
 
 export type usersUncheckedCreateWithoutSessionsInput = {
@@ -475,7 +501,8 @@ export type usersUncheckedCreateWithoutSessionsInput = {
   status?: string
   last_login_at?: Date | string | null
   created_at?: Date | string
-  employee_assignments?: Prisma.employee_assignmentsUncheckedCreateNestedOneWithoutUsersInput
+  approval_tasks?: Prisma.approval_tasksUncheckedCreateNestedManyWithoutUsersInput
+  employee_assignments?: Prisma.employee_assignmentsUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type usersCreateOrConnectWithoutSessionsInput = {
@@ -502,7 +529,8 @@ export type usersUpdateWithoutSessionsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutUsersNestedInput
+  approval_tasks?: Prisma.approval_tasksUpdateManyWithoutUsersNestedInput
+  employee_assignments?: Prisma.employee_assignmentsUpdateManyWithoutUsersNestedInput
 }
 
 export type usersUncheckedUpdateWithoutSessionsInput = {
@@ -513,7 +541,72 @@ export type usersUncheckedUpdateWithoutSessionsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employee_assignments?: Prisma.employee_assignmentsUncheckedUpdateOneWithoutUsersNestedInput
+  approval_tasks?: Prisma.approval_tasksUncheckedUpdateManyWithoutUsersNestedInput
+  employee_assignments?: Prisma.employee_assignmentsUncheckedUpdateManyWithoutUsersNestedInput
+}
+
+export type usersCreateWithoutApproval_tasksInput = {
+  id?: string
+  full_name: string
+  email: string
+  password_hash: string
+  status?: string
+  last_login_at?: Date | string | null
+  created_at?: Date | string
+  employee_assignments?: Prisma.employee_assignmentsCreateNestedManyWithoutUsersInput
+  sessions?: Prisma.sessionsCreateNestedManyWithoutUsersInput
+}
+
+export type usersUncheckedCreateWithoutApproval_tasksInput = {
+  id?: string
+  full_name: string
+  email: string
+  password_hash: string
+  status?: string
+  last_login_at?: Date | string | null
+  created_at?: Date | string
+  employee_assignments?: Prisma.employee_assignmentsUncheckedCreateNestedManyWithoutUsersInput
+  sessions?: Prisma.sessionsUncheckedCreateNestedManyWithoutUsersInput
+}
+
+export type usersCreateOrConnectWithoutApproval_tasksInput = {
+  where: Prisma.usersWhereUniqueInput
+  create: Prisma.XOR<Prisma.usersCreateWithoutApproval_tasksInput, Prisma.usersUncheckedCreateWithoutApproval_tasksInput>
+}
+
+export type usersUpsertWithoutApproval_tasksInput = {
+  update: Prisma.XOR<Prisma.usersUpdateWithoutApproval_tasksInput, Prisma.usersUncheckedUpdateWithoutApproval_tasksInput>
+  create: Prisma.XOR<Prisma.usersCreateWithoutApproval_tasksInput, Prisma.usersUncheckedCreateWithoutApproval_tasksInput>
+  where?: Prisma.usersWhereInput
+}
+
+export type usersUpdateToOneWithWhereWithoutApproval_tasksInput = {
+  where?: Prisma.usersWhereInput
+  data: Prisma.XOR<Prisma.usersUpdateWithoutApproval_tasksInput, Prisma.usersUncheckedUpdateWithoutApproval_tasksInput>
+}
+
+export type usersUpdateWithoutApproval_tasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  full_name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employee_assignments?: Prisma.employee_assignmentsUpdateManyWithoutUsersNestedInput
+  sessions?: Prisma.sessionsUpdateManyWithoutUsersNestedInput
+}
+
+export type usersUncheckedUpdateWithoutApproval_tasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  full_name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  last_login_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employee_assignments?: Prisma.employee_assignmentsUncheckedUpdateManyWithoutUsersNestedInput
+  sessions?: Prisma.sessionsUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 
@@ -522,10 +615,14 @@ export type usersUncheckedUpdateWithoutSessionsInput = {
  */
 
 export type UsersCountOutputType = {
+  approval_tasks: number
+  employee_assignments: number
   sessions: number
 }
 
 export type UsersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  approval_tasks?: boolean | UsersCountOutputTypeCountApproval_tasksArgs
+  employee_assignments?: boolean | UsersCountOutputTypeCountEmployee_assignmentsArgs
   sessions?: boolean | UsersCountOutputTypeCountSessionsArgs
 }
 
@@ -537,6 +634,20 @@ export type UsersCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the UsersCountOutputType
    */
   select?: Prisma.UsersCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountApproval_tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.approval_tasksWhereInput
+}
+
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountEmployee_assignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.employee_assignmentsWhereInput
 }
 
 /**
@@ -555,6 +666,7 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   status?: boolean
   last_login_at?: boolean
   created_at?: boolean
+  approval_tasks?: boolean | Prisma.users$approval_tasksArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.users$employee_assignmentsArgs<ExtArgs>
   sessions?: boolean | Prisma.users$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -592,6 +704,7 @@ export type usersSelectScalar = {
 
 export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "full_name" | "email" | "password_hash" | "status" | "last_login_at" | "created_at", ExtArgs["result"]["users"]>
 export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  approval_tasks?: boolean | Prisma.users$approval_tasksArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.users$employee_assignmentsArgs<ExtArgs>
   sessions?: boolean | Prisma.users$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -602,7 +715,8 @@ export type usersIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "users"
   objects: {
-    employee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs> | null
+    approval_tasks: Prisma.$approval_tasksPayload<ExtArgs>[]
+    employee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs>[]
     sessions: Prisma.$sessionsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1007,7 +1121,8 @@ readonly fields: usersFieldRefs;
  */
 export interface Prisma__usersClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  employee_assignments<T extends Prisma.users$employee_assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$employee_assignmentsArgs<ExtArgs>>): Prisma.Prisma__employee_assignmentsClient<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  approval_tasks<T extends Prisma.users$approval_tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$approval_tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$approval_tasksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  employee_assignments<T extends Prisma.users$employee_assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$employee_assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.users$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$sessionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1438,6 +1553,30 @@ export type usersDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * users.approval_tasks
+ */
+export type users$approval_tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the approval_tasks
+   */
+  select?: Prisma.approval_tasksSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the approval_tasks
+   */
+  omit?: Prisma.approval_tasksOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.approval_tasksInclude<ExtArgs> | null
+  where?: Prisma.approval_tasksWhereInput
+  orderBy?: Prisma.approval_tasksOrderByWithRelationInput | Prisma.approval_tasksOrderByWithRelationInput[]
+  cursor?: Prisma.approval_tasksWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Approval_tasksScalarFieldEnum | Prisma.Approval_tasksScalarFieldEnum[]
+}
+
+/**
  * users.employee_assignments
  */
 export type users$employee_assignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1454,6 +1593,11 @@ export type users$employee_assignmentsArgs<ExtArgs extends runtime.Types.Extensi
    */
   include?: Prisma.employee_assignmentsInclude<ExtArgs> | null
   where?: Prisma.employee_assignmentsWhereInput
+  orderBy?: Prisma.employee_assignmentsOrderByWithRelationInput | Prisma.employee_assignmentsOrderByWithRelationInput[]
+  cursor?: Prisma.employee_assignmentsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Employee_assignmentsScalarFieldEnum | Prisma.Employee_assignmentsScalarFieldEnum[]
 }
 
 /**

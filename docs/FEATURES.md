@@ -1,3 +1,5 @@
+Cập nhật quy trình nâng cấp 01/10/2026; xem [báo cáo thực hiện](IMPLEMENTATION_REPORT.md).
+
 # Chức năng hiện tại của FlowPilot
 
 Được cập nhật sau phản hồi phân quyền ngày 30/09/2026; bản trước đã được Astra 6 rà soát. Đây là phạm vi demo hiện có, không phải danh sách kế hoạch.
@@ -9,8 +11,8 @@
 | Mẫu đơn | Thư viện, tìm kiếm/lọc, xem trước A4, nhân bản, kích hoạt/ngừng dùng. |
 | Thiết kế mẫu | Bảy loại thành phần: văn bản ngắn/dài, số, ngày, danh sách chọn, xác nhận, tiêu đề nhóm; bắt buộc; một/hai cột; thêm/sửa/nhân bản/xóa/sắp xếp; hoàn tác/làm lại; in hoặc lưu PDF từ trình duyệt. |
 | Thẩm định mẫu | Mọi thành viên tạo mẫu; nhân viên chọn cấp trên/lãnh đạo thẩm định. Người được giao có thể sửa mẫu trước khi duyệt. Lãnh đạo được cấp quyền ban hành trực tiếp; mẫu dùng chung được sửa thành phiên bản mới, đơn cũ giữ nội dung cũ. |
-| Quy trình | Duyệt bởi quản lý trực tiếp hoặc chức danh; cấu hình, bật/tắt; thay đổi áp dụng cho đơn gửi mới; lịch sử thay đổi. |
-| Yêu cầu | Điền mẫu đã duyệt, lưu/sửa nháp, gửi, hủy, xem chi tiết/lịch sử; nhân bản đơn bị từ chối thành đơn mới; tìm kiếm, lọc, phân trang, xuất CSV. |
+| Quy trình | Nhiều bước, điều kiện AND/OR theo dữ liệu, song song ALL/ANY, sáu loại selector; nháp/ban hành/version/history/restore, mô phỏng; BLOCKED/retry; đơn đang chạy pinned version. |
+| Yêu cầu | Điền mẫu, nháp/gửi/hủy, trả bổ sung/sửa/gửi lại cùng mã và version; snapshot/diff/tiến trình/task theo vòng; nhân bản đơn bị từ chối thành đơn mới; tìm kiếm, lọc, phân trang, xuất CSV. |
 | Phê duyệt | Người được giao duyệt hoặc từ chối, bắt buộc nêu lý do từ chối, cấm tự duyệt. |
 | Tổ chức | Công ty, phòng ban, team, chức danh; tạo/sửa đơn vị và chức danh; kiểm tra quan hệ cấp trên và chu trình. |
 | Nhân sự | Tạo tài khoản chờ, phân công và người quản lý; phân công chính/kiêm nhiệm/biệt phái; kết thúc phân công; kích hoạt/khóa tài khoản. |
@@ -35,5 +37,6 @@
 ## Giới hạn hiện tại
 
 - Chưa có chuyển giao mẫu chờ thẩm định sang CDO khác. Nên xử lý hàng chờ trước khi thay đổi CDO hoặc vai trò của họ.
-- Trình thiết kế cảnh báo khi đóng tab và khi dùng nút quay lại của trang; chuyển qua liên kết điều hướng khác trong ứng dụng chưa có cảnh báo tương tự.
-- Bản demo chưa có phê duyệt nhiều tầng, tệp đính kèm, email/SMS, SSO, chữ ký số pháp lý hoặc nhiều công ty trong cùng một hệ thống.
+- Đã bổ sung cảnh báo khi rời trang qua liên kết lúc chưa lưu ở trình thiết kế, soạn đơn và cấu hình workflow; UAT trực quan cần ghi actual.
+- Bổ sung SLA/nhắc hạn/chuyển cấp, lịch ủy quyền/chuyển giao, tài liệu có version theo vòng/trao đổi và báo cáo điểm chậm. Xem [12 chức năng và cách hoạt động](WORKFLOW_GUIDE.md).
+- Chưa có BPMN tổng quát hoặc nối đồ thị tùy ý, email/SMS, SSO, chữ ký số pháp lý, antivirus hoặc nhiều công ty trong cùng một hệ thống.

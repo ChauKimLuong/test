@@ -220,8 +220,8 @@ export type form_template_revisionsWhereInput = {
   snapshot?: Prisma.JsonFilter<"form_template_revisions">
   actor_assignment_id?: Prisma.UuidNullableFilter<"form_template_revisions"> | string | null
   created_at?: Prisma.DateTimeFilter<"form_template_revisions"> | Date | string
-  form_templates?: Prisma.XOR<Prisma.Form_templatesScalarRelationFilter, Prisma.form_templatesWhereInput>
   employee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
+  form_templates?: Prisma.XOR<Prisma.Form_templatesScalarRelationFilter, Prisma.form_templatesWhereInput>
 }
 
 export type form_template_revisionsOrderByWithRelationInput = {
@@ -231,8 +231,8 @@ export type form_template_revisionsOrderByWithRelationInput = {
   snapshot?: Prisma.SortOrder
   actor_assignment_id?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  form_templates?: Prisma.form_templatesOrderByWithRelationInput
   employee_assignments?: Prisma.employee_assignmentsOrderByWithRelationInput
+  form_templates?: Prisma.form_templatesOrderByWithRelationInput
 }
 
 export type form_template_revisionsWhereUniqueInput = Prisma.AtLeast<{
@@ -246,8 +246,8 @@ export type form_template_revisionsWhereUniqueInput = Prisma.AtLeast<{
   snapshot?: Prisma.JsonFilter<"form_template_revisions">
   actor_assignment_id?: Prisma.UuidNullableFilter<"form_template_revisions"> | string | null
   created_at?: Prisma.DateTimeFilter<"form_template_revisions"> | Date | string
-  form_templates?: Prisma.XOR<Prisma.Form_templatesScalarRelationFilter, Prisma.form_templatesWhereInput>
   employee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
+  form_templates?: Prisma.XOR<Prisma.Form_templatesScalarRelationFilter, Prisma.form_templatesWhereInput>
 }, "id" | "form_template_id_version">
 
 export type form_template_revisionsOrderByWithAggregationInput = {
@@ -281,8 +281,8 @@ export type form_template_revisionsCreateInput = {
   version: number
   snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
-  form_templates: Prisma.form_templatesCreateNestedOneWithoutForm_template_revisionsInput
   employee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_template_revisionsInput
+  form_templates: Prisma.form_templatesCreateNestedOneWithoutForm_template_revisionsInput
 }
 
 export type form_template_revisionsUncheckedCreateInput = {
@@ -299,8 +299,8 @@ export type form_template_revisionsUpdateInput = {
   version?: Prisma.IntFieldUpdateOperationsInput | number
   snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutForm_template_revisionsNestedInput
   employee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_template_revisionsNestedInput
+  form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutForm_template_revisionsNestedInput
 }
 
 export type form_template_revisionsUncheckedUpdateInput = {
@@ -638,8 +638,8 @@ export type form_template_revisionsSelect<ExtArgs extends runtime.Types.Extensio
   snapshot?: boolean
   actor_assignment_id?: boolean
   created_at?: boolean
-  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs>
+  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["form_template_revisions"]>
 
 export type form_template_revisionsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -649,8 +649,8 @@ export type form_template_revisionsSelectCreateManyAndReturn<ExtArgs extends run
   snapshot?: boolean
   actor_assignment_id?: boolean
   created_at?: boolean
-  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs>
+  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["form_template_revisions"]>
 
 export type form_template_revisionsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -660,8 +660,8 @@ export type form_template_revisionsSelectUpdateManyAndReturn<ExtArgs extends run
   snapshot?: boolean
   actor_assignment_id?: boolean
   created_at?: boolean
-  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs>
+  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["form_template_revisions"]>
 
 export type form_template_revisionsSelectScalar = {
@@ -675,23 +675,23 @@ export type form_template_revisionsSelectScalar = {
 
 export type form_template_revisionsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "form_template_id" | "version" | "snapshot" | "actor_assignment_id" | "created_at", ExtArgs["result"]["form_template_revisions"]>
 export type form_template_revisionsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs>
+  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
 }
 export type form_template_revisionsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs>
+  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
 }
 export type form_template_revisionsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs>
+  form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
 }
 
 export type $form_template_revisionsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "form_template_revisions"
   objects: {
-    form_templates: Prisma.$form_templatesPayload<ExtArgs>
     employee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs> | null
+    form_templates: Prisma.$form_templatesPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1094,8 +1094,8 @@ readonly fields: form_template_revisionsFieldRefs;
  */
 export interface Prisma__form_template_revisionsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  form_templates<T extends Prisma.form_templatesDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templatesDefaultArgs<ExtArgs>>): Prisma.Prisma__form_templatesClient<runtime.Types.Result.GetResult<Prisma.$form_templatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   employee_assignments<T extends Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_template_revisions$employee_assignmentsArgs<ExtArgs>>): Prisma.Prisma__employee_assignmentsClient<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  form_templates<T extends Prisma.form_templatesDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templatesDefaultArgs<ExtArgs>>): Prisma.Prisma__form_templatesClient<runtime.Types.Result.GetResult<Prisma.$form_templatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

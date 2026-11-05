@@ -1,0 +1,200 @@
+@startuml
+title FlowPilot — Domain model (tập trung nghiệp vụ)
+left to right direction
+hide empty methods
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+package "1. Tổ chức và quyền" {
+  class User {
+    fullName: String
+    email: String
+    status: UserStatus
+  }
+  class OrganizationalUnit {
+    name: String
+    code: String
+    type: OrganizationalUnitType
+    status: OrganizationalUnitStatus
+  }
+  class Position {
+    name: String
+    code: String
+    rankLevel: Int
+    type: PositionType
+    status: PositionStatus
+  }
+  class EmployeeAssignment {
+    type: AssignmentType
+    isPrimary: Boolean
+    startedAt: DateTime
+    endedAt: DateTime?
+  }
+  class SystemRole {
+    code: SystemRoleCode
+    name: String
+    description: String?
+    isActive: Boolean
+  }
+  class RoleAssignment {
+    scopeType: RoleScopeType
+    validFrom: DateTime
+    validUntil: DateTime?
+    revokedAt: DateTime?
+  }
+  class Permission {
+    code: PermissionCode
+    name: String
+    description: String?
+  }
+}
+
+package "2. Biểu mẫu và quy trình" {
+  class FormTemplate {
+    code: String
+    name: String
+    description: String?
+    status: FormTemplateStatus
+    version: Int
+    submittedAt: DateTime?
+    reviewedAt: DateTime?
+  }
+  class FormField {
+    key: String
+    label: String
+    type: FieldType
+    isRequired: Boolean
+    order: Int
+    options: List<String>
+  }
+  class FormTemplateRevision {
+    version: Int
+    snapshot: FormSnapshot
+    recordedAt: DateTime
+  }
+  class FormReviewEvent {
+    eventType: FormReviewEventType
+    comment: String?
+    occurredAt: DateTime
+  }
+  class Workflow {
+    status: WorkflowStatus
+    draftDefinition: WorkflowDefinition?
+    updatedAt: DateTime
+    currentVersionNumber: Int
+  }
+  class WorkflowVersion {
+    version: Int
+    templateVersion: Int
+    changeNote: String?
+    publishedAt: DateTime
+  }
+  class WorkflowStep <<value object>> {
+    key: String
+    name: String
+    order: Int
+    mode: StepMode
+  }
+  class Selector <<value object>> {
+    type: SelectorType
+    level: Int?
+  }
+  class ConditionGroup <<value object>> {
+    mode: ConditionMode
+  }
+  class Condition <<value object>> {
+    operator: ConditionOperator
+    value: ScalarValue
+  }
+  class SlaPolicy <<value object>> {
+    minutes: Int
+    remindBeforeMinutes: Int
+  }
+}
+
+package "3. Đơn và thực thi" {
+  class Request {
+    requestCode: String?
+    formData: FormAnswers
+    status: RequestStatus
+    createdAt: DateTime
+    submittedAt: DateTime?
+    decidedAt: DateTime?
+  }
+  class WorkflowInstance {
+    status: InstanceStatus
+    currentStepIndex: Int
+    startedAt: DateTime
+    completedAt: DateTime?
+  }
+  class WorkflowStepRun {
+    stepIndex: Int
+    status: StepRunStatus
+    conditionMatched: Boolean?
+    startedAt: DateTime?
+    completedAt: DateTime?
+  }
+  class ApprovalTask {
+    status: ApprovalTaskStatus
+    createdAt: DateTime
+    dueAt: DateTime?
+  }
+  class TaskDecision {
+    decision: DecisionType
+    comment: String?
+    decidedAt: DateTime
+  }
+}
+
+User "1" -- "0..*" EmployeeAssignment : has
+OrganizationalUnit "1" -- "0..*" EmployeeAssignment : contains
+Position "1" -- "0..*" EmployeeAssignment : is held in
+OrganizationalUnit "0..1" -- "0..*" OrganizationalUnit : parent / children
+EmployeeAssignment "0..1" -- "0..*" EmployeeAssignment : manager / subordinates
+EmployeeAssignment "1" -- "0..*" RoleAssignment : receives
+SystemRole "1" -- "0..*" RoleAssignment : is granted by
+SystemRole "0..*" -- "0..*" Permission : includes
+
+FormTemplate "1" *-- "0..*" FormField : contains
+FormTemplate "1" -- "0..*" FormTemplateRevision : has old revisions
+FormTemplate "1" -- "0..*" FormReviewEvent : records review
+FormTemplate "1" -- "0..1" Workflow : is used by
+Workflow "1" -- "1..*" WorkflowVersion : publishes
+WorkflowVersion "1" *-- "1..*" WorkflowStep : defines
+WorkflowStep "1" *-- "1..*" Selector : selects
+WorkflowStep "1" *-- "0..1" ConditionGroup : runs when
+ConditionGroup "1" *-- "1..*" Condition : contains
+WorkflowStep "1" *-- "0..1" SlaPolicy : has SLA
+
+Request "1" *-- "0..1" WorkflowInstance : starts
+WorkflowInstance "1" *-- "0..*" WorkflowStepRun : runs steps
+WorkflowStepRun "1" *-- "0..*" ApprovalTask : assigns
+ApprovalTask "1" *-- "0..1" TaskDecision : records decision
+
+EmployeeAssignment "1" -- "0..*" Request : submits
+Workflow "1" -- "0..*" Request : governs
+WorkflowVersion "1" -- "0..*" WorkflowInstance : is pinned by
+WorkflowStep "1" -- "0..*" WorkflowStepRun : is executed as
+EmployeeAssignment "1" -- "0..*" ApprovalTask : is assigned
+EmployeeAssignment "1" -- "0..*" TaskDecision : decides
+FormField "1" -- "0..*" Condition : is tested by
+Selector "0..*" -- "0..1" Position : targets POSITION
+Selector "0..*" -- "0..1" EmployeeAssignment : targets ASSIGNMENT
+Selector "0..*" -- "0..1" SystemRole : targets ROLE
+SlaPolicy "0..*" -- "0..1" EmployeeAssignment : escalates to
+
+note bottom of WorkflowVersion
+  Một Workflow có ít nhất một version theo quy ước đồ án.
+  Version đã công bố bất biến. Các thành phần cấu hình
+  có thể được lưu JSONB, không mặc định là bảng riêng.
+end note
+note bottom of SystemRole
+  RolePermission là bảng nối nhiều–nhiều ở ERD,
+  không phải class miền khi chỉ có hai khóa ngoại.
+end note
+note bottom of Request
+  R1 bị từ chối vẫn bất biến. Sửa và nộp lại tạo R2.
+  Không cần resubmissionOfRequestId trong mô hình này.
+end note
+@enduml

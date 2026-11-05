@@ -64,11 +64,24 @@ export const ModelName = {
   requests: 'requests',
   role_assignments: 'role_assignments',
   role_permissions: 'role_permissions',
-  schema_migrations: 'schema_migrations',
   sessions: 'sessions',
   system_roles: 'system_roles',
   users: 'users',
-  workflows: 'workflows'
+  workflows: 'workflows',
+  approval_tasks: 'approval_tasks',
+  mutation_receipts: 'mutation_receipts',
+  request_submissions: 'request_submissions',
+  task_decisions: 'task_decisions',
+  workflow_instances: 'workflow_instances',
+  workflow_step_runs: 'workflow_step_runs',
+  workflow_versions: 'workflow_versions',
+  approval_delegations: 'approval_delegations',
+  request_attachments: 'request_attachments',
+  request_comments: 'request_comments',
+  sla_events: 'sla_events',
+  submission_attachments: 'submission_attachments',
+  task_transfers: 'task_transfers',
+  schema_migrations: 'schema_migrations'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -144,7 +157,6 @@ export type Form_review_eventsScalarFieldEnum = (typeof Form_review_eventsScalar
 
 
 export const Form_templatesScalarFieldEnum = {
-  version: 'version',
   id: 'id',
   code: 'code',
   name: 'name',
@@ -155,7 +167,8 @@ export const Form_templatesScalarFieldEnum = {
   reviewer_assignment_id: 'reviewer_assignment_id',
   submitted_at: 'submitted_at',
   reviewed_at: 'reviewed_at',
-  review_comment: 'review_comment'
+  review_comment: 'review_comment',
+  version: 'version'
 } as const
 
 export type Form_templatesScalarFieldEnum = (typeof Form_templatesScalarFieldEnum)[keyof typeof Form_templatesScalarFieldEnum]
@@ -176,13 +189,13 @@ export type Form_template_revisionsScalarFieldEnum = (typeof Form_template_revis
 export const NotificationsScalarFieldEnum = {
   id: 'id',
   request_id: 'request_id',
-  form_template_id: 'form_template_id',
   recipient_assignment_id: 'recipient_assignment_id',
   type: 'type',
   title: 'title',
   message: 'message',
   created_at: 'created_at',
-  read_at: 'read_at'
+  read_at: 'read_at',
+  form_template_id: 'form_template_id'
 } as const
 
 export type NotificationsScalarFieldEnum = (typeof NotificationsScalarFieldEnum)[keyof typeof NotificationsScalarFieldEnum]
@@ -222,7 +235,6 @@ export type PositionsScalarFieldEnum = (typeof PositionsScalarFieldEnum)[keyof t
 
 
 export const RequestsScalarFieldEnum = {
-  template_snapshot: 'template_snapshot',
   id: 'id',
   request_code: 'request_code',
   workflow_id: 'workflow_id',
@@ -233,7 +245,10 @@ export const RequestsScalarFieldEnum = {
   decision_comment: 'decision_comment',
   created_at: 'created_at',
   submitted_at: 'submitted_at',
-  decided_at: 'decided_at'
+  decided_at: 'decided_at',
+  template_snapshot: 'template_snapshot',
+  revision: 'revision',
+  last_submitted_at: 'last_submitted_at'
 } as const
 
 export type RequestsScalarFieldEnum = (typeof RequestsScalarFieldEnum)[keyof typeof RequestsScalarFieldEnum]
@@ -258,14 +273,6 @@ export const Role_permissionsScalarFieldEnum = {
 } as const
 
 export type Role_permissionsScalarFieldEnum = (typeof Role_permissionsScalarFieldEnum)[keyof typeof Role_permissionsScalarFieldEnum]
-
-
-export const Schema_migrationsScalarFieldEnum = {
-  version: 'version',
-  applied_at: 'applied_at'
-} as const
-
-export type Schema_migrationsScalarFieldEnum = (typeof Schema_migrationsScalarFieldEnum)[keyof typeof Schema_migrationsScalarFieldEnum]
 
 
 export const SessionsScalarFieldEnum = {
@@ -309,10 +316,197 @@ export const WorkflowsScalarFieldEnum = {
   approver_type: 'approver_type',
   target_position_id: 'target_position_id',
   status: 'status',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  draft_definition: 'draft_definition',
+  draft_revision: 'draft_revision',
+  published_version_id: 'published_version_id'
 } as const
 
 export type WorkflowsScalarFieldEnum = (typeof WorkflowsScalarFieldEnum)[keyof typeof WorkflowsScalarFieldEnum]
+
+
+export const Approval_tasksScalarFieldEnum = {
+  id: 'id',
+  step_run_id: 'step_run_id',
+  assignee_assignment_id: 'assignee_assignment_id',
+  assignee_user_id: 'assignee_user_id',
+  assignee_snapshot: 'assignee_snapshot',
+  status: 'status',
+  created_at: 'created_at',
+  decided_at: 'decided_at',
+  due_at: 'due_at',
+  remind_at: 'remind_at',
+  escalation_assignment_id: 'escalation_assignment_id'
+} as const
+
+export type Approval_tasksScalarFieldEnum = (typeof Approval_tasksScalarFieldEnum)[keyof typeof Approval_tasksScalarFieldEnum]
+
+
+export const Mutation_receiptsScalarFieldEnum = {
+  actor_assignment_id: 'actor_assignment_id',
+  request_id: 'request_id',
+  action: 'action',
+  key: 'key',
+  payload_hash: 'payload_hash',
+  created_at: 'created_at'
+} as const
+
+export type Mutation_receiptsScalarFieldEnum = (typeof Mutation_receiptsScalarFieldEnum)[keyof typeof Mutation_receiptsScalarFieldEnum]
+
+
+export const Request_submissionsScalarFieldEnum = {
+  id: 'id',
+  request_id: 'request_id',
+  round: 'round',
+  form_data_snapshot: 'form_data_snapshot',
+  requester_snapshot: 'requester_snapshot',
+  submitted_by_assignment_id: 'submitted_by_assignment_id',
+  submitted_at: 'submitted_at'
+} as const
+
+export type Request_submissionsScalarFieldEnum = (typeof Request_submissionsScalarFieldEnum)[keyof typeof Request_submissionsScalarFieldEnum]
+
+
+export const Task_decisionsScalarFieldEnum = {
+  id: 'id',
+  task_id: 'task_id',
+  actor_assignment_id: 'actor_assignment_id',
+  decision: 'decision',
+  comment: 'comment',
+  occurred_at: 'occurred_at'
+} as const
+
+export type Task_decisionsScalarFieldEnum = (typeof Task_decisionsScalarFieldEnum)[keyof typeof Task_decisionsScalarFieldEnum]
+
+
+export const Workflow_instancesScalarFieldEnum = {
+  id: 'id',
+  request_id: 'request_id',
+  workflow_version_id: 'workflow_version_id',
+  current_round: 'current_round',
+  current_step: 'current_step',
+  status: 'status',
+  blocked_reason: 'blocked_reason',
+  started_at: 'started_at',
+  completed_at: 'completed_at'
+} as const
+
+export type Workflow_instancesScalarFieldEnum = (typeof Workflow_instancesScalarFieldEnum)[keyof typeof Workflow_instancesScalarFieldEnum]
+
+
+export const Workflow_step_runsScalarFieldEnum = {
+  id: 'id',
+  instance_id: 'instance_id',
+  round: 'round',
+  step_id: 'step_id',
+  step_index: 'step_index',
+  name: 'name',
+  mode: 'mode',
+  condition_result: 'condition_result',
+  status: 'status',
+  entered_at: 'entered_at',
+  completed_at: 'completed_at'
+} as const
+
+export type Workflow_step_runsScalarFieldEnum = (typeof Workflow_step_runsScalarFieldEnum)[keyof typeof Workflow_step_runsScalarFieldEnum]
+
+
+export const Workflow_versionsScalarFieldEnum = {
+  id: 'id',
+  workflow_id: 'workflow_id',
+  version: 'version',
+  template_version: 'template_version',
+  definition: 'definition',
+  published_by_assignment_id: 'published_by_assignment_id',
+  change_note: 'change_note',
+  published_at: 'published_at'
+} as const
+
+export type Workflow_versionsScalarFieldEnum = (typeof Workflow_versionsScalarFieldEnum)[keyof typeof Workflow_versionsScalarFieldEnum]
+
+
+export const Approval_delegationsScalarFieldEnum = {
+  id: 'id',
+  owner_assignment_id: 'owner_assignment_id',
+  delegate_assignment_id: 'delegate_assignment_id',
+  starts_at: 'starts_at',
+  ends_at: 'ends_at',
+  reason: 'reason',
+  created_at: 'created_at',
+  revoked_at: 'revoked_at'
+} as const
+
+export type Approval_delegationsScalarFieldEnum = (typeof Approval_delegationsScalarFieldEnum)[keyof typeof Approval_delegationsScalarFieldEnum]
+
+
+export const Request_attachmentsScalarFieldEnum = {
+  id: 'id',
+  request_id: 'request_id',
+  document_id: 'document_id',
+  version: 'version',
+  filename: 'filename',
+  mime_type: 'mime_type',
+  byte_size: 'byte_size',
+  sha256: 'sha256',
+  content: 'content',
+  uploaded_by_assignment_id: 'uploaded_by_assignment_id',
+  created_at: 'created_at',
+  archived_at: 'archived_at'
+} as const
+
+export type Request_attachmentsScalarFieldEnum = (typeof Request_attachmentsScalarFieldEnum)[keyof typeof Request_attachmentsScalarFieldEnum]
+
+
+export const Request_commentsScalarFieldEnum = {
+  id: 'id',
+  request_id: 'request_id',
+  actor_assignment_id: 'actor_assignment_id',
+  body: 'body',
+  created_at: 'created_at'
+} as const
+
+export type Request_commentsScalarFieldEnum = (typeof Request_commentsScalarFieldEnum)[keyof typeof Request_commentsScalarFieldEnum]
+
+
+export const Sla_eventsScalarFieldEnum = {
+  id: 'id',
+  task_id: 'task_id',
+  event: 'event',
+  detail: 'detail',
+  occurred_at: 'occurred_at'
+} as const
+
+export type Sla_eventsScalarFieldEnum = (typeof Sla_eventsScalarFieldEnum)[keyof typeof Sla_eventsScalarFieldEnum]
+
+
+export const Submission_attachmentsScalarFieldEnum = {
+  submission_id: 'submission_id',
+  attachment_id: 'attachment_id'
+} as const
+
+export type Submission_attachmentsScalarFieldEnum = (typeof Submission_attachmentsScalarFieldEnum)[keyof typeof Submission_attachmentsScalarFieldEnum]
+
+
+export const Task_transfersScalarFieldEnum = {
+  id: 'id',
+  from_task_id: 'from_task_id',
+  to_task_id: 'to_task_id',
+  actor_assignment_id: 'actor_assignment_id',
+  delegation_id: 'delegation_id',
+  kind: 'kind',
+  reason: 'reason',
+  occurred_at: 'occurred_at'
+} as const
+
+export type Task_transfersScalarFieldEnum = (typeof Task_transfersScalarFieldEnum)[keyof typeof Task_transfersScalarFieldEnum]
+
+
+export const Schema_migrationsScalarFieldEnum = {
+  version: 'version',
+  applied_at: 'applied_at'
+} as const
+
+export type Schema_migrationsScalarFieldEnum = (typeof Schema_migrationsScalarFieldEnum)[keyof typeof Schema_migrationsScalarFieldEnum]
 
 
 export const SortOrder = {

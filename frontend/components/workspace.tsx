@@ -154,7 +154,11 @@ export function Dashboard() {
           <Link href="/forms" className="button">
             Khám phá biểu mẫu <ArrowUpRight size={18} />
           </Link>
-          {can(actor, 'FORM_CREATE') && <Link href="/forms/new" className="button">Tạo mẫu đơn mới <Plus size={18} /></Link>}
+          {can(actor, 'FORM_CREATE') && (
+            <Link href="/forms/new" className="button">
+              Tạo mẫu đơn mới <Plus size={18} />
+            </Link>
+          )}
           <div className="quick-foot">
             <ShieldCheck size={17} />
             Lịch sử được lưu trong từng yêu cầu
@@ -211,7 +215,16 @@ export function Dashboard() {
             )
           ) : (
             <div className="shortcuts">
-              {can(actor, 'FORM_CREATE') && <Link href="/forms/new"><FileText size={23} /><span><b>Tạo mẫu đơn mới</b><small>Thiết kế A4 và gửi cấp trên thẩm định</small></span><ArrowRight /></Link>}
+              {can(actor, 'FORM_CREATE') && (
+                <Link href="/forms/new">
+                  <FileText size={23} />
+                  <span>
+                    <b>Tạo mẫu đơn mới</b>
+                    <small>Thiết kế A4 và gửi cấp trên thẩm định</small>
+                  </span>
+                  <ArrowRight />
+                </Link>
+              )}
               <Link href="/requests/new">
                 <FileText size={23} />
                 <span>
@@ -272,7 +285,7 @@ export function RequestsList({ inbox }: { inbox: boolean }) {
         if (rows.length >= x.total || !x.items.length) break;
       }
       downloadCsv(
-        'flowpilot-yeu-cau.csv',
+        'orva-yeu-cau.csv',
         ['Mã yêu cầu', 'Biểu mẫu', 'Người gửi', 'Trạng thái', 'Ngày gửi', 'Người duyệt'],
         rows.map((r) => [
           r.request_code,
@@ -354,7 +367,7 @@ export function RequestsList({ inbox }: { inbox: boolean }) {
             <option value="">Tất cả trạng thái</option>
             {Object.entries(statusLabels)
               .filter(([s]) =>
-                ['DRAFT', 'PENDING', 'APPROVED', 'REJECTED', 'CANCELLED'].includes(s),
+                ['DRAFT', 'PENDING', 'RETURNED', 'APPROVED', 'REJECTED', 'CANCELLED'].includes(s),
               )
               .map(([s, l]) => (
                 <option value={s} key={s}>

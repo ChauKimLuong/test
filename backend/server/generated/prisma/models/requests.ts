@@ -20,8 +20,18 @@ export type requestsModel = runtime.Types.Result.DefaultSelection<Prisma.$reques
 
 export type AggregateRequests = {
   _count: RequestsCountAggregateOutputType | null
+  _avg: RequestsAvgAggregateOutputType | null
+  _sum: RequestsSumAggregateOutputType | null
   _min: RequestsMinAggregateOutputType | null
   _max: RequestsMaxAggregateOutputType | null
+}
+
+export type RequestsAvgAggregateOutputType = {
+  revision: number | null
+}
+
+export type RequestsSumAggregateOutputType = {
+  revision: number | null
 }
 
 export type RequestsMinAggregateOutputType = {
@@ -35,6 +45,8 @@ export type RequestsMinAggregateOutputType = {
   created_at: Date | null
   submitted_at: Date | null
   decided_at: Date | null
+  revision: number | null
+  last_submitted_at: Date | null
 }
 
 export type RequestsMaxAggregateOutputType = {
@@ -48,10 +60,11 @@ export type RequestsMaxAggregateOutputType = {
   created_at: Date | null
   submitted_at: Date | null
   decided_at: Date | null
+  revision: number | null
+  last_submitted_at: Date | null
 }
 
 export type RequestsCountAggregateOutputType = {
-  template_snapshot: number
   id: number
   request_code: number
   workflow_id: number
@@ -63,9 +76,20 @@ export type RequestsCountAggregateOutputType = {
   created_at: number
   submitted_at: number
   decided_at: number
+  template_snapshot: number
+  revision: number
+  last_submitted_at: number
   _all: number
 }
 
+
+export type RequestsAvgAggregateInputType = {
+  revision?: true
+}
+
+export type RequestsSumAggregateInputType = {
+  revision?: true
+}
 
 export type RequestsMinAggregateInputType = {
   id?: true
@@ -78,6 +102,8 @@ export type RequestsMinAggregateInputType = {
   created_at?: true
   submitted_at?: true
   decided_at?: true
+  revision?: true
+  last_submitted_at?: true
 }
 
 export type RequestsMaxAggregateInputType = {
@@ -91,10 +117,11 @@ export type RequestsMaxAggregateInputType = {
   created_at?: true
   submitted_at?: true
   decided_at?: true
+  revision?: true
+  last_submitted_at?: true
 }
 
 export type RequestsCountAggregateInputType = {
-  template_snapshot?: true
   id?: true
   request_code?: true
   workflow_id?: true
@@ -106,6 +133,9 @@ export type RequestsCountAggregateInputType = {
   created_at?: true
   submitted_at?: true
   decided_at?: true
+  template_snapshot?: true
+  revision?: true
+  last_submitted_at?: true
   _all?: true
 }
 
@@ -147,6 +177,18 @@ export type RequestsAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: RequestsAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: RequestsSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: RequestsMinAggregateInputType
@@ -177,12 +219,13 @@ export type requestsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: RequestsCountAggregateInputType | true
+  _avg?: RequestsAvgAggregateInputType
+  _sum?: RequestsSumAggregateInputType
   _min?: RequestsMinAggregateInputType
   _max?: RequestsMaxAggregateInputType
 }
 
 export type RequestsGroupByOutputType = {
-  template_snapshot: runtime.JsonValue
   id: string
   request_code: string | null
   workflow_id: string
@@ -194,7 +237,12 @@ export type RequestsGroupByOutputType = {
   created_at: Date
   submitted_at: Date | null
   decided_at: Date | null
+  template_snapshot: runtime.JsonValue
+  revision: number
+  last_submitted_at: Date | null
   _count: RequestsCountAggregateOutputType | null
+  _avg: RequestsAvgAggregateOutputType | null
+  _sum: RequestsSumAggregateOutputType | null
   _min: RequestsMinAggregateOutputType | null
   _max: RequestsMaxAggregateOutputType | null
 }
@@ -218,7 +266,6 @@ export type requestsWhereInput = {
   AND?: Prisma.requestsWhereInput | Prisma.requestsWhereInput[]
   OR?: Prisma.requestsWhereInput[]
   NOT?: Prisma.requestsWhereInput | Prisma.requestsWhereInput[]
-  template_snapshot?: Prisma.JsonFilter<"requests">
   id?: Prisma.UuidFilter<"requests"> | string
   request_code?: Prisma.StringNullableFilter<"requests"> | string | null
   workflow_id?: Prisma.UuidFilter<"requests"> | string
@@ -230,15 +277,22 @@ export type requestsWhereInput = {
   created_at?: Prisma.DateTimeFilter<"requests"> | Date | string
   submitted_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
   decided_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
+  template_snapshot?: Prisma.JsonFilter<"requests">
+  revision?: Prisma.IntFilter<"requests"> | number
+  last_submitted_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
   audit_logs?: Prisma.Audit_logsListRelationFilter
+  mutation_receipts?: Prisma.Mutation_receiptsListRelationFilter
   notifications?: Prisma.NotificationsListRelationFilter
+  request_attachments?: Prisma.Request_attachmentsListRelationFilter
+  request_comments?: Prisma.Request_commentsListRelationFilter
+  request_submissions?: Prisma.Request_submissionsListRelationFilter
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsScalarRelationFilter, Prisma.employee_assignmentsWhereInput>
   workflows?: Prisma.XOR<Prisma.WorkflowsScalarRelationFilter, Prisma.workflowsWhereInput>
+  workflow_instances?: Prisma.XOR<Prisma.Workflow_instancesNullableScalarRelationFilter, Prisma.workflow_instancesWhereInput> | null
 }
 
 export type requestsOrderByWithRelationInput = {
-  template_snapshot?: Prisma.SortOrder
   id?: Prisma.SortOrder
   request_code?: Prisma.SortOrderInput | Prisma.SortOrder
   workflow_id?: Prisma.SortOrder
@@ -250,11 +304,19 @@ export type requestsOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   submitted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   decided_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  template_snapshot?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  last_submitted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   audit_logs?: Prisma.audit_logsOrderByRelationAggregateInput
+  mutation_receipts?: Prisma.mutation_receiptsOrderByRelationAggregateInput
   notifications?: Prisma.notificationsOrderByRelationAggregateInput
+  request_attachments?: Prisma.request_attachmentsOrderByRelationAggregateInput
+  request_comments?: Prisma.request_commentsOrderByRelationAggregateInput
+  request_submissions?: Prisma.request_submissionsOrderByRelationAggregateInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsOrderByWithRelationInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsOrderByWithRelationInput
   workflows?: Prisma.workflowsOrderByWithRelationInput
+  workflow_instances?: Prisma.workflow_instancesOrderByWithRelationInput
 }
 
 export type requestsWhereUniqueInput = Prisma.AtLeast<{
@@ -263,7 +325,6 @@ export type requestsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.requestsWhereInput | Prisma.requestsWhereInput[]
   OR?: Prisma.requestsWhereInput[]
   NOT?: Prisma.requestsWhereInput | Prisma.requestsWhereInput[]
-  template_snapshot?: Prisma.JsonFilter<"requests">
   workflow_id?: Prisma.UuidFilter<"requests"> | string
   requester_assignment_id?: Prisma.UuidFilter<"requests"> | string
   approver_assignment_id?: Prisma.UuidNullableFilter<"requests"> | string | null
@@ -273,15 +334,22 @@ export type requestsWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"requests"> | Date | string
   submitted_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
   decided_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
+  template_snapshot?: Prisma.JsonFilter<"requests">
+  revision?: Prisma.IntFilter<"requests"> | number
+  last_submitted_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
   audit_logs?: Prisma.Audit_logsListRelationFilter
+  mutation_receipts?: Prisma.Mutation_receiptsListRelationFilter
   notifications?: Prisma.NotificationsListRelationFilter
+  request_attachments?: Prisma.Request_attachmentsListRelationFilter
+  request_comments?: Prisma.Request_commentsListRelationFilter
+  request_submissions?: Prisma.Request_submissionsListRelationFilter
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsScalarRelationFilter, Prisma.employee_assignmentsWhereInput>
   workflows?: Prisma.XOR<Prisma.WorkflowsScalarRelationFilter, Prisma.workflowsWhereInput>
+  workflow_instances?: Prisma.XOR<Prisma.Workflow_instancesNullableScalarRelationFilter, Prisma.workflow_instancesWhereInput> | null
 }, "id" | "request_code">
 
 export type requestsOrderByWithAggregationInput = {
-  template_snapshot?: Prisma.SortOrder
   id?: Prisma.SortOrder
   request_code?: Prisma.SortOrderInput | Prisma.SortOrder
   workflow_id?: Prisma.SortOrder
@@ -293,16 +361,20 @@ export type requestsOrderByWithAggregationInput = {
   created_at?: Prisma.SortOrder
   submitted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   decided_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  template_snapshot?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  last_submitted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.requestsCountOrderByAggregateInput
+  _avg?: Prisma.requestsAvgOrderByAggregateInput
   _max?: Prisma.requestsMaxOrderByAggregateInput
   _min?: Prisma.requestsMinOrderByAggregateInput
+  _sum?: Prisma.requestsSumOrderByAggregateInput
 }
 
 export type requestsScalarWhereWithAggregatesInput = {
   AND?: Prisma.requestsScalarWhereWithAggregatesInput | Prisma.requestsScalarWhereWithAggregatesInput[]
   OR?: Prisma.requestsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.requestsScalarWhereWithAggregatesInput | Prisma.requestsScalarWhereWithAggregatesInput[]
-  template_snapshot?: Prisma.JsonWithAggregatesFilter<"requests">
   id?: Prisma.UuidWithAggregatesFilter<"requests"> | string
   request_code?: Prisma.StringNullableWithAggregatesFilter<"requests"> | string | null
   workflow_id?: Prisma.UuidWithAggregatesFilter<"requests"> | string
@@ -314,10 +386,12 @@ export type requestsScalarWhereWithAggregatesInput = {
   created_at?: Prisma.DateTimeWithAggregatesFilter<"requests"> | Date | string
   submitted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"requests"> | Date | string | null
   decided_at?: Prisma.DateTimeNullableWithAggregatesFilter<"requests"> | Date | string | null
+  template_snapshot?: Prisma.JsonWithAggregatesFilter<"requests">
+  revision?: Prisma.IntWithAggregatesFilter<"requests"> | number
+  last_submitted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"requests"> | Date | string | null
 }
 
 export type requestsCreateInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -326,15 +400,22 @@ export type requestsCreateInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
   workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -346,12 +427,19 @@ export type requestsUncheckedCreateInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUpdateInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -360,15 +448,22 @@ export type requestsUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
   workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -380,12 +475,19 @@ export type requestsUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsCreateManyInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -397,10 +499,12 @@ export type requestsCreateManyInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
 }
 
 export type requestsUpdateManyMutationInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -409,10 +513,12 @@ export type requestsUpdateManyMutationInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type requestsUncheckedUpdateManyInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -424,6 +530,9 @@ export type requestsUncheckedUpdateManyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type RequestsNullableScalarRelationFilter = {
@@ -442,7 +551,6 @@ export type requestsOrderByRelationAggregateInput = {
 }
 
 export type requestsCountOrderByAggregateInput = {
-  template_snapshot?: Prisma.SortOrder
   id?: Prisma.SortOrder
   request_code?: Prisma.SortOrder
   workflow_id?: Prisma.SortOrder
@@ -454,6 +562,13 @@ export type requestsCountOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   submitted_at?: Prisma.SortOrder
   decided_at?: Prisma.SortOrder
+  template_snapshot?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  last_submitted_at?: Prisma.SortOrder
+}
+
+export type requestsAvgOrderByAggregateInput = {
+  revision?: Prisma.SortOrder
 }
 
 export type requestsMaxOrderByAggregateInput = {
@@ -467,6 +582,8 @@ export type requestsMaxOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   submitted_at?: Prisma.SortOrder
   decided_at?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  last_submitted_at?: Prisma.SortOrder
 }
 
 export type requestsMinOrderByAggregateInput = {
@@ -480,6 +597,17 @@ export type requestsMinOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   submitted_at?: Prisma.SortOrder
   decided_at?: Prisma.SortOrder
+  revision?: Prisma.SortOrder
+  last_submitted_at?: Prisma.SortOrder
+}
+
+export type requestsSumOrderByAggregateInput = {
+  revision?: Prisma.SortOrder
+}
+
+export type RequestsScalarRelationFilter = {
+  is?: Prisma.requestsWhereInput
+  isNot?: Prisma.requestsWhereInput
 }
 
 export type requestsCreateNestedOneWithoutAudit_logsInput = {
@@ -640,8 +768,77 @@ export type requestsUncheckedUpdateManyWithoutWorkflowsNestedInput = {
   deleteMany?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
 }
 
+export type requestsCreateNestedOneWithoutMutation_receiptsInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutMutation_receiptsInput, Prisma.requestsUncheckedCreateWithoutMutation_receiptsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutMutation_receiptsInput
+  connect?: Prisma.requestsWhereUniqueInput
+}
+
+export type requestsUpdateOneRequiredWithoutMutation_receiptsNestedInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutMutation_receiptsInput, Prisma.requestsUncheckedCreateWithoutMutation_receiptsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutMutation_receiptsInput
+  upsert?: Prisma.requestsUpsertWithoutMutation_receiptsInput
+  connect?: Prisma.requestsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.requestsUpdateToOneWithWhereWithoutMutation_receiptsInput, Prisma.requestsUpdateWithoutMutation_receiptsInput>, Prisma.requestsUncheckedUpdateWithoutMutation_receiptsInput>
+}
+
+export type requestsCreateNestedOneWithoutRequest_submissionsInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutRequest_submissionsInput, Prisma.requestsUncheckedCreateWithoutRequest_submissionsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutRequest_submissionsInput
+  connect?: Prisma.requestsWhereUniqueInput
+}
+
+export type requestsUpdateOneRequiredWithoutRequest_submissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutRequest_submissionsInput, Prisma.requestsUncheckedCreateWithoutRequest_submissionsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutRequest_submissionsInput
+  upsert?: Prisma.requestsUpsertWithoutRequest_submissionsInput
+  connect?: Prisma.requestsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.requestsUpdateToOneWithWhereWithoutRequest_submissionsInput, Prisma.requestsUpdateWithoutRequest_submissionsInput>, Prisma.requestsUncheckedUpdateWithoutRequest_submissionsInput>
+}
+
+export type requestsCreateNestedOneWithoutWorkflow_instancesInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutWorkflow_instancesInput, Prisma.requestsUncheckedCreateWithoutWorkflow_instancesInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutWorkflow_instancesInput
+  connect?: Prisma.requestsWhereUniqueInput
+}
+
+export type requestsUpdateOneRequiredWithoutWorkflow_instancesNestedInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutWorkflow_instancesInput, Prisma.requestsUncheckedCreateWithoutWorkflow_instancesInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutWorkflow_instancesInput
+  upsert?: Prisma.requestsUpsertWithoutWorkflow_instancesInput
+  connect?: Prisma.requestsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.requestsUpdateToOneWithWhereWithoutWorkflow_instancesInput, Prisma.requestsUpdateWithoutWorkflow_instancesInput>, Prisma.requestsUncheckedUpdateWithoutWorkflow_instancesInput>
+}
+
+export type requestsCreateNestedOneWithoutRequest_attachmentsInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutRequest_attachmentsInput, Prisma.requestsUncheckedCreateWithoutRequest_attachmentsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutRequest_attachmentsInput
+  connect?: Prisma.requestsWhereUniqueInput
+}
+
+export type requestsUpdateOneRequiredWithoutRequest_attachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutRequest_attachmentsInput, Prisma.requestsUncheckedCreateWithoutRequest_attachmentsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutRequest_attachmentsInput
+  upsert?: Prisma.requestsUpsertWithoutRequest_attachmentsInput
+  connect?: Prisma.requestsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.requestsUpdateToOneWithWhereWithoutRequest_attachmentsInput, Prisma.requestsUpdateWithoutRequest_attachmentsInput>, Prisma.requestsUncheckedUpdateWithoutRequest_attachmentsInput>
+}
+
+export type requestsCreateNestedOneWithoutRequest_commentsInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutRequest_commentsInput, Prisma.requestsUncheckedCreateWithoutRequest_commentsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutRequest_commentsInput
+  connect?: Prisma.requestsWhereUniqueInput
+}
+
+export type requestsUpdateOneRequiredWithoutRequest_commentsNestedInput = {
+  create?: Prisma.XOR<Prisma.requestsCreateWithoutRequest_commentsInput, Prisma.requestsUncheckedCreateWithoutRequest_commentsInput>
+  connectOrCreate?: Prisma.requestsCreateOrConnectWithoutRequest_commentsInput
+  upsert?: Prisma.requestsUpsertWithoutRequest_commentsInput
+  connect?: Prisma.requestsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.requestsUpdateToOneWithWhereWithoutRequest_commentsInput, Prisma.requestsUpdateWithoutRequest_commentsInput>, Prisma.requestsUncheckedUpdateWithoutRequest_commentsInput>
+}
+
 export type requestsCreateWithoutAudit_logsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -650,14 +847,21 @@ export type requestsCreateWithoutAudit_logsInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
   workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateWithoutAudit_logsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -669,7 +873,15 @@ export type requestsUncheckedCreateWithoutAudit_logsInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsCreateOrConnectWithoutAudit_logsInput = {
@@ -689,7 +901,6 @@ export type requestsUpdateToOneWithWhereWithoutAudit_logsInput = {
 }
 
 export type requestsUpdateWithoutAudit_logsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -698,14 +909,21 @@ export type requestsUpdateWithoutAudit_logsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
   workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateWithoutAudit_logsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -717,11 +935,18 @@ export type requestsUncheckedUpdateWithoutAudit_logsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsCreateWithoutEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -730,14 +955,21 @@ export type requestsCreateWithoutEmployee_assignments_requests_approver_assignme
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
   workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateWithoutEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -748,8 +980,16 @@ export type requestsUncheckedCreateWithoutEmployee_assignments_requests_approver
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsCreateOrConnectWithoutEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
@@ -763,7 +1003,6 @@ export type requestsCreateManyEmployee_assignments_requests_approver_assignment_
 }
 
 export type requestsCreateWithoutEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -772,14 +1011,21 @@ export type requestsCreateWithoutEmployee_assignments_requests_requester_assignm
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
   workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateWithoutEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -790,8 +1036,16 @@ export type requestsUncheckedCreateWithoutEmployee_assignments_requests_requeste
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsCreateOrConnectWithoutEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
@@ -824,7 +1078,6 @@ export type requestsScalarWhereInput = {
   AND?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
   OR?: Prisma.requestsScalarWhereInput[]
   NOT?: Prisma.requestsScalarWhereInput | Prisma.requestsScalarWhereInput[]
-  template_snapshot?: Prisma.JsonFilter<"requests">
   id?: Prisma.UuidFilter<"requests"> | string
   request_code?: Prisma.StringNullableFilter<"requests"> | string | null
   workflow_id?: Prisma.UuidFilter<"requests"> | string
@@ -836,6 +1089,9 @@ export type requestsScalarWhereInput = {
   created_at?: Prisma.DateTimeFilter<"requests"> | Date | string
   submitted_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
   decided_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
+  template_snapshot?: Prisma.JsonFilter<"requests">
+  revision?: Prisma.IntFilter<"requests"> | number
+  last_submitted_at?: Prisma.DateTimeNullableFilter<"requests"> | Date | string | null
 }
 
 export type requestsUpsertWithWhereUniqueWithoutEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
@@ -855,7 +1111,6 @@ export type requestsUpdateManyWithWhereWithoutEmployee_assignments_requests_requ
 }
 
 export type requestsCreateWithoutNotificationsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -864,14 +1119,21 @@ export type requestsCreateWithoutNotificationsInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
   workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateWithoutNotificationsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -883,7 +1145,15 @@ export type requestsUncheckedCreateWithoutNotificationsInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsCreateOrConnectWithoutNotificationsInput = {
@@ -903,7 +1173,6 @@ export type requestsUpdateToOneWithWhereWithoutNotificationsInput = {
 }
 
 export type requestsUpdateWithoutNotificationsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -912,14 +1181,21 @@ export type requestsUpdateWithoutNotificationsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
   workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateWithoutNotificationsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -931,11 +1207,18 @@ export type requestsUncheckedUpdateWithoutNotificationsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsCreateWithoutWorkflowsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -944,14 +1227,21 @@ export type requestsCreateWithoutWorkflowsInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsUncheckedCreateWithoutWorkflowsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   requester_assignment_id: string
@@ -962,8 +1252,16 @@ export type requestsUncheckedCreateWithoutWorkflowsInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
 }
 
 export type requestsCreateOrConnectWithoutWorkflowsInput = {
@@ -992,8 +1290,547 @@ export type requestsUpdateManyWithWhereWithoutWorkflowsInput = {
   data: Prisma.XOR<Prisma.requestsUpdateManyMutationInput, Prisma.requestsUncheckedUpdateManyWithoutWorkflowsInput>
 }
 
-export type requestsCreateManyEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
+export type requestsCreateWithoutMutation_receiptsInput = {
+  id?: string
+  request_code?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
   template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
+  workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsUncheckedCreateWithoutMutation_receiptsInput = {
+  id?: string
+  request_code?: string | null
+  workflow_id: string
+  requester_assignment_id: string
+  approver_assignment_id?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsCreateOrConnectWithoutMutation_receiptsInput = {
+  where: Prisma.requestsWhereUniqueInput
+  create: Prisma.XOR<Prisma.requestsCreateWithoutMutation_receiptsInput, Prisma.requestsUncheckedCreateWithoutMutation_receiptsInput>
+}
+
+export type requestsUpsertWithoutMutation_receiptsInput = {
+  update: Prisma.XOR<Prisma.requestsUpdateWithoutMutation_receiptsInput, Prisma.requestsUncheckedUpdateWithoutMutation_receiptsInput>
+  create: Prisma.XOR<Prisma.requestsCreateWithoutMutation_receiptsInput, Prisma.requestsUncheckedCreateWithoutMutation_receiptsInput>
+  where?: Prisma.requestsWhereInput
+}
+
+export type requestsUpdateToOneWithWhereWithoutMutation_receiptsInput = {
+  where?: Prisma.requestsWhereInput
+  data: Prisma.XOR<Prisma.requestsUpdateWithoutMutation_receiptsInput, Prisma.requestsUncheckedUpdateWithoutMutation_receiptsInput>
+}
+
+export type requestsUpdateWithoutMutation_receiptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
+  workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsUncheckedUpdateWithoutMutation_receiptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
+  requester_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  approver_assignment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsCreateWithoutRequest_submissionsInput = {
+  id?: string
+  request_code?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
+  workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsUncheckedCreateWithoutRequest_submissionsInput = {
+  id?: string
+  request_code?: string | null
+  workflow_id: string
+  requester_assignment_id: string
+  approver_assignment_id?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsCreateOrConnectWithoutRequest_submissionsInput = {
+  where: Prisma.requestsWhereUniqueInput
+  create: Prisma.XOR<Prisma.requestsCreateWithoutRequest_submissionsInput, Prisma.requestsUncheckedCreateWithoutRequest_submissionsInput>
+}
+
+export type requestsUpsertWithoutRequest_submissionsInput = {
+  update: Prisma.XOR<Prisma.requestsUpdateWithoutRequest_submissionsInput, Prisma.requestsUncheckedUpdateWithoutRequest_submissionsInput>
+  create: Prisma.XOR<Prisma.requestsCreateWithoutRequest_submissionsInput, Prisma.requestsUncheckedCreateWithoutRequest_submissionsInput>
+  where?: Prisma.requestsWhereInput
+}
+
+export type requestsUpdateToOneWithWhereWithoutRequest_submissionsInput = {
+  where?: Prisma.requestsWhereInput
+  data: Prisma.XOR<Prisma.requestsUpdateWithoutRequest_submissionsInput, Prisma.requestsUncheckedUpdateWithoutRequest_submissionsInput>
+}
+
+export type requestsUpdateWithoutRequest_submissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
+  workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsUncheckedUpdateWithoutRequest_submissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
+  requester_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  approver_assignment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsCreateWithoutWorkflow_instancesInput = {
+  id?: string
+  request_code?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
+  workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsUncheckedCreateWithoutWorkflow_instancesInput = {
+  id?: string
+  request_code?: string | null
+  workflow_id: string
+  requester_assignment_id: string
+  approver_assignment_id?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+}
+
+export type requestsCreateOrConnectWithoutWorkflow_instancesInput = {
+  where: Prisma.requestsWhereUniqueInput
+  create: Prisma.XOR<Prisma.requestsCreateWithoutWorkflow_instancesInput, Prisma.requestsUncheckedCreateWithoutWorkflow_instancesInput>
+}
+
+export type requestsUpsertWithoutWorkflow_instancesInput = {
+  update: Prisma.XOR<Prisma.requestsUpdateWithoutWorkflow_instancesInput, Prisma.requestsUncheckedUpdateWithoutWorkflow_instancesInput>
+  create: Prisma.XOR<Prisma.requestsCreateWithoutWorkflow_instancesInput, Prisma.requestsUncheckedCreateWithoutWorkflow_instancesInput>
+  where?: Prisma.requestsWhereInput
+}
+
+export type requestsUpdateToOneWithWhereWithoutWorkflow_instancesInput = {
+  where?: Prisma.requestsWhereInput
+  data: Prisma.XOR<Prisma.requestsUpdateWithoutWorkflow_instancesInput, Prisma.requestsUncheckedUpdateWithoutWorkflow_instancesInput>
+}
+
+export type requestsUpdateWithoutWorkflow_instancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
+  workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+}
+
+export type requestsUncheckedUpdateWithoutWorkflow_instancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
+  requester_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  approver_assignment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+}
+
+export type requestsCreateWithoutRequest_attachmentsInput = {
+  id?: string
+  request_code?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
+  workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsUncheckedCreateWithoutRequest_attachmentsInput = {
+  id?: string
+  request_code?: string | null
+  workflow_id: string
+  requester_assignment_id: string
+  approver_assignment_id?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_comments?: Prisma.request_commentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsCreateOrConnectWithoutRequest_attachmentsInput = {
+  where: Prisma.requestsWhereUniqueInput
+  create: Prisma.XOR<Prisma.requestsCreateWithoutRequest_attachmentsInput, Prisma.requestsUncheckedCreateWithoutRequest_attachmentsInput>
+}
+
+export type requestsUpsertWithoutRequest_attachmentsInput = {
+  update: Prisma.XOR<Prisma.requestsUpdateWithoutRequest_attachmentsInput, Prisma.requestsUncheckedUpdateWithoutRequest_attachmentsInput>
+  create: Prisma.XOR<Prisma.requestsCreateWithoutRequest_attachmentsInput, Prisma.requestsUncheckedCreateWithoutRequest_attachmentsInput>
+  where?: Prisma.requestsWhereInput
+}
+
+export type requestsUpdateToOneWithWhereWithoutRequest_attachmentsInput = {
+  where?: Prisma.requestsWhereInput
+  data: Prisma.XOR<Prisma.requestsUpdateWithoutRequest_attachmentsInput, Prisma.requestsUncheckedUpdateWithoutRequest_attachmentsInput>
+}
+
+export type requestsUpdateWithoutRequest_attachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
+  workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsUncheckedUpdateWithoutRequest_attachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
+  requester_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  approver_assignment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsCreateWithoutRequest_commentsInput = {
+  id?: string
+  request_code?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsCreateNestedManyWithoutRequestsInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutRequests_requests_requester_assignment_idToemployee_assignmentsInput
+  workflows: Prisma.workflowsCreateNestedOneWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsUncheckedCreateWithoutRequest_commentsInput = {
+  id?: string
+  request_code?: string | null
+  workflow_id: string
+  requester_assignment_id: string
+  approver_assignment_id?: string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  decision_comment?: string | null
+  created_at?: Date | string
+  submitted_at?: Date | string | null
+  decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutRequestsInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedCreateNestedManyWithoutRequestsInput
+  notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutRequestsInput
+  request_attachments?: Prisma.request_attachmentsUncheckedCreateNestedManyWithoutRequestsInput
+  request_submissions?: Prisma.request_submissionsUncheckedCreateNestedManyWithoutRequestsInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedCreateNestedOneWithoutRequestsInput
+}
+
+export type requestsCreateOrConnectWithoutRequest_commentsInput = {
+  where: Prisma.requestsWhereUniqueInput
+  create: Prisma.XOR<Prisma.requestsCreateWithoutRequest_commentsInput, Prisma.requestsUncheckedCreateWithoutRequest_commentsInput>
+}
+
+export type requestsUpsertWithoutRequest_commentsInput = {
+  update: Prisma.XOR<Prisma.requestsUpdateWithoutRequest_commentsInput, Prisma.requestsUncheckedUpdateWithoutRequest_commentsInput>
+  create: Prisma.XOR<Prisma.requestsCreateWithoutRequest_commentsInput, Prisma.requestsUncheckedCreateWithoutRequest_commentsInput>
+  where?: Prisma.requestsWhereInput
+}
+
+export type requestsUpdateToOneWithWhereWithoutRequest_commentsInput = {
+  where?: Prisma.requestsWhereInput
+  data: Prisma.XOR<Prisma.requestsUpdateWithoutRequest_commentsInput, Prisma.requestsUncheckedUpdateWithoutRequest_commentsInput>
+}
+
+export type requestsUpdateWithoutRequest_commentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
+  employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
+  employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
+  workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsUncheckedUpdateWithoutRequest_commentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
+  requester_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  approver_assignment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  decision_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
+  notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
+}
+
+export type requestsCreateManyEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -1004,10 +1841,12 @@ export type requestsCreateManyEmployee_assignments_requests_approver_assignment_
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
 }
 
 export type requestsCreateManyEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   workflow_id: string
@@ -1018,10 +1857,12 @@ export type requestsCreateManyEmployee_assignments_requests_requester_assignment
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
 }
 
 export type requestsUpdateWithoutEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -1030,14 +1871,21 @@ export type requestsUpdateWithoutEmployee_assignments_requests_approver_assignme
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
   workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateWithoutEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1048,12 +1896,19 @@ export type requestsUncheckedUpdateWithoutEmployee_assignments_requests_approver
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateManyWithoutEmployee_assignments_requests_approver_assignment_idToemployee_assignmentsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1064,10 +1919,12 @@ export type requestsUncheckedUpdateManyWithoutEmployee_assignments_requests_appr
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type requestsUpdateWithoutEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -1076,14 +1933,21 @@ export type requestsUpdateWithoutEmployee_assignments_requests_requester_assignm
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
   workflows?: Prisma.workflowsUpdateOneRequiredWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateWithoutEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1094,12 +1958,19 @@ export type requestsUncheckedUpdateWithoutEmployee_assignments_requests_requeste
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateManyWithoutEmployee_assignments_requests_requester_assignment_idToemployee_assignmentsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1110,10 +1981,12 @@ export type requestsUncheckedUpdateManyWithoutEmployee_assignments_requests_requ
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type requestsCreateManyWorkflowsInput = {
-  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: string
   request_code?: string | null
   requester_assignment_id: string
@@ -1124,10 +1997,12 @@ export type requestsCreateManyWorkflowsInput = {
   created_at?: Date | string
   submitted_at?: Date | string | null
   decided_at?: Date | string | null
+  template_snapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: number
+  last_submitted_at?: Date | string | null
 }
 
 export type requestsUpdateWithoutWorkflowsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   form_data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -1136,14 +2011,21 @@ export type requestsUpdateWithoutWorkflowsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUpdateManyWithoutRequestsNestedInput
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutRequests_requests_approver_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutRequests_requests_requester_assignment_idToemployee_assignmentsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateWithoutWorkflowsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1154,12 +2036,19 @@ export type requestsUncheckedUpdateWithoutWorkflowsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutRequestsNestedInput
+  mutation_receipts?: Prisma.mutation_receiptsUncheckedUpdateManyWithoutRequestsNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_attachments?: Prisma.request_attachmentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_comments?: Prisma.request_commentsUncheckedUpdateManyWithoutRequestsNestedInput
+  request_submissions?: Prisma.request_submissionsUncheckedUpdateManyWithoutRequestsNestedInput
+  workflow_instances?: Prisma.workflow_instancesUncheckedUpdateOneWithoutRequestsNestedInput
 }
 
 export type requestsUncheckedUpdateManyWithoutWorkflowsInput = {
-  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requester_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1170,6 +2059,9 @@ export type requestsUncheckedUpdateManyWithoutWorkflowsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   decided_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template_snapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  revision?: Prisma.IntFieldUpdateOperationsInput | number
+  last_submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1179,12 +2071,20 @@ export type requestsUncheckedUpdateManyWithoutWorkflowsInput = {
 
 export type RequestsCountOutputType = {
   audit_logs: number
+  mutation_receipts: number
   notifications: number
+  request_attachments: number
+  request_comments: number
+  request_submissions: number
 }
 
 export type RequestsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   audit_logs?: boolean | RequestsCountOutputTypeCountAudit_logsArgs
+  mutation_receipts?: boolean | RequestsCountOutputTypeCountMutation_receiptsArgs
   notifications?: boolean | RequestsCountOutputTypeCountNotificationsArgs
+  request_attachments?: boolean | RequestsCountOutputTypeCountRequest_attachmentsArgs
+  request_comments?: boolean | RequestsCountOutputTypeCountRequest_commentsArgs
+  request_submissions?: boolean | RequestsCountOutputTypeCountRequest_submissionsArgs
 }
 
 /**
@@ -1207,13 +2107,40 @@ export type RequestsCountOutputTypeCountAudit_logsArgs<ExtArgs extends runtime.T
 /**
  * RequestsCountOutputType without action
  */
+export type RequestsCountOutputTypeCountMutation_receiptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.mutation_receiptsWhereInput
+}
+
+/**
+ * RequestsCountOutputType without action
+ */
 export type RequestsCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.notificationsWhereInput
 }
 
+/**
+ * RequestsCountOutputType without action
+ */
+export type RequestsCountOutputTypeCountRequest_attachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.request_attachmentsWhereInput
+}
+
+/**
+ * RequestsCountOutputType without action
+ */
+export type RequestsCountOutputTypeCountRequest_commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.request_commentsWhereInput
+}
+
+/**
+ * RequestsCountOutputType without action
+ */
+export type RequestsCountOutputTypeCountRequest_submissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.request_submissionsWhereInput
+}
+
 
 export type requestsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  template_snapshot?: boolean
   id?: boolean
   request_code?: boolean
   workflow_id?: boolean
@@ -1225,16 +2152,23 @@ export type requestsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   created_at?: boolean
   submitted_at?: boolean
   decided_at?: boolean
+  template_snapshot?: boolean
+  revision?: boolean
+  last_submitted_at?: boolean
   audit_logs?: boolean | Prisma.requests$audit_logsArgs<ExtArgs>
+  mutation_receipts?: boolean | Prisma.requests$mutation_receiptsArgs<ExtArgs>
   notifications?: boolean | Prisma.requests$notificationsArgs<ExtArgs>
+  request_attachments?: boolean | Prisma.requests$request_attachmentsArgs<ExtArgs>
+  request_comments?: boolean | Prisma.requests$request_commentsArgs<ExtArgs>
+  request_submissions?: boolean | Prisma.requests$request_submissionsArgs<ExtArgs>
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: boolean | Prisma.requests$employee_assignments_requests_approver_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   workflows?: boolean | Prisma.workflowsDefaultArgs<ExtArgs>
+  workflow_instances?: boolean | Prisma.requests$workflow_instancesArgs<ExtArgs>
   _count?: boolean | Prisma.RequestsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["requests"]>
 
 export type requestsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  template_snapshot?: boolean
   id?: boolean
   request_code?: boolean
   workflow_id?: boolean
@@ -1246,13 +2180,15 @@ export type requestsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   created_at?: boolean
   submitted_at?: boolean
   decided_at?: boolean
+  template_snapshot?: boolean
+  revision?: boolean
+  last_submitted_at?: boolean
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: boolean | Prisma.requests$employee_assignments_requests_approver_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   workflows?: boolean | Prisma.workflowsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["requests"]>
 
 export type requestsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  template_snapshot?: boolean
   id?: boolean
   request_code?: boolean
   workflow_id?: boolean
@@ -1264,13 +2200,15 @@ export type requestsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   created_at?: boolean
   submitted_at?: boolean
   decided_at?: boolean
+  template_snapshot?: boolean
+  revision?: boolean
+  last_submitted_at?: boolean
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: boolean | Prisma.requests$employee_assignments_requests_approver_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   workflows?: boolean | Prisma.workflowsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["requests"]>
 
 export type requestsSelectScalar = {
-  template_snapshot?: boolean
   id?: boolean
   request_code?: boolean
   workflow_id?: boolean
@@ -1282,15 +2220,23 @@ export type requestsSelectScalar = {
   created_at?: boolean
   submitted_at?: boolean
   decided_at?: boolean
+  template_snapshot?: boolean
+  revision?: boolean
+  last_submitted_at?: boolean
 }
 
-export type requestsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"template_snapshot" | "id" | "request_code" | "workflow_id" | "requester_assignment_id" | "approver_assignment_id" | "form_data" | "status" | "decision_comment" | "created_at" | "submitted_at" | "decided_at", ExtArgs["result"]["requests"]>
+export type requestsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "request_code" | "workflow_id" | "requester_assignment_id" | "approver_assignment_id" | "form_data" | "status" | "decision_comment" | "created_at" | "submitted_at" | "decided_at" | "template_snapshot" | "revision" | "last_submitted_at", ExtArgs["result"]["requests"]>
 export type requestsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   audit_logs?: boolean | Prisma.requests$audit_logsArgs<ExtArgs>
+  mutation_receipts?: boolean | Prisma.requests$mutation_receiptsArgs<ExtArgs>
   notifications?: boolean | Prisma.requests$notificationsArgs<ExtArgs>
+  request_attachments?: boolean | Prisma.requests$request_attachmentsArgs<ExtArgs>
+  request_comments?: boolean | Prisma.requests$request_commentsArgs<ExtArgs>
+  request_submissions?: boolean | Prisma.requests$request_submissionsArgs<ExtArgs>
   employee_assignments_requests_approver_assignment_idToemployee_assignments?: boolean | Prisma.requests$employee_assignments_requests_approver_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_requests_requester_assignment_idToemployee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   workflows?: boolean | Prisma.workflowsDefaultArgs<ExtArgs>
+  workflow_instances?: boolean | Prisma.requests$workflow_instancesArgs<ExtArgs>
   _count?: boolean | Prisma.RequestsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type requestsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1308,13 +2254,17 @@ export type $requestsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "requests"
   objects: {
     audit_logs: Prisma.$audit_logsPayload<ExtArgs>[]
+    mutation_receipts: Prisma.$mutation_receiptsPayload<ExtArgs>[]
     notifications: Prisma.$notificationsPayload<ExtArgs>[]
+    request_attachments: Prisma.$request_attachmentsPayload<ExtArgs>[]
+    request_comments: Prisma.$request_commentsPayload<ExtArgs>[]
+    request_submissions: Prisma.$request_submissionsPayload<ExtArgs>[]
     employee_assignments_requests_approver_assignment_idToemployee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs> | null
     employee_assignments_requests_requester_assignment_idToemployee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs>
     workflows: Prisma.$workflowsPayload<ExtArgs>
+    workflow_instances: Prisma.$workflow_instancesPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    template_snapshot: runtime.JsonValue
     id: string
     request_code: string | null
     workflow_id: string
@@ -1326,6 +2276,9 @@ export type $requestsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     created_at: Date
     submitted_at: Date | null
     decided_at: Date | null
+    template_snapshot: runtime.JsonValue
+    revision: number
+    last_submitted_at: Date | null
   }, ExtArgs["result"]["requests"]>
   composites: {}
 }
@@ -1409,8 +2362,8 @@ export interface requestsDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * // Get first 10 Requests
    * const requests = await prisma.requests.findMany({ take: 10 })
    * 
-   * // Only select the `template_snapshot`
-   * const requestsWithTemplate_snapshotOnly = await prisma.requests.findMany({ select: { template_snapshot: true } })
+   * // Only select the `id`
+   * const requestsWithIdOnly = await prisma.requests.findMany({ select: { id: true } })
    * 
    */
   findMany<T extends requestsFindManyArgs>(args?: Prisma.SelectSubset<T, requestsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$requestsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -1454,9 +2407,9 @@ export interface requestsDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    *   ]
    * })
    * 
-   * // Create many Requests and only return the `template_snapshot`
-   * const requestsWithTemplate_snapshotOnly = await prisma.requests.createManyAndReturn({
-   *   select: { template_snapshot: true },
+   * // Create many Requests and only return the `id`
+   * const requestsWithIdOnly = await prisma.requests.createManyAndReturn({
+   *   select: { id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -1545,9 +2498,9 @@ export interface requestsDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    *   ]
    * })
    * 
-   * // Update zero or more Requests and only return the `template_snapshot`
-   * const requestsWithTemplate_snapshotOnly = await prisma.requests.updateManyAndReturn({
-   *   select: { template_snapshot: true },
+   * // Update zero or more Requests and only return the `id`
+   * const requestsWithIdOnly = await prisma.requests.updateManyAndReturn({
+   *   select: { id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1721,10 +2674,15 @@ readonly fields: requestsFieldRefs;
 export interface Prisma__requestsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   audit_logs<T extends Prisma.requests$audit_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mutation_receipts<T extends Prisma.requests$mutation_receiptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$mutation_receiptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$mutation_receiptsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.requests$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$notificationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  request_attachments<T extends Prisma.requests$request_attachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$request_attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$request_attachmentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  request_comments<T extends Prisma.requests$request_commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$request_commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$request_commentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  request_submissions<T extends Prisma.requests$request_submissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$request_submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$request_submissionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   employee_assignments_requests_approver_assignment_idToemployee_assignments<T extends Prisma.requests$employee_assignments_requests_approver_assignment_idToemployee_assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$employee_assignments_requests_approver_assignment_idToemployee_assignmentsArgs<ExtArgs>>): Prisma.Prisma__employee_assignmentsClient<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   employee_assignments_requests_requester_assignment_idToemployee_assignments<T extends Prisma.employee_assignmentsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.employee_assignmentsDefaultArgs<ExtArgs>>): Prisma.Prisma__employee_assignmentsClient<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   workflows<T extends Prisma.workflowsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.workflowsDefaultArgs<ExtArgs>>): Prisma.Prisma__workflowsClient<runtime.Types.Result.GetResult<Prisma.$workflowsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  workflow_instances<T extends Prisma.requests$workflow_instancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.requests$workflow_instancesArgs<ExtArgs>>): Prisma.Prisma__workflow_instancesClient<runtime.Types.Result.GetResult<Prisma.$workflow_instancesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1754,7 +2712,6 @@ export interface Prisma__requestsClient<T, Null = never, ExtArgs extends runtime
  * Fields of the requests model
  */
 export interface requestsFieldRefs {
-  readonly template_snapshot: Prisma.FieldRef<"requests", 'Json'>
   readonly id: Prisma.FieldRef<"requests", 'String'>
   readonly request_code: Prisma.FieldRef<"requests", 'String'>
   readonly workflow_id: Prisma.FieldRef<"requests", 'String'>
@@ -1766,6 +2723,9 @@ export interface requestsFieldRefs {
   readonly created_at: Prisma.FieldRef<"requests", 'DateTime'>
   readonly submitted_at: Prisma.FieldRef<"requests", 'DateTime'>
   readonly decided_at: Prisma.FieldRef<"requests", 'DateTime'>
+  readonly template_snapshot: Prisma.FieldRef<"requests", 'Json'>
+  readonly revision: Prisma.FieldRef<"requests", 'Int'>
+  readonly last_submitted_at: Prisma.FieldRef<"requests", 'DateTime'>
 }
     
 
@@ -2191,6 +3151,30 @@ export type requests$audit_logsArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
+ * requests.mutation_receipts
+ */
+export type requests$mutation_receiptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the mutation_receipts
+   */
+  select?: Prisma.mutation_receiptsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the mutation_receipts
+   */
+  omit?: Prisma.mutation_receiptsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mutation_receiptsInclude<ExtArgs> | null
+  where?: Prisma.mutation_receiptsWhereInput
+  orderBy?: Prisma.mutation_receiptsOrderByWithRelationInput | Prisma.mutation_receiptsOrderByWithRelationInput[]
+  cursor?: Prisma.mutation_receiptsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Mutation_receiptsScalarFieldEnum | Prisma.Mutation_receiptsScalarFieldEnum[]
+}
+
+/**
  * requests.notifications
  */
 export type requests$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2215,6 +3199,78 @@ export type requests$notificationsArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * requests.request_attachments
+ */
+export type requests$request_attachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the request_attachments
+   */
+  select?: Prisma.request_attachmentsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the request_attachments
+   */
+  omit?: Prisma.request_attachmentsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.request_attachmentsInclude<ExtArgs> | null
+  where?: Prisma.request_attachmentsWhereInput
+  orderBy?: Prisma.request_attachmentsOrderByWithRelationInput | Prisma.request_attachmentsOrderByWithRelationInput[]
+  cursor?: Prisma.request_attachmentsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Request_attachmentsScalarFieldEnum | Prisma.Request_attachmentsScalarFieldEnum[]
+}
+
+/**
+ * requests.request_comments
+ */
+export type requests$request_commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the request_comments
+   */
+  select?: Prisma.request_commentsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the request_comments
+   */
+  omit?: Prisma.request_commentsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.request_commentsInclude<ExtArgs> | null
+  where?: Prisma.request_commentsWhereInput
+  orderBy?: Prisma.request_commentsOrderByWithRelationInput | Prisma.request_commentsOrderByWithRelationInput[]
+  cursor?: Prisma.request_commentsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Request_commentsScalarFieldEnum | Prisma.Request_commentsScalarFieldEnum[]
+}
+
+/**
+ * requests.request_submissions
+ */
+export type requests$request_submissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the request_submissions
+   */
+  select?: Prisma.request_submissionsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the request_submissions
+   */
+  omit?: Prisma.request_submissionsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.request_submissionsInclude<ExtArgs> | null
+  where?: Prisma.request_submissionsWhereInput
+  orderBy?: Prisma.request_submissionsOrderByWithRelationInput | Prisma.request_submissionsOrderByWithRelationInput[]
+  cursor?: Prisma.request_submissionsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Request_submissionsScalarFieldEnum | Prisma.Request_submissionsScalarFieldEnum[]
+}
+
+/**
  * requests.employee_assignments_requests_approver_assignment_idToemployee_assignments
  */
 export type requests$employee_assignments_requests_approver_assignment_idToemployee_assignmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2231,6 +3287,25 @@ export type requests$employee_assignments_requests_approver_assignment_idToemplo
    */
   include?: Prisma.employee_assignmentsInclude<ExtArgs> | null
   where?: Prisma.employee_assignmentsWhereInput
+}
+
+/**
+ * requests.workflow_instances
+ */
+export type requests$workflow_instancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the workflow_instances
+   */
+  select?: Prisma.workflow_instancesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the workflow_instances
+   */
+  omit?: Prisma.workflow_instancesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.workflow_instancesInclude<ExtArgs> | null
+  where?: Prisma.workflow_instancesWhereInput
 }
 
 /**

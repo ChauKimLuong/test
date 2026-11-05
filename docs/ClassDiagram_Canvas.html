@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class diagram DemoProject — toàn bộ mô hình trên một canvas</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --page: #f5f7fb;
+      --surface: #ffffff;
+      --ink: #182235;
+      --muted: #526077;
+      --border: #c9d2e1;
+      --line: #60718b;
+      --org: #2563eb;
+      --form: #8b5cf6;
+      --runtime: #059669;
+      --support: #dc6b22;
+      --soft-org: #eaf1ff;
+      --soft-form: #f3ecff;
+      --soft-runtime: #e5f7ef;
+      --soft-support: #fff1e7;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page: #101722;
+        --surface: #192332;
+        --ink: #ecf2fa;
+        --muted: #afbed1;
+        --border: #495b73;
+        --line: #9eb0c8;
+        --soft-org: #172b4c;
+        --soft-form: #302043;
+        --soft-runtime: #173c32;
+        --soft-support: #49301f;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--ink); overflow: hidden; }
+    .toolbar {
+      height: 76px; display: flex; align-items: center; gap: 16px; padding: 0 20px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+    }
+    .heading { min-width: 0; flex: 1; }
+    h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    .subtitle { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .controls { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+    button {
+      background: var(--surface); color: var(--ink); border: 1px solid var(--border);
+      border-radius: 8px; padding: 7px 11px; font: inherit; font-size: 13px;
+    }
+    button:hover, button:focus-visible { border-color: var(--org); outline-color: var(--org); }
+    #zoomReadout { min-width: 51px; text-align: center; font-variant-numeric: tabular-nums; font-size: 13px; }
+    .canvas-wrap { width: 100vw; height: calc(100vh - 76px); overflow: hidden; }
+    svg { display: block; width: 100%; height: 100%; touch-action: none; background: var(--page); }
+    .zone { fill: var(--surface); stroke: var(--border); stroke-width: 2; }
+    .zone-label { font-size: 29px; font-weight: 700; fill: var(--ink); }
+    .zone-sub { font-size: 17px; fill: var(--muted); }
+    .node { filter: drop-shadow(0 4px 9px rgb(0 0 0 / .08)); cursor: grab; }
+    .node.dragging { cursor: grabbing; }
+    .node rect.body { fill: var(--surface); stroke: var(--border); stroke-width: 2; }
+    .node rect.head { stroke: none; }
+    .node text.title { fill: var(--ink); font-size: 20px; font-weight: 700; }
+    .node text.field { fill: var(--ink); font-size: 16px; }
+    .node text.stereotype { fill: var(--muted); font-size: 14px; font-style: italic; }
+    .node line.divider { stroke: var(--border); stroke-width: 1.5; }
+    .node.selected rect.body { stroke: var(--org); stroke-width: 5; }
+    .edge path { fill: none; stroke: var(--line); stroke-width: 2.2; }
+    .edge.support path { opacity: .55; }
+    .edge.value path { opacity: .85; }
+    .edge text { fill: var(--muted); font-size: 15px; paint-order: stroke; stroke: var(--page); stroke-width: 6px; }
+    .edge.active path { stroke: var(--org); stroke-width: 4; opacity: 1; stroke-dasharray: none; }
+    .edge.active text { fill: var(--ink); font-weight: 700; }
+    .edge.dimmed, .node.dimmed { opacity: .16; }
+    .legend { font-size: 17px; fill: var(--muted); }
+    @media (max-width: 680px) {
+      .toolbar { height: 100px; flex-wrap: wrap; gap: 4px; padding: 8px 12px; }
+      h1 { font-size: 15px; }
+      .subtitle { font-size: 11px; }
+      .controls { width: 100%; justify-content: flex-start; }
+      .canvas-wrap { height: calc(100vh - 100px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="heading">
+      <h1>Class diagram DemoProject — một canvas</h1>
+      <div class="subtitle">Kéo ô class để sắp xếp · Kéo nền để di chuyển canvas · Cuộn để phóng to · Bấm ô để xem quan hệ</div>
+    </div>
+    <div class="controls" aria-label="Điều khiển canvas">
+      <button id="zoomOut" type="button" aria-label="Thu nhỏ">−</button>
+      <span id="zoomReadout" aria-live="polite">100%</span>
+      <button id="zoomIn" type="button" aria-label="Phóng to">+</button>
+      <button id="fit" type="button">Xem toàn bộ</button>
+      <button id="focus" type="button">Quan hệ chính</button>
+      <button id="resetLayout" type="button">Đặt lại vị trí</button>
+    </div>
+  </div>
+  <div class="canvas-wrap">
+    <svg id="diagram" role="img" aria-label="Sơ đồ lớp thống nhất của DemoProject gồm tổ chức và quyền, biểu mẫu và cấu hình, vận hành đơn, và các lớp hỗ trợ">
+      <title>Class diagram DemoProject</title>
+      <desc>Sơ đồ dựa trên Prisma schema và mã workflow hiện tại. Các class trong JSON được đánh dấu value object.</desc>
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="var(--border)" opacity=".5" /></pattern>
+        <marker id="diamond" markerWidth="15" markerHeight="11" refX="14" refY="5.5" orient="auto" markerUnits="userSpaceOnUse">
+          <path d="M0 5.5 L7 0 L14 5.5 L7 11 Z" fill="var(--line)" stroke="var(--line)" stroke-width="1.5" />
+        </marker>
+      </defs>
+      <g id="world">
+        <rect x="0" y="0" width="5500" height="3100" fill="url(#grid)" />
+        <g id="zones"></g>
+        <g id="edges"></g>
+        <g id="nodes"></g>
+      </g>
+    </svg>
+  </div>
+  <script>
+  (() => {
+    'use strict';
+    const NS = 'http://www.w3.org/2000/svg';
+    const W = 5500, H = 3100;
+    const svg = document.getElementById('diagram');
+    const zonesLayer = document.getElementById('zones');
+    const edgesLayer = document.getElementById('edges');
+    const nodesLayer = document.getElementById('nodes');
+    const readout = document.getElementById('zoomReadout');
+    const node = (id, zone, x, y, w, fields, kind = '') => ({ id, zone, x, y, w, fields, kind, h: 66 + fields.length * 25 + (kind ? 20 : 0) });
+    const nodes = [
+      node('User','org',125,260,320,['id: UUID','fullName: String','email: String','passwordHash: String','status: UserStatus','lastLoginAt: DateTime?']),
+      node('OrganizationalUnit','org',505,260,360,['id: UUID','parentId: UUID?','code: String','name: String','type: UnitType','status: UnitStatus']),
+      node('Position','org',935,260,320,['id: UUID','code: String','name: String','rankLevel: Int','type: PositionType','status: PositionStatus']),
+      node('EmployeeAssignment','org',485,690,420,['id: UUID','userId: UUID','organizationalUnitId: UUID','positionId: UUID','managerAssignmentId: UUID?','type: AssignmentType','isPrimary: Boolean','isUnitHead: Boolean','startedAt: DateTime','endedAt: DateTime?']),
+      node('RoleAssignment','org',125,1160,340,['id: UUID','employeeAssignmentId: UUID','systemRoleId: UUID','scopeType: RoleScope','validFrom: DateTime','validUntil: DateTime?','revokedAt: DateTime?']),
+      node('SystemRole','org',535,1160,320,['id: UUID','code: String','name: String','description: String?','isActive: Boolean']),
+      node('Permission','org',935,1160,320,['id: UUID','code: String','name: String']),
+      node('RolePermission','org',760,1530,320,['systemRoleId: UUID','permissionId: UUID']),
+
+      node('FormTemplate','form',1540,260,380,['id: UUID','code: String','name: String','status: FormStatus','version: Int','reviewerAssignmentId: UUID?']),
+      node('FormField','form',1540,650,380,['id: UUID','formTemplateId: UUID','key: String','label: String','type: FieldType','isRequired: Boolean','sortOrder: Int','options: JSON','fullWidth: Boolean']),
+      node('FormTemplateRevision','form',1540,1080,380,['id: UUID','formTemplateId: UUID','version: Int','snapshot: JSON','createdAt: DateTime']),
+      node('FormReviewEvent','form',1540,1450,380,['id: UUID','formTemplateId: UUID','actorAssignmentId: UUID','eventType: String','comment: String?']),
+      node('Workflow','form',2035,260,400,['id: UUID','formTemplateId: UUID','approverType: String (legacy)','targetPositionId: UUID? (legacy)','draftDefinition: JSON?','draftRevision: Int','publishedVersionId: UUID?','status: WorkflowStatus']),
+      node('WorkflowVersion','form',2540,260,420,['id: UUID','workflowId: UUID','version: Int','templateVersion: Int','definition: JSON','publishedAt: DateTime']),
+      node('WorkflowStep','form',2530,665,430,['id: String','name: String','mode: ALL | ANY','assignees: Selector[]','when: ConditionGroup?','sla: SlaPolicy?'],'value object trong JSON'),
+      node('Selector','form',2050,1130,390,['type: SelectorType','positionId: UUID?','assignmentId: UUID?','roleId: UUID?','unitId: UUID?'],'value object trong JSON'),
+      node('ConditionGroup','form',2530,1130,430,['mode: ALL | ANY','conditions: Condition[]'],'value object trong JSON'),
+      node('Condition','form',2050,1510,390,['field: String','operator: String','value: Any?'],'value object trong JSON'),
+      node('SlaPolicy','form',2530,1450,430,['minutes: Int','remindBeforeMinutes: Int','escalationAssignmentId: UUID?'],'value object trong JSON'),
+
+      node('Request','runtime',3325,260,430,['id: UUID','requestCode: String?','workflowId: UUID','requesterAssignmentId: UUID','approverAssignmentId: UUID? (legacy)','formData: JSON','templateSnapshot: JSON','status: RequestStatus','revision: Int','createdAt: DateTime','submittedAt: DateTime?','decidedAt: DateTime?']),
+      node('RequestSubmission','runtime',3325,735,430,['id: UUID','requestId: UUID','round: Int','formDataSnapshot: JSON','requesterSnapshot: JSON','submittedAt: DateTime']),
+      node('WorkflowInstance','runtime',3850,260,430,['id: UUID','requestId: UUID','workflowVersionId: UUID','currentRound: Int','currentStep: Int','status: InstanceStatus']),
+      node('WorkflowStepRun','runtime',4380,260,430,['id: UUID','instanceId: UUID','round: Int','stepId: String','conditionResult: JSON?','status: StepStatus']),
+      node('ApprovalTask','runtime',4380,740,430,['id: UUID','stepRunId: UUID','assigneeAssignmentId: UUID','assigneeUserId: UUID','status: TaskStatus','dueAt: DateTime?']),
+      node('TaskDecision','runtime',4900,740,360,['id: UUID','taskId: UUID','actorAssignmentId: UUID','decision: Decision','comment: String?']),
+
+      node('Session','support',125,2110,340,['tokenHash: String','userId: UUID','assignmentId: UUID','expiresAt: DateTime']),
+      node('Notification','support',535,2110,360,['id: UUID','requestId: UUID?','formTemplateId: UUID?','recipientAssignmentId: UUID','type: NotificationType','readAt: DateTime?']),
+      node('AuditLog','support',965,2110,350,['id: UUID','requestId: UUID?','workflowId: UUID?','actorAssignmentId: UUID','eventType: AuditEventType','details: JSON?']),
+      node('ApprovalDelegation','support',1385,2110,390,['id: UUID','ownerAssignmentId: UUID','delegateAssignmentId: UUID','startsAt: DateTime','endsAt: DateTime','revokedAt: DateTime?']),
+      node('TaskTransfer','support',1845,2110,390,['id: UUID','fromTaskId: UUID','toTaskId: UUID','delegationId: UUID?','kind: TransferKind']),
+      node('SlaEvent','support',2305,2110,330,['id: UUID','taskId: UUID','event: SlaEventType','occurredAt: DateTime']),
+      node('RequestAttachment','support',2705,2110,410,['id: UUID','requestId: UUID','documentId: UUID','version: Int','content: Bytes','archivedAt: DateTime?']),
+      node('SubmissionAttachment','support',3180,2110,390,['submissionId: UUID','attachmentId: UUID']),
+      node('RequestComment','support',3640,2110,370,['id: UUID','requestId: UUID','actorAssignmentId: UUID','body: String']),
+      node('MutationReceipt','support',4080,2110,390,['actorAssignmentId: UUID','requestId: UUID','action: String','key: String','payloadHash: String']),
+    ];
+    const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+    const defaultPositions = Object.fromEntries(nodes.map(n => [n.id, {x:n.x,y:n.y}]));
+    const storageKey = 'demoproject-class-diagram-layout-v1';
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      for (const n of nodes) {
+        const p = saved[n.id];
+        if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) {
+          n.x = Math.max(0, Math.min(W-n.w, p.x));
+          n.y = Math.max(0, Math.min(H-n.h, p.y));
+        }
+      }
+    } catch (_) { /* The canvas remains usable when local storage is unavailable. */ }
+    function savePositions() {
+      try { localStorage.setItem(storageKey, JSON.stringify(Object.fromEntries(nodes.map(n => [n.id,{x:n.x,y:n.y}])))); }
+      catch (_) { /* Keeping positions is optional. */ }
+    }
+    const edge = (from, to, a, b, label, kind = '') => ({from,to,a,b,label,kind});
+    const edges = [
+      edge('User','EmployeeAssignment','1','0..*','has'),
+      edge('OrganizationalUnit','EmployeeAssignment','1','0..*','contains'),
+      edge('Position','EmployeeAssignment','1','0..*','is held by'),
+      edge('OrganizationalUnit','OrganizationalUnit','0..1','0..*','parent / children'),
+      edge('EmployeeAssignment','EmployeeAssignment','0..1','0..*','manager / subordinates'),
+      edge('EmployeeAssignment','RoleAssignment','1','0..*','receives'),
+      edge('SystemRole','RoleAssignment','1','0..*','grants'),
+      edge('SystemRole','RolePermission','1','0..*','has'),
+      edge('Permission','RolePermission','1','0..*','includes'),
+      edge('FormTemplate','FormField','1','0..*','contains','composition'),
+      edge('FormTemplate','FormTemplateRevision','1','0..*','preserves'),
+      edge('FormTemplate','FormReviewEvent','1','0..*','review history'),
+      edge('FormTemplate','Workflow','1','0..1','configures'),
+      edge('Position','Workflow','0..1','0..*','legacy target','support'),
+      edge('Workflow','WorkflowVersion','1','0..*','publishes'),
+      edge('Workflow','WorkflowStep','1','1..*','draft JSON','value'),
+      edge('WorkflowVersion','WorkflowStep','1','1..*','definition JSON','value'),
+      edge('WorkflowStep','Selector','1','1..*','assignees','value'),
+      edge('WorkflowStep','ConditionGroup','1','0..1','when','value'),
+      edge('ConditionGroup','Condition','1','1..*','conditions','value'),
+      edge('WorkflowStep','SlaPolicy','1','0..1','sla','value'),
+      edge('Workflow','Request','1','0..*','is used by'),
+      edge('WorkflowVersion','WorkflowInstance','1','0..*','pinned by'),
+      edge('Request','RequestSubmission','1','0..*','rounds'),
+      edge('Request','WorkflowInstance','1','0..1','executes as'),
+      edge('WorkflowInstance','WorkflowStepRun','1','0..*','runs'),
+      edge('WorkflowStepRun','ApprovalTask','1','0..*','assigns'),
+      edge('ApprovalTask','TaskDecision','1','0..1','records'),
+      edge('EmployeeAssignment','Request','1','0..*','submits'),
+      edge('EmployeeAssignment','ApprovalTask','1','0..*','receives'),
+      edge('EmployeeAssignment','TaskDecision','1','0..*','decides'),
+      edge('User','Session','1','0..*','logs in','support'),
+      edge('EmployeeAssignment','Session','1','0..*','active assignment','support'),
+      edge('EmployeeAssignment','Notification','1','0..*','receives','support'),
+      edge('EmployeeAssignment','AuditLog','1','0..*','performs','support'),
+      edge('Request','Notification','0..1','0..*','generates','support'),
+      edge('FormTemplate','Notification','0..1','0..*','generates','support'),
+      edge('Request','AuditLog','0..1','0..*','records','support'),
+      edge('Workflow','AuditLog','0..1','0..*','records','support'),
+      edge('EmployeeAssignment','ApprovalDelegation','1','0..*','owner / delegate','support'),
+      edge('ApprovalDelegation','TaskTransfer','0..1','0..*','causes','support'),
+      edge('ApprovalTask','TaskTransfer','1','0..1','replaced through','support'),
+      edge('ApprovalTask','SlaEvent','1','0..*','deadline events','support'),
+      edge('Request','RequestAttachment','1','0..*','contains','support'),
+      edge('RequestSubmission','SubmissionAttachment','1','0..*','pins','support'),
+      edge('RequestAttachment','SubmissionAttachment','1','0..*','is pinned by','support'),
+      edge('Request','RequestComment','1','0..*','conversation','support'),
+      edge('Request','MutationReceipt','1','0..*','deduplicates','support'),
+    ];
+    const el = (tag, attrs = {}, text = '') => {
+      const x = document.createElementNS(NS, tag);
+      for (const [k,v] of Object.entries(attrs)) x.setAttribute(k, String(v));
+      if (text) x.textContent = text;
+      return x;
+    };
+    const zones = [
+      {x:70,y:170,w:1310,h:1710,title:'01  Tổ chức và quyền',sub:'Người, đơn vị, chức danh, phân công, vai trò',key:'org'},
+      {x:1470,y:170,w:1570,h:1710,title:'02  Biểu mẫu và định nghĩa',sub:'Mẫu, phiên bản, bước cấu hình trong JSON',key:'form'},
+      {x:3110,y:170,w:2320,h:1710,title:'03  Hồ sơ và thực thi',sub:'Đơn, vòng gửi, bước chạy, nhiệm vụ, quyết định',key:'runtime'},
+      {x:70,y:1980,w:5360,h:970,title:'04  Vận hành và truy vết',sub:'Phiên, thông báo, audit, ủy quyền, SLA, tài liệu',key:'support'},
+    ];
+    for (const z of zones) {
+      zonesLayer.append(el('rect',{class:'zone',x:z.x,y:z.y,width:z.w,height:z.h,rx:20}));
+      zonesLayer.append(el('text',{class:'zone-label',x:z.x+38,y:z.y+57},z.title));
+      zonesLayer.append(el('text',{class:'zone-sub',x:z.x+38,y:z.y+88},z.sub));
+    }
+    for (const n of nodes) {
+      const g = el('g',{class:'node', 'data-id':n.id, transform:`translate(${n.x} ${n.y})`});
+      g.append(el('rect',{class:'body',x:0,y:0,width:n.w,height:n.h,rx:11}));
+      g.append(el('rect',{class:'head',x:1,y:1,width:n.w-2,height:45,rx:10,fill:`var(--soft-${n.zone})`}));
+      g.append(el('line',{class:'divider',x1:0,y1:46,x2:n.w,y2:46}));
+      g.append(el('text',{class:'title',x:18,y:30},n.id));
+      if (n.kind) g.append(el('text',{class:'stereotype',x:18,y:67},`«${n.kind}»`));
+      const start = n.kind ? 94 : 75;
+      n.fields.forEach((f,i) => g.append(el('text',{class:'field',x:20,y:start+i*25},`− ${f}`)));
+      g.setAttribute('tabindex','0');
+      g.setAttribute('role','button');
+      g.setAttribute('aria-label',`Class ${n.id}. Kéo để đổi vị trí; nhấn Enter để xem quan hệ.`);
+      let nodeDrag = null;
+      g.addEventListener('pointerdown', e => {
+        if (e.button !== 0) return;
+        e.stopPropagation();
+        const start = worldPoint(e);
+        nodeDrag = {pointerId:e.pointerId, start, x:n.x, y:n.y, screenX:e.clientX, screenY:e.clientY, moved:false};
+        g.setPointerCapture(e.pointerId);
+      });
+      g.addEventListener('pointermove', e => {
+        if (!nodeDrag || nodeDrag.pointerId !== e.pointerId) return;
+        e.stopPropagation();
+        if (Math.hypot(e.clientX-nodeDrag.screenX,e.clientY-nodeDrag.screenY) > 4) nodeDrag.moved = true;
+        if (!nodeDrag.moved) return;
+        const current = worldPoint(e);
+        n.x = Math.max(0,Math.min(W-n.w,nodeDrag.x+current.x-nodeDrag.start.x));
+        n.y = Math.max(0,Math.min(H-n.h,nodeDrag.y+current.y-nodeDrag.start.y));
+        g.setAttribute('transform',`translate(${n.x} ${n.y})`);
+        g.classList.add('dragging');
+        edges.filter(link => link.from===n.id || link.to===n.id).forEach(renderEdge);
+      });
+      g.addEventListener('pointerup', e => {
+        if (!nodeDrag || nodeDrag.pointerId !== e.pointerId) return;
+        e.stopPropagation();
+        if (nodeDrag.moved) savePositions(); else select(n.id);
+        nodeDrag = null;
+        g.classList.remove('dragging');
+        g.releasePointerCapture(e.pointerId);
+      });
+      g.addEventListener('pointercancel', () => {nodeDrag=null;g.classList.remove('dragging')});
+      g.addEventListener('click', e => e.stopPropagation());
+      g.addEventListener('keydown', e => {
+        if (e.key==='Enter' || e.key===' ') {e.preventDefault();e.stopPropagation();select(n.id)}
+      });
+      nodesLayer.append(g);
+      n.element = g;
+    }
+    function point(n, side) {
+      if (side === 'left') return {x:n.x,y:n.y+n.h/2};
+      if (side === 'right') return {x:n.x+n.w,y:n.y+n.h/2};
+      if (side === 'top') return {x:n.x+n.w/2,y:n.y};
+      return {x:n.x+n.w/2,y:n.y+n.h};
+    }
+    function geometry(a,b) {
+      const dx=(b.x+b.w/2)-(a.x+a.w/2), dy=(b.y+b.h/2)-(a.y+a.h/2);
+      const horizontal=Math.abs(dx)>Math.abs(dy)*.75;
+      const as=horizontal?(dx>0?'right':'left'):(dy>0?'bottom':'top');
+      const bs=horizontal?(dx>0?'left':'right'):(dy>0?'top':'bottom');
+      const p=point(a,as), q=point(b,bs);
+      const d=horizontal?`M ${p.x} ${p.y} L ${(p.x+q.x)/2} ${p.y} L ${(p.x+q.x)/2} ${q.y} L ${q.x} ${q.y}`:`M ${p.x} ${p.y} L ${p.x} ${(p.y+q.y)/2} L ${q.x} ${(p.y+q.y)/2} L ${q.x} ${q.y}`;
+      return {d,p,q,mid:{x:(p.x+q.x)/2,y:(p.y+q.y)/2}};
+    }
+    function edgeShape(e) {
+      const a=byId[e.from], b=byId[e.to];
+      if (a===b) {
+        const x=a.x+a.w, y=a.y+a.h*.35;
+        return {d:`M ${x} ${y} L ${x+110} ${y} L ${x+110} ${y+85} L ${x} ${y+85}`,p:{x,y},q:{x,y:y+85},mid:{x:x+110,y:y+42}};
+      }
+      return geometry(a,b);
+    }
+    function renderEdge(e) {
+      const shape=edgeShape(e);
+      e.path.setAttribute('d',shape.d);
+      [[shape.p.x+8,shape.p.y-8],[shape.q.x+8,shape.q.y-8],[shape.mid.x+8,shape.mid.y-11]].forEach((p,i) => {
+        e.labels[i].setAttribute('x',p[0]);
+        e.labels[i].setAttribute('y',p[1]);
+      });
+    }
+    for (const e of edges) {
+      const g=el('g',{class:`edge ${e.kind==='support'?'support':e.kind==='value'?'value':''}`, 'data-from':e.from,'data-to':e.to});
+      e.path=el('path');
+      if (e.kind==='composition' || e.kind==='value') e.path.setAttribute('marker-start','url(#diamond)');
+      g.append(e.path);
+      e.labels=[e.a,e.b,e.label].map(t => {const label=el('text',{},t);g.append(label);return label});
+      edgesLayer.append(g);
+      e.element=g;
+      renderEdge(e);
+    }
+    zonesLayer.append(el('text',{class:'legend',x:120,y:2890},'Đường liền: association   ·   Hình thoi: composition / value object trong JSON   ·   Đường nhạt: quan hệ bổ trợ'));
+    zonesLayer.append(el('text',{class:'legend',x:120,y:2920},'Mô hình khái niệm dựa trên schema.prisma và workflow-rules.ts; phương thức xử lý nằm trong NestJS services, không nằm trên các entity.'));
+
+    let view={x:0,y:0,w:W,h:H};
+    let drag=null;
+    let selected=null;
+    let coreOnly=false;
+    function applyView() {
+      svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+      readout.textContent=`${Math.round(svg.clientWidth/view.w*100)}%`;
+    }
+    function fit() { view={x:0,y:0,w:W,h:H}; applyView(); }
+    function zoom(factor,cx=view.x+view.w/2,cy=view.y+view.h/2) {
+      const nw=Math.max(650,Math.min(W*1.15,view.w/factor));
+      const nh=nw*svg.clientHeight/svg.clientWidth;
+      const rx=(cx-view.x)/view.w, ry=(cy-view.y)/view.h;
+      view={x:cx-rx*nw,y:cy-ry*nh,w:nw,h:nh}; applyView();
+    }
+    function coord(event) {
+      const r=svg.getBoundingClientRect();
+      return {x:view.x+(event.clientX-r.left)/r.width*view.w,y:view.y+(event.clientY-r.top)/r.height*view.h};
+    }
+    function worldPoint(event) {
+      const p=svg.createSVGPoint();
+      p.x=event.clientX; p.y=event.clientY;
+      return p.matrixTransform(svg.getScreenCTM().inverse());
+    }
+    function select(id) {
+      selected=selected===id?null:id;
+      const related=new Set(selected?[selected]:[]);
+      if(selected) edges.filter(e=>e.from===selected||e.to===selected).forEach(e=>{related.add(e.from);related.add(e.to)});
+      nodes.forEach(n=>n.element.setAttribute('class',`node${selected?(n.id===selected?' selected':related.has(n.id)?'':' dimmed'):''}`));
+      edges.forEach(e=>e.element.setAttribute('class',`edge${e.kind==='support'?' support':e.kind==='value'?' value':''}${selected?(e.from===selected||e.to===selected?' active':' dimmed'):''}`));
+      if(coreOnly) edges.forEach(e=>{if(e.kind==='support')e.element.style.display='none'});
+    }
+    svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={x:e.clientX,y:e.clientY,view:{...view}};svg.setPointerCapture(e.pointerId)});
+    svg.addEventListener('pointermove',e=>{if(!drag)return;const r=svg.getBoundingClientRect();view.x=drag.view.x-(e.clientX-drag.x)/r.width*drag.view.w;view.y=drag.view.y-(e.clientY-drag.y)/r.height*drag.view.h;applyView()});
+    svg.addEventListener('pointerup',()=>{drag=null});
+    svg.addEventListener('pointercancel',()=>{drag=null});
+    svg.addEventListener('wheel',e=>{e.preventDefault();const p=coord(e);zoom(e.deltaY<0?1.16:1/1.16,p.x,p.y)},{passive:false});
+    svg.addEventListener('click',()=>select(null));
+    document.getElementById('zoomIn').addEventListener('click',()=>zoom(1.3));
+    document.getElementById('zoomOut').addEventListener('click',()=>zoom(1/1.3));
+    document.getElementById('fit').addEventListener('click',fit);
+    document.getElementById('focus').addEventListener('click',e=>{coreOnly=!coreOnly;e.currentTarget.textContent=coreOnly?'Hiện tất cả':'Quan hệ chính';edges.forEach(x=>x.element.style.display=coreOnly&&x.kind==='support'?'none':'')});
+    document.getElementById('resetLayout').addEventListener('click',() => {
+      nodes.forEach(n => {n.x=defaultPositions[n.id].x;n.y=defaultPositions[n.id].y;n.element.setAttribute('transform',`translate(${n.x} ${n.y})`)});
+      edges.forEach(renderEdge);
+      savePositions();
+      select(null);
+      fit();
+    });
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')select(null);if(e.key==='+')zoom(1.3);if(e.key==='-')zoom(1/1.3)});
+    fit();
+  })();
+  </script>
+</body>
+</html>

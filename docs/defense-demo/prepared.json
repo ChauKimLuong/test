@@ -1,0 +1,450 @@
+{
+  "preparedAt": "2026-10-13T09:04:38.562Z",
+  "form": {
+    "id": "0267e3b6-a7aa-4c81-8176-f1d433ce3fea",
+    "code": "MS-BV-01",
+    "name": "Đề nghị mua sắm — quy trình trình bày",
+    "workflowId": "55cc1bf8-5dbc-484a-9246-2ec228d67380",
+    "workflowVersion": 2,
+    "creator": "ceo@flowpilot.vn",
+    "url": "http://localhost:3000/workflows?form=0267e3b6-a7aa-4c81-8176-f1d433ce3fea"
+  },
+  "reviewerRole": {
+    "id": "c79e7b99-100d-497a-b4a0-f6cf01c818f1",
+    "code": "PROCUREMENT_REVIEWER",
+    "assignee": "hoang@flowpilot.vn",
+    "permissions": [
+      "REQUEST_APPROVE",
+      "REQUEST_REJECT",
+      "REQUEST_RETURN"
+    ]
+  },
+  "definition": {
+    "schemaVersion": 1,
+    "steps": [
+      {
+        "id": "confirm-need",
+        "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+        "mode": "ALL",
+        "assignees": [
+          {
+            "type": "DIRECT_MANAGER"
+          }
+        ],
+        "sla": {
+          "minutes": 1440,
+          "remindBeforeMinutes": 120,
+          "escalationAssignmentId": "2681cf6c-885f-4735-95a9-b05f7f57d902"
+        }
+      },
+      {
+        "id": "review-mid-budget",
+        "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+        "mode": "ALL",
+        "assignees": [
+          {
+            "type": "ROLE",
+            "roleId": "c79e7b99-100d-497a-b4a0-f6cf01c818f1"
+          }
+        ],
+        "when": {
+          "mode": "ALL",
+          "conditions": [
+            {
+              "field": "amount",
+              "operator": "GTE",
+              "value": 5000000
+            },
+            {
+              "field": "amount",
+              "operator": "LT",
+              "value": 20000000
+            }
+          ]
+        },
+        "sla": {
+          "minutes": 480,
+          "remindBeforeMinutes": 60,
+          "escalationAssignmentId": "2681cf6c-885f-4735-95a9-b05f7f57d902"
+        }
+      },
+      {
+        "id": "parallel-review",
+        "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+        "mode": "ALL",
+        "assignees": [
+          {
+            "type": "POSITION",
+            "positionId": "e8da1d8a-1887-4a25-9632-b2172d3305e4",
+            "unitId": "0fde72a2-9191-41cf-9d57-0a2da11fd770"
+          },
+          {
+            "type": "ROLE",
+            "roleId": "c79e7b99-100d-497a-b4a0-f6cf01c818f1"
+          }
+        ],
+        "when": {
+          "mode": "ALL",
+          "conditions": [
+            {
+              "field": "amount",
+              "operator": "GTE",
+              "value": 20000000
+            }
+          ]
+        },
+        "sla": {
+          "minutes": 2880,
+          "remindBeforeMinutes": 240
+        }
+      },
+      {
+        "id": "ceo-final",
+        "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+        "mode": "ALL",
+        "assignees": [
+          {
+            "type": "POSITION",
+            "positionId": "33e94708-9593-4222-8a63-49d965be4274",
+            "unitId": "0fde72a2-9191-41cf-9d57-0a2da11fd770"
+          }
+        ],
+        "when": {
+          "mode": "ANY",
+          "conditions": [
+            {
+              "field": "amount",
+              "operator": "GTE",
+              "value": 20000000
+            },
+            {
+              "field": "urgent",
+              "operator": "EQ",
+              "value": true
+            },
+            {
+              "field": "budgetSource",
+              "operator": "EQ",
+              "value": "Chi ngoài kế hoạch"
+            }
+          ]
+        },
+        "sla": {
+          "minutes": 1440,
+          "remindBeforeMinutes": 120
+        }
+      }
+    ]
+  },
+  "simulations": [
+    {
+      "label": "Chi nhỏ",
+      "amount": 3000000,
+      "urgent": false,
+      "budgetSource": "Ngân sách bộ phận",
+      "steps": [
+        {
+          "id": "confirm-need",
+          "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+          "matched": true,
+          "assignees": [
+            "Nguyễn Thu Linh"
+          ]
+        },
+        {
+          "id": "review-mid-budget",
+          "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "parallel-review",
+          "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "ceo-final",
+          "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+          "matched": false,
+          "assignees": []
+        }
+      ]
+    },
+    {
+      "label": "Đúng ngưỡng 5 triệu",
+      "amount": 5000000,
+      "urgent": false,
+      "budgetSource": "Ngân sách bộ phận",
+      "steps": [
+        {
+          "id": "confirm-need",
+          "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+          "matched": true,
+          "assignees": [
+            "Nguyễn Thu Linh"
+          ]
+        },
+        {
+          "id": "review-mid-budget",
+          "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+          "matched": true,
+          "assignees": [
+            "Phạm Quốc Hoàng"
+          ]
+        },
+        {
+          "id": "parallel-review",
+          "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "ceo-final",
+          "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+          "matched": false,
+          "assignees": []
+        }
+      ]
+    },
+    {
+      "label": "Ngay dưới 20 triệu",
+      "amount": 19999999,
+      "urgent": false,
+      "budgetSource": "Ngân sách bộ phận",
+      "steps": [
+        {
+          "id": "confirm-need",
+          "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+          "matched": true,
+          "assignees": [
+            "Nguyễn Thu Linh"
+          ]
+        },
+        {
+          "id": "review-mid-budget",
+          "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+          "matched": true,
+          "assignees": [
+            "Phạm Quốc Hoàng"
+          ]
+        },
+        {
+          "id": "parallel-review",
+          "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "ceo-final",
+          "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+          "matched": false,
+          "assignees": []
+        }
+      ]
+    },
+    {
+      "label": "Đúng ngưỡng 20 triệu",
+      "amount": 20000000,
+      "urgent": false,
+      "budgetSource": "Ngân sách bộ phận",
+      "steps": [
+        {
+          "id": "confirm-need",
+          "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+          "matched": true,
+          "assignees": [
+            "Nguyễn Thu Linh"
+          ]
+        },
+        {
+          "id": "review-mid-budget",
+          "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "parallel-review",
+          "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+          "matched": true,
+          "assignees": [
+            "Lê Mai Anh",
+            "Phạm Quốc Hoàng"
+          ]
+        },
+        {
+          "id": "ceo-final",
+          "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+          "matched": true,
+          "assignees": [
+            "Trần Đức An"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Chi lớn",
+      "amount": 35000000,
+      "urgent": false,
+      "budgetSource": "Ngân sách bộ phận",
+      "steps": [
+        {
+          "id": "confirm-need",
+          "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+          "matched": true,
+          "assignees": [
+            "Nguyễn Thu Linh"
+          ]
+        },
+        {
+          "id": "review-mid-budget",
+          "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "parallel-review",
+          "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+          "matched": true,
+          "assignees": [
+            "Lê Mai Anh",
+            "Phạm Quốc Hoàng"
+          ]
+        },
+        {
+          "id": "ceo-final",
+          "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+          "matched": true,
+          "assignees": [
+            "Trần Đức An"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Khẩn nhưng kinh phí nhỏ",
+      "amount": 3000000,
+      "urgent": true,
+      "budgetSource": "Ngân sách bộ phận",
+      "steps": [
+        {
+          "id": "confirm-need",
+          "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+          "matched": true,
+          "assignees": [
+            "Nguyễn Thu Linh"
+          ]
+        },
+        {
+          "id": "review-mid-budget",
+          "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "parallel-review",
+          "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "ceo-final",
+          "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+          "matched": true,
+          "assignees": [
+            "Trần Đức An"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Chi ngoài kế hoạch",
+      "amount": 3000000,
+      "urgent": false,
+      "budgetSource": "Chi ngoài kế hoạch",
+      "steps": [
+        {
+          "id": "confirm-need",
+          "name": "01 · Quản lý trực tiếp xác nhận nhu cầu",
+          "matched": true,
+          "assignees": [
+            "Nguyễn Thu Linh"
+          ]
+        },
+        {
+          "id": "review-mid-budget",
+          "name": "02 · Thẩm định chi phí và hiệu quả (5–<20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "parallel-review",
+          "name": "03 · Đồng thẩm định liên phòng ban (từ 20 triệu)",
+          "matched": false,
+          "assignees": []
+        },
+        {
+          "id": "ceo-final",
+          "name": "04 · CEO quyết định ngân sách lớn hoặc ngoại lệ",
+          "matched": true,
+          "assignees": [
+            "Trần Đức An"
+          ]
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "key": "small",
+      "id": "12380335-fab3-485c-85a2-cc7b5f38e7c4",
+      "code": "REQ-2026-00011",
+      "status": "APPROVED",
+      "label": "DEMO-BV-01 · Kinh phí nhỏ",
+      "amount": 3000000,
+      "url": "http://localhost:3000/requests/12380335-fab3-485c-85a2-cc7b5f38e7c4",
+      "workflowVersion": 2
+    },
+    {
+      "key": "medium",
+      "id": "df18c8b5-0c70-4d51-ab08-9ce7b57ab15e",
+      "code": "REQ-2026-00012",
+      "status": "APPROVED",
+      "label": "DEMO-BV-02 · Thẩm định chi phí",
+      "amount": 12000000,
+      "url": "http://localhost:3000/requests/df18c8b5-0c70-4d51-ab08-9ce7b57ab15e",
+      "workflowVersion": 2
+    },
+    {
+      "key": "large",
+      "id": "5e8bc703-212c-4cd2-a379-5e4d9d7477d3",
+      "code": "REQ-2026-00013",
+      "status": "PENDING",
+      "label": "DEMO-BV-03 · Đồng thẩm định và CEO",
+      "amount": 35000000,
+      "url": "http://localhost:3000/requests/5e8bc703-212c-4cd2-a379-5e4d9d7477d3",
+      "workflowVersion": 2
+    },
+    {
+      "key": "returned",
+      "id": "6fab55bb-f254-4e12-99d8-41cff1f75758",
+      "code": "REQ-2026-00014",
+      "status": "RETURNED",
+      "label": "DEMO-BV-04 · Cần bổ sung báo giá",
+      "amount": 9000000,
+      "url": "http://localhost:3000/requests/6fab55bb-f254-4e12-99d8-41cff1f75758",
+      "workflowVersion": 2
+    },
+    {
+      "key": "draft",
+      "id": "87b3b8b5-630f-45ab-937e-8a24886a5bbd",
+      "code": null,
+      "status": "DRAFT",
+      "label": "DEMO-BV-05 · Nháp để gửi trực tiếp",
+      "amount": 35000000,
+      "url": "http://localhost:3000/requests/87b3b8b5-630f-45ab-937e-8a24886a5bbd",
+      "workflowVersion": null
+    }
+  ],
+  "preservedExistingRequests": 15
+}

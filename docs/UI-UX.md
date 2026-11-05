@@ -37,3 +37,19 @@ Giao diện không giả lập chữ ký tay hay chữ ký số. Kết quả ph�
 4. Tạo mẫu có trường dài, lựa chọn và bắt buộc; kéo hoặc dùng nút sắp xếp; undo/redo.
 5. Xem A4 và in: kiểm tra văn bản tiếng Việt, xuống dòng, dữ liệu nhiều trang.
 6. Lỗi API/mất phiên có thông báo và đường quay lại.
+
+## Quy trình nâng cấp (01/10/2026)
+
+Trình cấu hình card có thứ tự, nút lên/xuống/xóa, nhóm ALL/ANY, selector và điều kiện typed; sidebar lưu/publish, mô phỏng, history/diff/restore. Chi tiết đơn có tiến trình/round/task, trả bổ sung, retry BLOCKED và bảng so sánh dữ liệu. A4 thêm lịch sử nhiều người. Cảnh báo rời trang qua liên kết khi chưa lưu. Source đã build; visual QA responsive/bàn phím/A4 còn chờ UAT, không khẳng định đã kiểm tra trực quan.
+
+
+## CR-02: UI vận hành
+
+Dùng ui-ux-pro-max: giữ theme enterprise và Phosphor, label hiện rõ, button có busy state, error có role alert, xác nhận chuyển giao/thu hồi/gỡ tài liệu. Step editor có SLA switch với trường điều kiện xuất hiện khi bật; tiến trình có due/overdue bằng chữ. Menu thêm Ủy quyền và Thời hạn & điểm chậm. Request detail có file version/round/history, chat append-only và transfer reason. File tạo mới cần lưu draft trước để có request id; giới hạn loại/size hiện ngay cạnh input.
+
+Metrics hiển thị mẫu số, null khi chưa có mẫu, TB/p95 completed tách active wait, link tới request; bảng có vùng scroll trên mobile. Layout mới chuyển hai cột thành một ở 850px. Source/build đã kiểm tra; keyboard/focus/mobile/visual/A4 UAT chưa có actual.
+
+
+## CR-04 — workflow studio
+
+Dùng ui-ux-pro-max và bố cục tham khảo: canvas nền chấm bên trái, panel chọn Bước/Mô phỏng/Ban hành/Lịch sử bên phải; màu node phân loại semantic trong theme navy/blue/white hiện có. Chế độ flow mặc định, danh sách dùng chung dữ liệu làm phương án chỉnh thay thế. Phần lưu/ban hành có permission/revision và cảnh báo chưa lưu; undo/redo giữ 50 thay đổi. Canvas lazy-load, layout lưu local theo assignment/workflow, tự sắp xếp/zoom/minimap/fullscreen và focus ring/Enter chọn node/dropdown. Di chuyển node không thay đường xử lý; đổi thứ tự/điều kiện/selectors cập nhật topology tự động. Sources: WORKFLOW_CANVAS.md.

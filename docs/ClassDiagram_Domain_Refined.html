@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlowPilot · Domain model chọn lọc</title>
+  <style>
+    :root{--ink:#18263b;--muted:#516177;--line:#93a2b7;--border:#c8d3e1;--paper:#fff;--back:#eef3f8;--org:#28679c;--form:#6b52a3;--run:#187b64;--focus:#d46423}
+    *{box-sizing:border-box}body{margin:0;background:var(--back);color:var(--ink);font:15px/1.45 system-ui,"Segoe UI",sans-serif}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.app{height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr)}header{padding:16px 24px;background:#14253c;color:white;display:flex;gap:20px;align-items:center;justify-content:space-between}header h1{font-size:22px;line-height:1.2;margin:3px 0}header p{font-size:13px;color:#c5d4e6;margin:0}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;color:#92c9ff}.head-actions{display:flex;gap:8px;flex-wrap:wrap}.head-actions a,.head-actions button{border:1px solid #60758f;background:#27415d;color:white;text-decoration:none;border-radius:9px;padding:9px 12px;white-space:nowrap}.tabs{display:flex;gap:7px;padding:10px 16px;background:white;border-bottom:1px solid var(--border);overflow-x:auto}.tabs button{white-space:nowrap;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);padding:9px 14px;min-height:44px;font-weight:650}.tabs button[aria-selected=true]{background:#173b68;border-color:#173b68;color:white}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 370px;min-height:0}.main{display:grid;grid-template-rows:auto minmax(0,1fr);min-width:0}.toolbar{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#f8fbff;border-bottom:1px solid var(--border);overflow-x:auto}.toolbar strong{margin-right:auto;white-space:nowrap}.toolbar button{background:white;border:1px solid var(--border);border-radius:8px;padding:7px 10px;min-height:38px;white-space:nowrap}.toolbar span{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}.viewport{position:relative;overflow:hidden;touch-action:none;background-color:#eef4fb;background-image:radial-gradient(#c2d0e2 1px,transparent 1px);background-size:22px 22px}.world{position:absolute;left:0;top:0;transform-origin:0 0}.links{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.edge{pointer-events:stroke;cursor:pointer}.edge .hit{stroke:transparent;stroke-width:22;fill:none}.edge .stroke{stroke:#74869d;stroke-width:2.3;fill:none}.edge[data-kind=composition] .stroke{stroke:#405b79;stroke-width:2.8}.edge:hover .stroke,.edge.selected .stroke{stroke:var(--focus);stroke-width:3.6}.edge-label,.mult{paint-order:stroke;stroke:#eef4fb;stroke-width:7px;pointer-events:none}.edge-label{font-size:12px;font-weight:750;fill:#42546d}.mult{font-size:13px;font-weight:800;fill:#263c58}.cards{position:absolute;inset:0;pointer-events:none}.card{position:absolute;width:238px;height:190px;border:1.5px solid #aebed1;border-radius:10px;background:white;box-shadow:0 8px 20px #15284215;overflow:hidden;pointer-events:auto;text-align:left;color:var(--ink);padding:0;cursor:grab;touch-action:none;user-select:none}.card:active{cursor:grabbing}.card.selected{outline:3px solid var(--focus);z-index:2}.card-title{font-size:15px;font-weight:800;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card[data-group=org] .card-title{background:#e5f1fc;border-left:5px solid var(--org)}.card[data-group=form] .card-title{background:#f0eafd;border-left:5px solid var(--form)}.card[data-group=run] .card-title{background:#e1f5ef;border-left:5px solid var(--run)}.card .tag{font-size:10px;color:#705399;margin-left:5px}.attr{padding:1px 11px;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.45}.attr:first-of-type{padding-top:7px}.card-more{position:absolute;bottom:0;left:0;right:0;background:#f7f9fc;border-top:1px solid #dce4ee;padding:5px 11px;color:#52667d;font-size:10px}.inspector{overflow:auto;background:#fff;border-left:1px solid var(--border);min-height:0}.inspect-head{padding:18px 21px 14px;background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:3}.inspect-head small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#637b99}.inspect-head h2{font-size:23px;line-height:1.2;margin:5px 0 7px;overflow-wrap:anywhere}.inspect-head p{margin:0;color:var(--muted);font-size:13px}.inspect-body{padding:18px 21px 38px}.inspect-body h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin:23px 0 9px;color:#526782}.inspect-body p{margin:7px 0;line-height:1.55}.box{border:1px solid #c8d8e9;background:#f1f7fd;border-radius:9px;padding:11px 12px;margin:10px 0}.box.purple{border-color:#d9c9ec;background:#f8f4fd}.box.green{border-color:#b9e3d4;background:#eefaf5}.field{padding:10px 0;border-bottom:1px solid #e4eaf1}.field code{font-size:12px;color:#143e6d;font-weight:750}.field p{margin:4px 0 0;font-size:13px}.field small{color:#536b82}.edge-button{display:block;width:100%;margin:6px 0;padding:8px 9px;text-align:left;background:#f8fafc;color:var(--ink);border:1px solid var(--border);border-radius:8px;font-size:12px}.legend{font-size:12px;color:#506179;padding:8px 15px;border-top:1px solid var(--border);background:#fafcff}.script{position:fixed;inset:0;z-index:20;background:#14253c;color:white;overflow:auto;padding:38px clamp(20px,5vw,90px)}.script[hidden]{display:none}.script article{max-width:850px;margin:auto;font-size:18px;line-height:1.7}.script h2{font-size:34px}.script h3{color:#a8d6ff;margin-top:32px}.script button{position:fixed;right:22px;top:18px;border:0;border-radius:8px;background:white;color:#14253c;padding:10px 14px}.script a{color:#bcdcff}.note{font-size:12px;color:#627489}.mode-list{display:grid;gap:7px}.mode-list button{text-align:left;border:1px solid var(--border);border-radius:8px;background:#f8fafc;padding:9px;color:var(--ink)}
+    .card{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;appearance:none}.card-title+.attr{padding-top:7px}.app.focus .workspace{grid-template-columns:minmax(0,1fr)}.app.focus .inspector{display:none}@media(max-width:900px){.workspace{grid-template-columns:minmax(0,1fr) 310px}.head-actions a{display:none}}@media(max-width:700px){.app{height:auto;min-height:100dvh;grid-template-rows:auto auto auto}header{padding:13px 15px;align-items:flex-start}header h1{font-size:19px}.head-actions{flex-shrink:0}.workspace{display:block}.main{height:60dvh;min-height:430px}.inspector{max-height:none;border-left:0;border-top:1px solid var(--border)}.script article{font-size:16px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header><div><div class="eyebrow">TLCN · Domain model chọn lọc · 3 phần</div><h1>FlowPilot — mô hình miền gọn, có lý do</h1><p>Chỉ nối cấu trúc cần giải thích; tham chiếu còn lại được ghi bằng ID. Bấm từng class để xem lý do.</p></div><div class="head-actions"><a href="ClassDiagram_Presentation.html">Xem bản cài đặt</a><button type="button" id="openScript">Lời trình bày</button></div></header>
+  <nav class="tabs" id="tabs" aria-label="Góc nhìn mô hình miền"></nav>
+  <div class="workspace"><main class="main"><div class="toolbar"><strong id="sceneTitle"></strong><button type="button" id="zoomOut" aria-label="Thu nhỏ">−</button><span id="zoomValue">100%</span><button type="button" id="zoomIn" aria-label="Phóng to">+</button><button type="button" id="fit">Vừa khung</button><button type="button" id="toggleInspector">Ẩn giải thích</button><button type="button" id="reset">Đặt lại vị trí</button></div><div class="viewport" id="viewport"><div class="world" id="world"><svg class="links" id="links" aria-label="Các quan hệ UML"></svg><div class="cards" id="cards"></div></div></div></main><aside class="inspector" id="inspector" aria-live="polite"></aside></div>
+</div>
+<div class="script" id="script" hidden><button type="button" id="closeScript">Đóng</button><article><div class="eyebrow">Lời trình bày · 3 phần</div><h2>Người và quyền → mẫu và quy trình → đơn và lần chạy</h2><p>“Em trình bày mô hình miền, nên em chọn lọc đường nối. Quan hệ phân cấp và sở hữu vòng đời được vẽ; tham chiếu thông thường như <code>userId</code> được ghi trong class thay vì nối thêm một đường trùng ý.”</p><h3>1 · Tổ chức và quyền</h3><p>“User là con người. EmployeeAssignment là một lần người ấy làm việc ở đơn vị và chức danh, có thời hạn. Hai đường tự nối cho thấy cây đơn vị và tuyến quản lý trực tiếp. RoleAssignment là một lần cấp SystemRole có phạm vi và thời hạn. SystemRole gom Permission; quyền phần mềm không tự suy ra từ Position.”</p><h3>2 · Mẫu và quy trình</h3><p>“FormTemplate chứa FormField; các lần chỉnh/duyệt được giữ bằng revision và event tham chiếu ID. Workflow có cấu hình nháp; mỗi lần công bố tạo WorkflowVersion bất biến. Version chứa WorkflowStep. Selector, Condition và SlaPolicy nằm trong definition, được ghi bằng thuộc tính có kiểu để tránh đường lặp.”</p><h3>3 · Đơn và thực thi</h3><p>“Request là hồ sơ. Khi RETURNED, em sửa cùng Request và gửi một RequestSubmission mới; REJECTED thì hồ sơ kết thúc và lần làm lại là Request khác. Khi nộp lần đầu, Request tạo WorkflowInstance chốt WorkflowVersion. Instance chạy StepRun, giao ApprovalTask và ghi TaskDecision.”</p><p>“ID tham chiếu vẫn mang ý nghĩa miền; khóa ngoại, bảng nối và JSONB cụ thể thuộc ERD. Class không có đường nối không có nghĩa là độc lập trong hệ thống.”</p><p><a href="ClassDiagram_Domain_Refined_Guide.md">Mở hướng dẫn và quyết định mô hình</a></p></article></div>
+<script>
+(()=>{'use strict';
+const classes=[
+  {
+    "id": "User",
+    "group": "org",
+    "purpose": "Một người sử dụng hệ thống.",
+    "why": "Thông tin con người không đổi mỗi khi chuyển phòng/kiêm nhiệm; phần đăng nhập không phải cấu trúc nhân sự.",
+    "example": "An có một tài khoản, nhưng có thể từng làm ở hai phòng.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh ổn định của người dùng, được EmployeeAssignment.userId tham chiếu.",
+        "example": "U-AN"
+      },
+      {
+        "name": "fullName: String",
+        "meaning": "Tên hiển thị của người dùng.",
+        "example": "Nguyễn Văn An"
+      },
+      {
+        "name": "email: String",
+        "meaning": "Địa chỉ đăng nhập và liên hệ; không dùng làm khóa vì có thể đổi.",
+        "example": "an@congty.vn"
+      },
+      {
+        "name": "status: UserStatus",
+        "meaning": "Tài khoản đang hoạt động hay bị khóa/ngừng sử dụng.",
+        "example": "ACTIVE"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "OrganizationalUnit",
+    "group": "org",
+    "purpose": "Một đơn vị trong cây tổ chức.",
+    "why": "Cơ cấu đơn vị có quan hệ cha–con; không gộp với Position vì phòng ban khác chức danh.",
+    "example": "Phòng Phần mềm thuộc Khối Công nghệ.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh đơn vị; được phân công nhân sự tham chiếu.",
+        "example": "OU-SW"
+      },
+      {
+        "name": "name: String",
+        "meaning": "Tên hiển thị của đơn vị.",
+        "example": "Phòng Phần mềm"
+      },
+      {
+        "name": "code: String",
+        "meaning": "Mã nghiệp vụ ổn định của đơn vị.",
+        "example": "IT-SW"
+      },
+      {
+        "name": "type: OrganizationalUnitType",
+        "meaning": "Loại đơn vị: công ty, khối, phòng, nhóm.",
+        "example": "DEPARTMENT"
+      },
+      {
+        "name": "status: OrganizationalUnitStatus",
+        "meaning": "Đơn vị còn nhận phân công mới hay không.",
+        "example": "ACTIVE"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "Position",
+    "group": "org",
+    "purpose": "Danh mục chức danh nhân sự.",
+    "why": "Chức danh còn tồn tại khi người giữ thay đổi; không tự đồng nghĩa với quyền trong phần mềm.",
+    "example": "Trưởng phòng là chức danh; Bình là một người đang giữ chức danh đó.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh chức danh, được phân công hoặc Selector POSITION tham chiếu.",
+        "example": "P-HEAD"
+      },
+      {
+        "name": "code: String",
+        "meaning": "Mã chức danh ổn định.",
+        "example": "DEPT_HEAD"
+      },
+      {
+        "name": "name: String",
+        "meaning": "Tên chức danh hiển thị.",
+        "example": "Trưởng phòng"
+      },
+      {
+        "name": "status: PositionStatus",
+        "meaning": "Có còn dùng để phân công mới hay không.",
+        "example": "ACTIVE"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "EmployeeAssignment",
+    "group": "org",
+    "purpose": "Một lần một người giữ một chức danh trong một đơn vị.",
+    "why": "Lưu lịch sử điều chuyển/kiêm nhiệm và quan hệ quản lý theo phân công, không theo tài khoản.",
+    "example": "An làm nhân viên Phòng Phần mềm từ tháng 1; sau đó nhận thêm phân công dự án.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh của chính lần phân công; RoleAssignment và Request có thể tham chiếu.",
+        "example": "EA-AN-SW"
+      },
+      {
+        "name": "userId: UUID",
+        "meaning": "Tham chiếu User của người được phân công; dùng ID thay đường nối thường.",
+        "example": "U-AN"
+      },
+      {
+        "name": "organizationalUnitId: UUID",
+        "meaning": "Tham chiếu đơn vị làm việc; cùng người có thể đổi đơn vị.",
+        "example": "OU-SW"
+      },
+      {
+        "name": "positionId: UUID",
+        "meaning": "Tham chiếu chức danh đang giữ.",
+        "example": "P-STAFF"
+      },
+      {
+        "name": "type: AssignmentType",
+        "meaning": "Phân công chính thức, kiêm nhiệm hoặc tạm thời.",
+        "example": "OFFICIAL"
+      },
+      {
+        "name": "isPrimary: Boolean",
+        "meaning": "Đánh dấu phân công chính trong các phân công đồng thời.",
+        "example": "true"
+      },
+      {
+        "name": "startedAt: DateTime",
+        "meaning": "Ngày phân công bắt đầu hiệu lực.",
+        "example": "2026-01-01"
+      },
+      {
+        "name": "endedAt: DateTime?",
+        "meaning": "Ngày kết thúc; trống nếu còn hiệu lực.",
+        "example": "null"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "SystemRole",
+    "group": "org",
+    "purpose": "Một tập quyền thao tác trong phần mềm.",
+    "why": "Quyền hệ thống không tự suy ra từ chức danh; nhiều role có thể dùng chung Permission.",
+    "example": "APPROVER có quyền duyệt task; SYSTEM_ADMIN có nhiều quyền hơn.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh role, được RoleAssignment và Selector ROLE tham chiếu.",
+        "example": "SR-APPROVER"
+      },
+      {
+        "name": "code: SystemRoleCode",
+        "meaning": "Mã vai trò được hệ thống hiểu theo enum.",
+        "example": "APPROVER"
+      },
+      {
+        "name": "name: String",
+        "meaning": "Tên vai trò dễ đọc.",
+        "example": "Người phê duyệt"
+      },
+      {
+        "name": "isActive: Boolean",
+        "meaning": "Role còn được phép cấp mới hay không.",
+        "example": "true"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "RoleAssignment",
+    "group": "org",
+    "purpose": "Một lần cấp SystemRole cho EmployeeAssignment.",
+    "why": "Tách khỏi phân công nhân sự để quyền có phạm vi, thời hạn và lịch sử thu hồi riêng.",
+    "example": "Bình được cấp APPROVER trong đơn vị từ 1/10 đến 31/12.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh lần cấp quyền để có thể thu hồi/kiểm tra lịch sử.",
+        "example": "RA-1"
+      },
+      {
+        "name": "employeeAssignmentId: UUID",
+        "meaning": "Phân công được cấp quyền; dùng ID thay một đường nối thường.",
+        "example": "EA-BINH"
+      },
+      {
+        "name": "systemRoleId: UUID",
+        "meaning": "Role được cấp; dùng ID thay đường nối thứ hai.",
+        "example": "SR-APPROVER"
+      },
+      {
+        "name": "scopeType: RoleScopeType",
+        "meaning": "Phạm vi hiệu lực: toàn công ty hoặc theo đơn vị của phân công.",
+        "example": "ORGANIZATIONAL_UNIT"
+      },
+      {
+        "name": "validFrom: DateTime",
+        "meaning": "Thời điểm bắt đầu hiệu lực.",
+        "example": "2026-10-01"
+      },
+      {
+        "name": "validUntil: DateTime?",
+        "meaning": "Hạn dự kiến nếu có.",
+        "example": "2026-12-31"
+      },
+      {
+        "name": "revokedAt: DateTime?",
+        "meaning": "Thời điểm bị thu hồi sớm; null nếu chưa thu hồi.",
+        "example": "null"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "Permission",
+    "group": "org",
+    "purpose": "Một thao tác cụ thể được cho phép.",
+    "why": "Tách khỏi SystemRole để cùng một quyền được dùng trong nhiều vai trò.",
+    "example": "REQUEST_APPROVE thuộc APPROVER và SYSTEM_ADMIN.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh quyền; bảng nối triển khai role–permission dùng ID này.",
+        "example": "PM-APPROVE"
+      },
+      {
+        "name": "code: PermissionCode",
+        "meaning": "Mã quyền nguyên tử.",
+        "example": "REQUEST_APPROVE"
+      },
+      {
+        "name": "name: String",
+        "meaning": "Tên hiển thị của quyền.",
+        "example": "Phê duyệt yêu cầu"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "FormTemplate",
+    "group": "form",
+    "purpose": "Mẫu đơn hiện hành có thể được soạn, kiểm duyệt và sử dụng.",
+    "why": "Nội dung phải điền thay đổi độc lập với quy trình phê duyệt; bản hiện hành khác snapshot lịch sử.",
+    "example": "Mẫu Đề nghị mua thiết bị hiện là v2.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh mẫu; Workflow và các bản ghi lịch sử tham chiếu bằng ID.",
+        "example": "F-PURCHASE"
+      },
+      {
+        "name": "code: String",
+        "meaning": "Mã nghiệp vụ ổn định của mẫu, không đổi theo tên.",
+        "example": "PURCHASE_REQUEST"
+      },
+      {
+        "name": "name: String",
+        "meaning": "Tên mẫu nhân viên nhìn thấy.",
+        "example": "Đề nghị mua thiết bị"
+      },
+      {
+        "name": "status: FormTemplateStatus",
+        "meaning": "Trạng thái soạn/chờ duyệt/đang dùng/ngừng dùng.",
+        "example": "ACTIVE"
+      },
+      {
+        "name": "version: Int",
+        "meaning": "Số phiên bản cấu trúc hiện hành, ví dụ 2.",
+        "example": "2"
+      },
+      {
+        "name": "createdByAssignmentId: UUID?",
+        "meaning": "Phân công nhân sự tạo mẫu; tham chiếu bằng ID vì không cần một đường mới.",
+        "example": "EA-AN"
+      },
+      {
+        "name": "reviewerAssignmentId: UUID?",
+        "meaning": "Phân công được giao kiểm duyệt hiện tại, nếu có.",
+        "example": "EA-BINH"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "FormField",
+    "group": "form",
+    "purpose": "Định nghĩa một ô nhập của mẫu hiện hành.",
+    "why": "Mỗi ô có key, kiểu và quy tắc bắt buộc riêng; là thành phần của FormTemplate.",
+    "example": "Ô amount là số tiền đề nghị.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh ô khi quản trị chỉnh mẫu.",
+        "example": "FF-AMOUNT"
+      },
+      {
+        "name": "key: String",
+        "meaning": "Mã ô ổn định trong một phiên bản; formData và Condition.fieldKey dùng mã này.",
+        "example": "amount"
+      },
+      {
+        "name": "label: String",
+        "meaning": "Nhãn người dùng nhìn thấy.",
+        "example": "Số tiền"
+      },
+      {
+        "name": "type: FieldType",
+        "meaning": "Kiểu dữ liệu cần nhập và kiểm tra.",
+        "example": "NUMBER"
+      },
+      {
+        "name": "isRequired: Boolean",
+        "meaning": "Có bắt buộc điền khi gửi không.",
+        "example": "true"
+      },
+      {
+        "name": "order: Int",
+        "meaning": "Thứ tự hiển thị trong mẫu.",
+        "example": "3"
+      },
+      {
+        "name": "options: List<String>",
+        "meaning": "Danh sách lựa chọn khi type là SELECT; trống với NUMBER.",
+        "example": "[]"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "FormTemplateRevision",
+    "group": "form",
+    "purpose": "Snapshot bất biến của một phiên bản mẫu cũ.",
+    "why": "Không sửa ảnh chụp lịch sử khi mẫu hiện hành đổi; mẫu v1 có thể chưa có revision nếu chưa từng cập nhật.",
+    "example": "Khi sửa v1 thành v2, lưu revision chứa field của v1.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh snapshot cũ.",
+        "example": "FR-1"
+      },
+      {
+        "name": "formTemplateId: UUID",
+        "meaning": "Mẫu gốc; dùng ID thay đường nối lịch sử để canvas gọn.",
+        "example": "F-PURCHASE"
+      },
+      {
+        "name": "version: Int",
+        "meaning": "Phiên bản được chụp lại; khác FormTemplate.version hiện hành.",
+        "example": "1"
+      },
+      {
+        "name": "snapshot: FormSnapshot",
+        "meaning": "Nội dung mẫu và field ở thời điểm đó; khi lưu có thể là JSONB.",
+        "example": "Mẫu mua hàng v1"
+      },
+      {
+        "name": "actorAssignmentId: UUID?",
+        "meaning": "Ai thực hiện việc lưu phiên bản cũ, nếu biết.",
+        "example": "EA-BINH"
+      },
+      {
+        "name": "createdAt: DateTime",
+        "meaning": "Thời điểm snapshot được tạo.",
+        "example": "2026-10-03"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "FormReviewEvent",
+    "group": "form",
+    "purpose": "Một sự kiện kiểm duyệt mẫu.",
+    "why": "Không ghi đè nhận xét duyệt cũ lên một field duy nhất của FormTemplate.",
+    "example": "Người duyệt yêu cầu sửa tên ô amount rồi sau đó chấp thuận.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh sự kiện kiểm duyệt.",
+        "example": "FRE-1"
+      },
+      {
+        "name": "formTemplateId: UUID",
+        "meaning": "Mẫu được kiểm duyệt; dùng ID thay đường nối.",
+        "example": "F-PURCHASE"
+      },
+      {
+        "name": "actorAssignmentId: UUID",
+        "meaning": "Phân công nhân sự thực hiện sự kiện.",
+        "example": "EA-BINH"
+      },
+      {
+        "name": "eventType: FormReviewEventType",
+        "meaning": "Gửi duyệt, yêu cầu sửa, chấp thuận hoặc đổi trạng thái.",
+        "example": "CHANGES_REQUESTED"
+      },
+      {
+        "name": "comment: String?",
+        "meaning": "Nhận xét/lý do của sự kiện.",
+        "example": "Đổi nhãn Số tiền"
+      },
+      {
+        "name": "occurredAt: DateTime",
+        "meaning": "Thời điểm sự kiện xảy ra.",
+        "example": "2026-10-02 09:00"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "Workflow",
+    "group": "form",
+    "purpose": "Quy trình của một mẫu, chứa cấu hình nháp và chỉ phiên bản đang công bố.",
+    "why": "Bản nháp có thể sửa; WorkflowVersion đã công bố phải bất biến để đơn cũ không đổi tuyến.",
+    "example": "Quy trình mua thiết bị đang soạn thêm bước CFO.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh quy trình, được Request tham chiếu.",
+        "example": "W-PURCHASE"
+      },
+      {
+        "name": "formTemplateId: UUID",
+        "meaning": "Mẫu mà quy trình áp dụng; dùng ID thay đường FormTemplate–Workflow.",
+        "example": "F-PURCHASE"
+      },
+      {
+        "name": "status: WorkflowStatus",
+        "meaning": "Có nhận đơn mới hay đang tạm dừng.",
+        "example": "ACTIVE"
+      },
+      {
+        "name": "draftDefinition: WorkflowDefinition?",
+        "meaning": "Cấu hình đang sửa, chưa công bố; có thể lưu JSONB.",
+        "example": "Thêm bước CFO"
+      },
+      {
+        "name": "publishedVersionId: UUID",
+        "meaning": "Chỉ một WorkflowVersion hiện hành trong các version đã công bố.",
+        "example": "WV-2"
+      },
+      {
+        "name": "updatedAt: DateTime",
+        "meaning": "Lần cập nhật cấu hình gần nhất.",
+        "example": "2026-10-04"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "WorkflowVersion",
+    "group": "form",
+    "purpose": "Ảnh chụp quy trình đã công bố và không sửa tại chỗ.",
+    "why": "Mỗi Request chạy theo version đã chốt dù quản trị công bố version mới.",
+    "example": "Version 2 thêm CFO khi số tiền từ 20 triệu.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh phiên bản; WorkflowInstance.workflowVersionId sẽ chốt ID này.",
+        "example": "WV-2"
+      },
+      {
+        "name": "version: Int",
+        "meaning": "Số thứ tự công bố trong một Workflow.",
+        "example": "2"
+      },
+      {
+        "name": "templateVersion: Int",
+        "meaning": "Phiên bản cấu trúc mẫu tương ứng lúc ban hành.",
+        "example": "3"
+      },
+      {
+        "name": "definition: WorkflowDefinition",
+        "meaning": "Snapshot đầy đủ các bước/quy tắc; các value object bên dưới phân rã nội dung này, không phải nguồn dữ liệu thứ hai.",
+        "example": "Hai bước: trưởng phòng, CFO"
+      },
+      {
+        "name": "publishedByAssignmentId: UUID?",
+        "meaning": "Phân công đã ban hành phiên bản.",
+        "example": "EA-CTO"
+      },
+      {
+        "name": "changeNote: String?",
+        "meaning": "Lý do thay đổi so với version trước.",
+        "example": "Thêm CFO"
+      },
+      {
+        "name": "publishedAt: DateTime",
+        "meaning": "Lúc version được công bố.",
+        "example": "2026-10-05"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "WorkflowStep",
+    "group": "form",
+    "purpose": "Một bước được định nghĩa bên trong WorkflowVersion.",
+    "why": "Bước cấu hình khác WorkflowStepRun: một bên là quy tắc, một bên là lần bước thực sự chạy cho từng đơn.",
+    "example": "Bước CFO duyệt khi amount ≥ 20 triệu.",
+    "attrs": [
+      {
+        "name": "key: String",
+        "meaning": "Mã bước duy nhất trong một version; StepRun.stepKey dùng mã này.",
+        "example": "cfo-review"
+      },
+      {
+        "name": "name: String",
+        "meaning": "Tên bước cho người theo dõi.",
+        "example": "CFO duyệt"
+      },
+      {
+        "name": "order: Int",
+        "meaning": "Thứ tự chạy; quy trình này không có vòng lặp tùy ý.",
+        "example": "2"
+      },
+      {
+        "name": "mode: StepMode",
+        "meaning": "ALL yêu cầu mọi người được giao; ANY chỉ cần một người đồng ý.",
+        "example": "ANY"
+      },
+      {
+        "name": "selectors: List<Selector>",
+        "meaning": "Một hoặc nhiều quy tắc tìm người duyệt; thuộc chính bước này.",
+        "example": "[POSITION(CFO)]"
+      },
+      {
+        "name": "when: ConditionGroup?",
+        "meaning": "Nhóm điều kiện tùy chọn; vắng mặt nghĩa là bước luôn được xét.",
+        "example": "amount >= 20000000"
+      },
+      {
+        "name": "sla: SlaPolicy?",
+        "meaning": "Chính sách hạn xử lý tùy chọn.",
+        "example": "48 giờ"
+      }
+    ],
+    "tag": "value object"
+  },
+  {
+    "id": "Selector",
+    "group": "form",
+    "purpose": "Quy tắc tìm người duyệt khi bước bắt đầu.",
+    "why": "Selector không phải người được giao thực tế; nó được phân giải ra EmployeeAssignment tại thời điểm chạy.",
+    "example": "POSITION(CFO) tìm người đang giữ chức danh CFO.",
+    "attrs": [
+      {
+        "name": "type: SelectorType",
+        "meaning": "Cách chọn: DIRECT_MANAGER, MANAGER_LEVEL, POSITION, ASSIGNMENT hoặc ROLE.",
+        "example": "POSITION"
+      },
+      {
+        "name": "level: Int?",
+        "meaning": "Số cấp quản lý, chỉ dùng khi type=MANAGER_LEVEL.",
+        "example": "2"
+      },
+      {
+        "name": "positionId: UUID?",
+        "meaning": "Chức danh cần tìm, chỉ dùng khi type=POSITION.",
+        "example": "P-CFO"
+      },
+      {
+        "name": "assignmentId: UUID?",
+        "meaning": "Đúng một phân công, chỉ dùng khi type=ASSIGNMENT.",
+        "example": "EA-HA"
+      },
+      {
+        "name": "roleId: UUID?",
+        "meaning": "Role cần tìm, chỉ dùng khi type=ROLE.",
+        "example": "SR-APPROVER"
+      }
+    ],
+    "tag": "value object"
+  },
+  {
+    "id": "ConditionGroup",
+    "group": "form",
+    "purpose": "Nhóm các điều kiện quyết định bước có chạy.",
+    "why": "Gom nhiều phép so sánh bằng ALL/ANY; không cần bảng riêng nếu lưu trong definition JSON.",
+    "example": "Cần amount ≥ 20 triệu và urgent=true.",
+    "attrs": [
+      {
+        "name": "mode: ConditionMode",
+        "meaning": "ALL: tất cả đúng; ANY: ít nhất một đúng.",
+        "example": "ALL"
+      },
+      {
+        "name": "conditions: List<Condition>",
+        "meaning": "Danh sách ít nhất một điều kiện thuộc nhóm.",
+        "example": "[amount >= 20000000, urgent = true]"
+      }
+    ],
+    "tag": "value object"
+  },
+  {
+    "id": "Condition",
+    "group": "form",
+    "purpose": "Một phép so sánh câu trả lời của đơn.",
+    "why": "Tham chiếu bằng fieldKey của snapshot mẫu, không nối tới FormField hiện hành có thể đổi.",
+    "example": "amount GTE 20000000.",
+    "attrs": [
+      {
+        "name": "fieldKey: String",
+        "meaning": "Key của ô trong template version đã chốt, không phải UUID của field hiện hành.",
+        "example": "amount"
+      },
+      {
+        "name": "operator: ConditionOperator",
+        "meaning": "EQ, GT, GTE, LT, LTE, IN, IS_EMPTY, IS_NOT_EMPTY...",
+        "example": "GTE"
+      },
+      {
+        "name": "value: ConditionValue?",
+        "meaning": "Giá trị so sánh: một giá trị hoặc danh sách cho IN; trống cho IS_EMPTY/IS_NOT_EMPTY.",
+        "example": "20000000"
+      }
+    ],
+    "tag": "value object"
+  },
+  {
+    "id": "SlaPolicy",
+    "group": "form",
+    "purpose": "Chính sách thời hạn của một bước.",
+    "why": "Chốt dueAt vào task khi bước chạy; escalation có thể chỉ đúng phân công xử lý khi quá hạn.",
+    "example": "Bước CFO hạn 48 giờ, nhắc trước 4 giờ.",
+    "attrs": [
+      {
+        "name": "minutes: Int",
+        "meaning": "Số phút tối đa để xử lý bước.",
+        "example": "2880"
+      },
+      {
+        "name": "remindBeforeMinutes: Int",
+        "meaning": "Nhắc trước hạn bao nhiêu phút.",
+        "example": "240"
+      },
+      {
+        "name": "escalationAssignmentId: UUID?",
+        "meaning": "Phân công mục tiêu chuyển cấp nếu quá hạn; vắng mặt thì chỉ cảnh báo.",
+        "example": "EA-CTO"
+      }
+    ],
+    "tag": "value object"
+  },
+  {
+    "id": "Request",
+    "group": "run",
+    "purpose": "Một hồ sơ cụ thể, có bản nháp và kết quả cuối.",
+    "why": "Tách khỏi Workflow vì quy trình là quy tắc tái sử dụng; Request là dữ liệu một hồ sơ. RETURNED sửa cùng hồ sơ, REJECTED đã kết thúc.",
+    "example": "An tạo đơn mua laptop, bị trả bổ sung rồi gửi vòng 2.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh hồ sơ; không đổi khi RETURNED rồi gửi lại.",
+        "example": "R-1"
+      },
+      {
+        "name": "requestCode: String?",
+        "meaning": "Mã hồ sơ cấp khi gửi lần đầu; giữ nguyên ở vòng sau.",
+        "example": "REQ-2026-001"
+      },
+      {
+        "name": "requesterAssignmentId: UUID",
+        "meaning": "Phân công nhân sự tạo/nộp đơn; dùng ID thay đường nối sang phần 1.",
+        "example": "EA-AN"
+      },
+      {
+        "name": "workflowId: UUID",
+        "meaning": "Quy trình được chọn; dùng ID thay đường nối sang phần 2.",
+        "example": "W-PURCHASE"
+      },
+      {
+        "name": "templateSnapshot: FormSnapshot",
+        "meaning": "Ảnh chụp mẫu lúc tạo bản nháp; giúp đơn cũ không bị đổi field theo mẫu hiện hành.",
+        "example": "Mẫu mua thiết bị v2"
+      },
+      {
+        "name": "formData: FormAnswers",
+        "meaning": "Câu trả lời đang chỉnh của bản nháp hoặc hồ sơ RETURNED.",
+        "example": "amount=25000000"
+      },
+      {
+        "name": "status: RequestStatus",
+        "meaning": "DRAFT, PENDING, RETURNED, APPROVED, REJECTED, CANCELLED.",
+        "example": "RETURNED"
+      },
+      {
+        "name": "createdAt: DateTime",
+        "meaning": "Lúc tạo hồ sơ/bản nháp.",
+        "example": "2026-10-06"
+      },
+      {
+        "name": "submittedAt: DateTime?",
+        "meaning": "Lần gửi đầu tiên; vòng sau xem RequestSubmission.submittedAt.",
+        "example": "2026-10-07"
+      },
+      {
+        "name": "decidedAt: DateTime?",
+        "meaning": "Lúc có kết quả cuối, không ghi khi chỉ RETURNED.",
+        "example": "null"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "RequestSubmission",
+    "group": "run",
+    "purpose": "Snapshot bất biến của một lần nộp hoặc nộp lại.",
+    "why": "RETURNED giữ Request nhưng cần bảo toàn dữ liệu và người nộp của từng vòng; REJECTED thì tạo Request mới.",
+    "example": "R-1 vòng 1 amount=25 triệu, vòng 2 bổ sung lý do và nộp lại.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh lần nộp để truy lịch sử.",
+        "example": "RS-2"
+      },
+      {
+        "name": "round: Int",
+        "meaning": "Số vòng nộp trong cùng Request, bắt đầu từ 1.",
+        "example": "2"
+      },
+      {
+        "name": "formDataSnapshot: FormAnswers",
+        "meaning": "Câu trả lời bất biến của vòng này, không bị formData hiện tại ghi đè.",
+        "example": "amount=25000000"
+      },
+      {
+        "name": "requesterSnapshot: RequesterSnapshot",
+        "meaning": "Tên/đơn vị/chức danh người nộp tại lúc gửi.",
+        "example": "An, Phòng Phần mềm"
+      },
+      {
+        "name": "submittedByAssignmentId: UUID",
+        "meaning": "Phân công nhân sự thực hiện lần gửi này.",
+        "example": "EA-AN"
+      },
+      {
+        "name": "submittedAt: DateTime",
+        "meaning": "Thời điểm của đúng vòng nộp này.",
+        "example": "2026-10-10"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "WorkflowInstance",
+    "group": "run",
+    "purpose": "Một lần vận hành quy trình cho Request và một version đã chốt.",
+    "why": "Tách khỏi WorkflowVersion vì version là công thức bất biến; instance là quá trình chạy riêng của hồ sơ.",
+    "example": "R-1 chạy theo WV-2 và vẫn giữ WV-2 khi RETURNED/gửi lại.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh lần chạy; một Request có tối đa một instance.",
+        "example": "WI-1"
+      },
+      {
+        "name": "workflowVersionId: UUID",
+        "meaning": "Version công bố được chốt khi gửi lần đầu; không đổi qua các vòng RETURNED.",
+        "example": "WV-2"
+      },
+      {
+        "name": "status: InstanceStatus",
+        "meaning": "RUNNING, RETURNED, BLOCKED hoặc kết thúc.",
+        "example": "RETURNED"
+      },
+      {
+        "name": "currentRound: Int",
+        "meaning": "Vòng nộp đang/đã chạy gần nhất.",
+        "example": "2"
+      },
+      {
+        "name": "currentStepIndex: Int",
+        "meaning": "Vị trí bước hiện tại trong version đã chốt.",
+        "example": "1"
+      },
+      {
+        "name": "startedAt: DateTime",
+        "meaning": "Lúc instance bắt đầu chạy.",
+        "example": "2026-10-07"
+      },
+      {
+        "name": "completedAt: DateTime?",
+        "meaning": "Lúc instance kết thúc hẳn, nếu có.",
+        "example": "null"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "WorkflowStepRun",
+    "group": "run",
+    "purpose": "Một bước đã được xét trong một vòng của instance.",
+    "why": "Tách khỏi WorkflowStep định nghĩa vì mỗi vòng có điều kiện, người duyệt và kết quả khác nhau.",
+    "example": "Bước CFO ở vòng 1 bỏ qua; vòng 2 được kích hoạt.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh của lần xét bước.",
+        "example": "WSR-2"
+      },
+      {
+        "name": "round: Int",
+        "meaning": "Vòng nộp mà lần chạy bước thuộc về.",
+        "example": "2"
+      },
+      {
+        "name": "stepKey: String",
+        "meaning": "Mã WorkflowStep trong WorkflowVersion đã chốt; không nối sang object trong JSON.",
+        "example": "cfo-review"
+      },
+      {
+        "name": "status: StepRunStatus",
+        "meaning": "ACTIVE, SKIPPED, APPROVED, REJECTED hoặc RETURNED.",
+        "example": "ACTIVE"
+      },
+      {
+        "name": "conditionMatched: Boolean?",
+        "meaning": "Điều kiện bước đúng/sai; trống nếu chưa đánh giá.",
+        "example": "true"
+      },
+      {
+        "name": "enteredAt: DateTime",
+        "meaning": "Lúc bước được xét/bắt đầu.",
+        "example": "2026-10-10"
+      },
+      {
+        "name": "completedAt: DateTime?",
+        "meaning": "Lúc bước kết thúc.",
+        "example": "null"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "ApprovalTask",
+    "group": "run",
+    "purpose": "Một việc phê duyệt giao cho phân công nhân sự cụ thể.",
+    "why": "Một StepRun kiểu ALL/ANY có thể có nhiều task; task chưa chắc đã có quyết định.",
+    "example": "Bước CFO tạo task cho Hà, hạn xử lý sau 48 giờ.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh việc được giao, dùng khi ra quyết định.",
+        "example": "T-HA"
+      },
+      {
+        "name": "assigneeAssignmentId: UUID",
+        "meaning": "Phân công đang được giao; được phân giải từ Selector lúc chạy.",
+        "example": "EA-HA"
+      },
+      {
+        "name": "assigneeSnapshot: AssigneeSnapshot",
+        "meaning": "Tên/chức danh lúc giao để lịch sử không đổi khi nhân sự chuyển vị trí.",
+        "example": "Hà, CFO"
+      },
+      {
+        "name": "status: ApprovalTaskStatus",
+        "meaning": "PENDING, APPROVED, REJECTED, RETURNED hoặc CANCELLED.",
+        "example": "PENDING"
+      },
+      {
+        "name": "createdAt: DateTime",
+        "meaning": "Lúc task được giao.",
+        "example": "2026-10-10"
+      },
+      {
+        "name": "dueAt: DateTime?",
+        "meaning": "Hạn xử lý chốt từ SlaPolicy nếu có.",
+        "example": "2026-10-12"
+      }
+    ],
+    "tag": ""
+  },
+  {
+    "id": "TaskDecision",
+    "group": "run",
+    "purpose": "Quyết định bất biến của một ApprovalTask đã được xử lý.",
+    "why": "Task đang chờ chưa có quyết định; tách ra để lưu người quyết định, ý kiến và thời điểm mà không lẫn với việc giao task.",
+    "example": "Hà RETURNED kèm góp ý; hoặc APPROVED khi đủ thông tin.",
+    "attrs": [
+      {
+        "name": "id: UUID",
+        "meaning": "Định danh quyết định để đối chiếu lịch sử.",
+        "example": "TD-1"
+      },
+      {
+        "name": "actorAssignmentId: UUID",
+        "meaning": "Phân công đã thực sự quyết định, không chỉ người từng được giao.",
+        "example": "EA-HA"
+      },
+      {
+        "name": "decision: DecisionType",
+        "meaning": "APPROVED, REJECTED hoặc RETURNED; RETURNED không phải từ chối cuối.",
+        "example": "RETURNED"
+      },
+      {
+        "name": "comment: String?",
+        "meaning": "Nhận xét; bắt buộc với REJECTED/RETURNED theo quy tắc hiện tại.",
+        "example": "Bổ sung báo giá"
+      },
+      {
+        "name": "occurredAt: DateTime",
+        "meaning": "Thời điểm quyết định được ghi nhận.",
+        "example": "2026-10-09 09:30"
+      }
+    ],
+    "tag": ""
+  }
+];
+const byId=Object.fromEntries(classes.map(c=>[c.id,c]));
+const org=[
+  {
+    "from": "OrganizationalUnit",
+    "to": "OrganizationalUnit",
+    "a": "0..1",
+    "b": "0..*",
+    "label": "parent / children",
+    "why": "Cây đơn vị là cấu trúc nghiệp vụ: mỗi đơn vị có tối đa một cha, một cha có nhiều con. Không thêm parentId vì đường tự nối đã diễn tả đúng ý; cây không được có chu trình.",
+    "kind": "association",
+    "example": "Khối Công nghệ chứa Phòng Phần mềm."
+  },
+  {
+    "from": "EmployeeAssignment",
+    "to": "EmployeeAssignment",
+    "a": "0..1",
+    "b": "0..*",
+    "label": "manager / subordinates",
+    "why": "Quản lý trực tiếp gắn với một phân công đang có hiệu lực, không gắn cứng với User. Bỏ managerAssignmentId vì đường tự nối đã thể hiện mối quan hệ.",
+    "kind": "association",
+    "example": "Phân công Trưởng phòng của Bình quản lý phân công Nhân viên của An."
+  },
+  {
+    "from": "SystemRole",
+    "to": "Permission",
+    "a": "0..*",
+    "b": "0..*",
+    "label": "includes",
+    "why": "Role gồm nhiều quyền và một quyền có thể được dùng trong nhiều role. RolePermission chỉ là bảng nối của ERD, không thêm vào sơ đồ miền.",
+    "kind": "association",
+    "example": "APPROVER và SYSTEM_ADMIN cùng chứa REQUEST_APPROVE."
+  }
+];
+const form=[
+  {
+    "from": "FormTemplate",
+    "to": "FormField",
+    "a": "1",
+    "b": "0..*",
+    "label": "contains",
+    "why": "Field thuộc cấu trúc mẫu hiện hành; bản nháp có thể chưa có field. Không thêm formTemplateId vào FormField vì composition này đã thể hiện quan hệ.",
+    "kind": "composition",
+    "example": "Mẫu mua thiết bị chứa ô amount và reason."
+  },
+  {
+    "from": "Workflow",
+    "to": "WorkflowVersion",
+    "a": "1",
+    "b": "1..*",
+    "label": "publishes",
+    "why": "Trong quy ước đồ án, Workflow luôn có ít nhất một version đã công bố. Đường này mô tả toàn bộ lịch sử version; publishedVersionId chỉ chọn một version hiện hành, không lặp quan hệ.",
+    "kind": "association",
+    "example": "Quy trình có v1 và v2; pointer chọn v2."
+  },
+  {
+    "from": "WorkflowVersion",
+    "to": "WorkflowStep",
+    "a": "1",
+    "b": "1..*",
+    "label": "defines",
+    "why": "Các bước là thành phần của definition đã công bố, có thứ tự, bất biến cùng version. Hình thoi phân rã snapshot để đọc mô hình; không bắt buộc mỗi Step là một bảng.",
+    "kind": "composition",
+    "example": "Version 2 gồm bước Trưởng phòng rồi CFO."
+  }
+];
+const run=[
+  {
+    "from": "Request",
+    "to": "RequestSubmission",
+    "a": "1",
+    "b": "0..*",
+    "label": "records rounds",
+    "why": "Nháp chưa có lần nộp; mỗi lần nộp/gửi lại tạo snapshot bất biến riêng. RETURNED dùng lại Request và tăng round, còn REJECTED kết thúc hồ sơ.",
+    "kind": "composition",
+    "example": "R-1 có submission vòng 1 và vòng 2."
+  },
+  {
+    "from": "Request",
+    "to": "WorkflowInstance",
+    "a": "1",
+    "b": "0..1",
+    "label": "starts",
+    "why": "Đơn nháp chưa có instance; khi gửi lần đầu tạo tối đa một instance, giữ version đã chốt qua các vòng RETURNED.",
+    "kind": "composition",
+    "example": "R-1 DRAFT chưa có instance; gửi thì tạo WI-1."
+  },
+  {
+    "from": "WorkflowInstance",
+    "to": "WorkflowStepRun",
+    "a": "1",
+    "b": "0..*",
+    "label": "runs",
+    "why": "Một instance có nhiều lần xét bước qua các round; lúc mới tạo hoặc bị chặn có thể chưa có StepRun.",
+    "kind": "composition",
+    "example": "WI-1 chạy manager ở vòng 1 và vòng 2."
+  },
+  {
+    "from": "WorkflowStepRun",
+    "to": "ApprovalTask",
+    "a": "1",
+    "b": "0..*",
+    "label": "assigns",
+    "why": "Bước bị SKIPPED không giao task; bước ALL/ANY có thể giao nhiều task cho các nhân sự khác nhau.",
+    "kind": "composition",
+    "example": "Bước ANY giao task cho Hà và Bình."
+  },
+  {
+    "from": "ApprovalTask",
+    "to": "TaskDecision",
+    "a": "1",
+    "b": "0..1",
+    "label": "records",
+    "why": "Task PENDING/CANCELLED có thể chưa từng có quyết định; task được xử lý có tối đa một TaskDecision.",
+    "kind": "composition",
+    "example": "Task của Hà ghi quyết định RETURNED."
+  }
+];
+const sceneDefs={
+  "org": {
+    "title": "01 · Tổ chức và quyền",
+    "w": 1250,
+    "h": 850,
+    "ids": [
+      "User",
+      "OrganizationalUnit",
+      "Position",
+      "EmployeeAssignment",
+      "SystemRole",
+      "RoleAssignment",
+      "Permission"
+    ],
+    "positions": {
+      "User": [
+        50,
+        30
+      ],
+      "OrganizationalUnit": [
+        470,
+        30
+      ],
+      "Position": [
+        900,
+        30
+      ],
+      "EmployeeAssignment": [
+        470,
+        320
+      ],
+      "SystemRole": [
+        900,
+        320
+      ],
+      "RoleAssignment": [
+        470,
+        610
+      ],
+      "Permission": [
+        900,
+        610
+      ]
+    }
+  },
+  "form": {
+    "title": "02 · Mẫu và quy trình",
+    "w": 1300,
+    "h": 800,
+    "ids": [
+      "FormTemplate",
+      "FormField",
+      "FormTemplateRevision",
+      "FormReviewEvent",
+      "Workflow",
+      "WorkflowVersion",
+      "WorkflowStep",
+      "Selector",
+      "ConditionGroup",
+      "Condition",
+      "SlaPolicy"
+    ],
+    "positions": {
+      "FormTemplate": [
+        340,
+        30
+      ],
+      "FormField": [
+        340,
+        300
+      ],
+      "FormTemplateRevision": [
+        40,
+        300
+      ],
+      "FormReviewEvent": [
+        40,
+        30
+      ],
+      "Workflow": [
+        640,
+        30
+      ],
+      "WorkflowVersion": [
+        1010,
+        30
+      ],
+      "WorkflowStep": [
+        1010,
+        300
+      ],
+      "Selector": [
+        640,
+        300
+      ],
+      "ConditionGroup": [
+        340,
+        570
+      ],
+      "Condition": [
+        40,
+        570
+      ],
+      "SlaPolicy": [
+        640,
+        570
+      ]
+    }
+  },
+  "run": {
+    "title": "03 · Đơn và thực thi",
+    "w": 1340,
+    "h": 740,
+    "ids": [
+      "Request",
+      "RequestSubmission",
+      "WorkflowInstance",
+      "WorkflowStepRun",
+      "ApprovalTask",
+      "TaskDecision"
+    ],
+    "positions": {
+      "RequestSubmission": [
+        60,
+        90
+      ],
+      "Request": [
+        540,
+        90
+      ],
+      "WorkflowInstance": [
+        1020,
+        90
+      ],
+      "TaskDecision": [
+        60,
+        450
+      ],
+      "ApprovalTask": [
+        540,
+        450
+      ],
+      "WorkflowStepRun": [
+        1020,
+        450
+      ]
+    }
+  }
+};
+sceneDefs.org.edges=org;sceneDefs.form.edges=form;sceneDefs.run.edges=run;
+const tabNames={org:'1 · Tổ chức và quyền',form:'2 · Mẫu và quy trình',run:'3 · Đơn và thực thi'};
+const viewport=document.getElementById('viewport'),world=document.getElementById('world'),cards=document.getElementById('cards'),svg=document.getElementById('links'),inspector=document.getElementById('inspector');
+let scene='org',scale=1,offset={x:0,y:0},selected=null,custom={};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const key=()=>`flowpilot-domain-${scene}`;
+function current(){return sceneDefs[scene]}
+function pos(id){return custom[id]||{x:current().positions[id][0],y:current().positions[id][1]}}
+function save(){try{localStorage.setItem(key(),JSON.stringify(custom))}catch{}}
+function read(){try{custom=JSON.parse(localStorage.getItem(key())||'{}')}catch{custom={}}}
+function transform(){world.style.transform=`translate(${offset.x}px,${offset.y}px) scale(${scale})`;document.getElementById('zoomValue').textContent=Math.round(scale*100)+'%'}
+function fit(){const r=viewport.getBoundingClientRect(),s=current();scale=Math.min(1.08,(r.width-28)/s.w,(r.height-28)/s.h);offset={x:(r.width-s.w*scale)/2,y:(r.height-s.h*scale)/2};transform()}
+function renderTabs(){document.getElementById('tabs').innerHTML=Object.entries(tabNames).map(([id,title])=>`<button type="button" data-tab="${id}" aria-selected="${scene===id}">${title}</button>`).join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>setScene(b.dataset.tab))}
+function setScene(id){scene=id;selected=null;read();renderTabs();render();requestAnimationFrame(fit)}
+function point(a,b){const p=pos(a),q=pos(b),w=238,h=190,dx=q.x-p.x,dy=q.y-p.y;if(Math.abs(dx)>Math.abs(dy)){return {x:p.x+(dx>0?w:0),y:p.y+h/2}}return{x:p.x+w/2,y:p.y+(dy>0?h:0)}}
+function endpoint(a,b){const p=pos(b),q=pos(a),w=238,h=190,dx=q.x-p.x,dy=q.y-p.y;if(Math.abs(dx)>Math.abs(dy)){return{x:p.x+(dx>0?w:0),y:p.y+h/2}}return{x:p.x+w/2,y:p.y+(dy>0?h:0)}}
+function draw(){svg.setAttribute('viewBox',`0 0 ${current().w} ${current().h}`);svg.innerHTML='';current().edges.forEach((e,i)=>{const self=e.from===e.to;let a,b,d,lx,ly;if(self){const p=pos(e.from),y=p.y+125;a={x:p.x,y};b={x:p.x,y:y+45};d=`M ${a.x} ${a.y} C ${a.x-125} ${a.y-70}, ${a.x-125} ${b.y+70}, ${b.x} ${b.y}`;lx=a.x-132;ly=y+27}else{a=point(e.from,e.to);b=endpoint(e.from,e.to);d=`M ${a.x} ${a.y} L ${b.x} ${b.y}`;lx=(a.x+b.x)/2;ly=(a.y+b.y)/2-8}const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class','edge'+(selected?.type==='edge'&&selected.index===i?' selected':''));group.dataset.kind=e.kind;let diamond='';if(e.kind==='composition'){const vx=b.x-a.x,vy=b.y-a.y,len=Math.hypot(vx,vy)||1,ux=vx/len,uy=vy/len,px=-uy,py=ux,x=a.x+ux*12,y=a.y+uy*12;diamond=`<polygon points="${a.x},${a.y} ${x+px*8},${y+py*8} ${a.x+ux*24},${a.y+uy*24} ${x-px*8},${y-py*8}" fill="#405b79"/>`}group.innerHTML=`<path class="hit" d="${d}"/><path class="stroke" d="${d}"/>${diamond}<text class="edge-label" x="${lx}" y="${ly}" text-anchor="middle">${esc(e.label)}</text><text class="mult" x="${self?a.x-7:a.x+(b.x-a.x)*.11}" y="${self?a.y-8:a.y+(b.y-a.y)*.11-8}" text-anchor="middle">${esc(e.a)}</text><text class="mult" x="${self?b.x-7:b.x+(a.x-b.x)*.11}" y="${self?b.y+14:b.y+(a.y-b.y)*.11-8}" text-anchor="middle">${esc(e.b)}</text>`;group.onclick=()=>selectEdge(i);svg.append(group)})}
+function render(){const s=current();document.getElementById('sceneTitle').textContent=s.title;world.style.width=s.w+'px';world.style.height=s.h+'px';cards.innerHTML='';s.ids.forEach(id=>{const c=byId[id],p=pos(id),b=document.createElement('button');b.type='button';b.className='card'+(selected?.type==='class'&&selected.id===id?' selected':'');b.dataset.group=c.group;b.dataset.id=id;b.style.left=p.x+'px';b.style.top=p.y+'px';b.setAttribute('aria-label',`Class ${id}: ${c.purpose}. Bấm để xem chi tiết, kéo để di chuyển.`);b.innerHTML=`<div class="card-title">${esc(id)}${c.tag?`<span class="tag">«${esc(c.tag)}»</span>`:''}</div>${c.attrs.slice(0,8).map(a=>`<div class="attr">− ${esc(a.name)}</div>`).join('')}<div class="card-more">${c.attrs.length} thuộc tính · bấm để giải thích</div>`;let origin=null,moved=false;b.addEventListener('pointerdown',ev=>{if(ev.button!==0)return;origin={x:ev.clientX,y:ev.clientY,px:pos(id).x,py:pos(id).y};moved=false;b.setPointerCapture(ev.pointerId)});b.addEventListener('pointermove',ev=>{if(!origin)return;const dx=(ev.clientX-origin.x)/scale,dy=(ev.clientY-origin.y)/scale;if(Math.hypot(dx,dy)>5)moved=true;if(!moved)return;custom[id]={x:Math.max(0,Math.min(s.w-238,origin.px+dx)),y:Math.max(0,Math.min(s.h-190,origin.py+dy))};b.style.left=custom[id].x+'px';b.style.top=custom[id].y+'px';draw()});b.addEventListener('pointerup',()=>{if(moved)save();origin=null});b.onclick=ev=>{if(moved){moved=false;ev.preventDefault();return}selectClass(id)};b.onkeydown=ev=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(ev.key))return;ev.preventDefault();const p=pos(id),delta=ev.shiftKey?20:8;custom[id]={x:Math.max(0,Math.min(s.w-238,p.x+(ev.key==='ArrowRight'?delta:ev.key==='ArrowLeft'?-delta:0))),y:Math.max(0,Math.min(s.h-190,p.y+(ev.key==='ArrowDown'?delta:ev.key==='ArrowUp'?-delta:0)))};b.style.left=custom[id].x+'px';b.style.top=custom[id].y+'px';draw();save()};cards.append(b)});draw();showScene()}
+function showScene(){const s=current();const intro={
+ org:"Chỉ 3 đường: cây đơn vị, tuyến quản lý, và quyền trong role. User/Position/RoleAssignment không cần thêm đường vì các tham chiếu đã ghi bằng ID trong EmployeeAssignment và RoleAssignment.",
+ form:"Chỉ 3 đường: mẫu chứa field, workflow công bố version, version định nghĩa step. Revision/review trỏ bằng formTemplateId; cấu trúc Selector/Condition/SLA nằm trong thuộc tính có kiểu của WorkflowStep.",
+ run:"5 đường diễn tả vòng đời một hồ sơ: snapshot vòng nộp, instance, step run, task, decision. Các tham chiếu sang phần 1–2 nằm trong ...Id để tránh dây chéo."
+}[scene];inspector.innerHTML=`<div class="inspect-head"><small>Hướng dẫn đọc</small><h2>${esc(s.title)}</h2><p>${s.edges.length} đường chọn lọc · ${s.ids.length} class</p></div><div class="inspect-body"><div class="box">${esc(intro)}</div><h3>Thứ tự nên nói</h3><div class="mode-list">${s.ids.map(id=>`<button type="button" data-node="${id}">${esc(id)} — ${esc(byId[id].purpose)}</button>`).join('')}</div><h3>Quy ước</h3><p>Hình thoi đặc là quan hệ sở hữu cấu trúc/vòng đời. Đường liền là association quan trọng. <code>...Id</code> là tham chiếu theo định danh; thuộc tính có kiểu như <code>List&lt;Selector&gt;</code> mô tả object lồng trong definition. Class không có đường nối vẫn tham gia mô hình qua các thuộc tính ấy.</p><p class="note">Sơ đồ này không cố vẽ mọi khóa ngoại hay mọi bảng PostgreSQL. Bấm class để xem từng field và lý do giữ hoặc không vẽ đường.</p></div>`;inspector.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>selectClass(b.dataset.node))}
+function selectClass(id){selected={type:'class',id};document.querySelectorAll('.card').forEach(el=>el.classList.toggle('selected',el.dataset.id===id));draw();const c=byId[id],rels=[...org,...form,...run].filter(e=>e.from===id||e.to===id),refs=c.attrs.filter(a=>a.name!=='id: UUID'&&/Id\??: UUID/.test(a.name)),typed=c.attrs.filter(a=>/List<(Selector|Condition)>|ConditionGroup\?|SlaPolicy\?/.test(a.name));inspector.innerHTML=`<div class="inspect-head"><small>${c.group==='org'?'1 · Tổ chức và quyền':c.group==='form'?'2 · Mẫu và quy trình':'3 · Đơn và thực thi'}</small><h2>${esc(id)}</h2><p>${esc(c.purpose)}</p></div><div class="inspect-body"><h3>Vì sao tách class?</h3><div class="box purple">${esc(c.why)}</div><h3>Ví dụ</h3><div class="box">${esc(c.example)}</div><h3>Từng thuộc tính</h3>${c.attrs.map(a=>`<div class="field"><code>${esc(a.name)}</code><p>${esc(a.meaning)}</p>${a.example?`<small>Ví dụ: ${esc(a.example)}</small>`:''}</div>`).join('')}<h3>Tham chiếu bằng ID / kiểu</h3>${refs.length||typed.length?`<div class="box">${[...refs,...typed].map(a=>`<div><code>${esc(a.name)}</code> — ${esc(a.meaning)}</div>`).join('')}</div>`:'<p>Class này không cần thêm tham chiếu ngoài các quan hệ đã vẽ.</p>'}<h3>Quan hệ được vẽ</h3>${rels.length?`<div class="mode-list">${rels.map(e=>`<button type="button" data-relationship="${esc(e.from)}|${esc(e.to)}|${esc(e.label)}">${esc(e.from)} ${esc(e.a)} — ${esc(e.label)} — ${esc(e.b)} ${esc(e.to)}</button>`).join('')}</div>`:'<p>Không có đường trực tiếp trên canvas. Các ID/thuộc tính kiểu ở trên đã đủ để hiểu liên kết mà không thêm dây chéo.</p>'}<p class="note">ID là định danh tham chiếu, không phải lời khẳng định mọi class là một bảng. Value object trong definition có thể lưu JSONB.</p></div>`;inspector.querySelectorAll('[data-relationship]').forEach(b=>b.onclick=()=>jumpEdge(b.dataset.relationship));inspector.scrollTop=0}
+function jumpEdge(identity){const [from,to,label]=identity.split('|');for(const sid of ['org','form','run']){const idx=sceneDefs[sid].edges.findIndex(e=>e.from===from&&e.to===to&&e.label===label);if(idx>=0){if(sid!==scene){setScene(sid);requestAnimationFrame(()=>selectEdge(idx))}else selectEdge(idx);return}}}
+function selectEdge(i){selected={type:'edge',index:i};draw();const e=current().edges[i];inspector.innerHTML=`<div class="inspect-head"><small>${e.kind==='composition'?'Composition · hình thoi đặc':'Association · đường liền'}</small><h2>${esc(e.from)} ↔ ${esc(e.to)}</h2><p>${esc(e.label)}</p></div><div class="inspect-body"><h3>Multiplicity đọc thế nào?</h3><div class="box green"><strong>${esc(e.from)} “${esc(e.a)}” — “${esc(e.b)}” ${esc(e.to)}</strong><p>Một đối tượng ${esc(e.from)} gắn với ${esc(e.b)} đối tượng ${esc(e.to)}; đọc chiều ngược lại dùng ${esc(e.a)}.</p></div><h3>Ý nghĩa nghiệp vụ</h3><p>${esc(e.why)}</p>${e.example?`<h3>Ví dụ</h3><div class="box">${esc(e.example)}</div>`:''}<h3>Vì sao vẽ đường?</h3><p>${e.kind==='composition'?'Đối tượng con thuộc cấu trúc hoặc vòng đời của đối tượng chứa. Hình thoi đặt ở đầu lớp chứa; không suy ra SQL ON DELETE CASCADE.':'Đây là một trong số ít quan hệ cần nhìn trực tiếp để hiểu miền nghiệp vụ.'}</p><div class="mode-list"><button type="button" data-node="${esc(e.from)}">Mở ${esc(e.from)}</button><button type="button" data-node="${esc(e.to)}">Mở ${esc(e.to)}</button></div></div>`;inspector.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>selectClass(b.dataset.node));inspector.scrollTop=0}
+document.getElementById('zoomIn').onclick=()=>{scale=Math.min(2,scale*1.2);transform()};document.getElementById('zoomOut').onclick=()=>{scale=Math.max(.25,scale/1.2);transform()};document.getElementById('fit').onclick=fit;document.getElementById('toggleInspector').onclick=()=>{const focused=document.querySelector('.app').classList.toggle('focus');document.getElementById('toggleInspector').textContent=focused?'Hiện giải thích':'Ẩn giải thích';fit()};document.getElementById('reset').onclick=()=>{custom={};try{localStorage.removeItem(key())}catch{}render();fit()};
+let pan=null;viewport.addEventListener('pointerdown',ev=>{if(ev.target.closest('.card,.edge'))return;pan={x:ev.clientX,y:ev.clientY,ox:offset.x,oy:offset.y};viewport.setPointerCapture(ev.pointerId)});viewport.addEventListener('pointermove',ev=>{if(!pan)return;offset={x:pan.ox+ev.clientX-pan.x,y:pan.oy+ev.clientY-pan.y};transform()});viewport.addEventListener('pointerup',()=>pan=null);viewport.addEventListener('wheel',ev=>{ev.preventDefault();const old=scale,newScale=Math.max(.25,Math.min(2,scale*(ev.deltaY<0?1.1:.9))),r=viewport.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;offset={x:x-(x-offset.x)*newScale/old,y:y-(y-offset.y)*newScale/old};scale=newScale;transform()},{passive:false});
+const script=document.getElementById('script');document.getElementById('openScript').onclick=()=>{script.hidden=false;document.getElementById('closeScript').focus()};document.getElementById('closeScript').onclick=()=>{script.hidden=true;document.getElementById('openScript').focus()};window.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!script.hidden){script.hidden=true;document.getElementById('openScript').focus()}});
+window.addEventListener('resize',()=>fit());setScene('org');
+})();
+</script>
+</body>
+</html>
+

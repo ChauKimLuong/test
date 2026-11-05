@@ -3,6 +3,11 @@ import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import { setTimeout as delay } from 'node:timers/promises';
 import { runIntegration } from './integration.mjs';
+import { runWorkflowIntegration } from './workflow-integration.mjs';
+import { runRuleTests } from './workflow-rules.mjs';
+import { runMigrationTests } from './workflow-migration.mjs';
+import { runLoadTests } from './workflow-load.mjs';
+import { runOperationsTests } from './workflow-operations.mjs';
 const source =
   process.env.DATABASE_URL ||
   'postgres://flowpilot:flowpilot_local_change_me@localhost:5433/flowpilot';
@@ -19,6 +24,8 @@ try {
   await admin.query('CREATE DATABASE ' + dbName);
   created = true;
   const password = 'TestPassword@2026!';
+  runRuleTests();
+  await runMigrationTests(source, password);
   child = spawn(process.execPath, ['dist/main.js'], {
     cwd: process.cwd(),
     windowsHide: true,
@@ -29,6 +36,7 @@ try {
       APP_ORIGIN: 'http://localhost:3000',
       DEMO_PASSWORD: password,
       SEED_DEMO: 'true',
+      SLA_WORKER: 'false',
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -48,6 +56,9 @@ try {
   if (!ready) throw new Error('Test API did not start: ' + logs);
   db = new Pool({ connectionString: target.toString() });
   await runIntegration('http://localhost:3099/api', password, db);
+  await runWorkflowIntegration('http://localhost:3099/api', password, db);
+  await runOperationsTests('http://localhost:3099/api', password, db);
+  await runLoadTests('http://localhost:3099/api', password, db);
 } catch (e) {
   console.error(e);
   console.error(logs.slice(-5000));

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlowPilot · Domain model</title>
+  <style>
+    :root{--ink:#18263b;--muted:#516177;--line:#93a2b7;--border:#c8d3e1;--paper:#fff;--back:#eef3f8;--org:#28679c;--form:#6b52a3;--run:#187b64;--focus:#d46423}
+    *{box-sizing:border-box}body{margin:0;background:var(--back);color:var(--ink);font:15px/1.45 system-ui,"Segoe UI",sans-serif}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.app{height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr)}header{padding:16px 24px;background:#14253c;color:white;display:flex;gap:20px;align-items:center;justify-content:space-between}header h1{font-size:22px;line-height:1.2;margin:3px 0}header p{font-size:13px;color:#c5d4e6;margin:0}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;color:#92c9ff}.head-actions{display:flex;gap:8px;flex-wrap:wrap}.head-actions a,.head-actions button{border:1px solid #60758f;background:#27415d;color:white;text-decoration:none;border-radius:9px;padding:9px 12px;white-space:nowrap}.tabs{display:flex;gap:7px;padding:10px 16px;background:white;border-bottom:1px solid var(--border);overflow-x:auto}.tabs button{white-space:nowrap;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);padding:9px 14px;min-height:44px;font-weight:650}.tabs button[aria-selected=true]{background:#173b68;border-color:#173b68;color:white}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 370px;min-height:0}.main{display:grid;grid-template-rows:auto minmax(0,1fr);min-width:0}.toolbar{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#f8fbff;border-bottom:1px solid var(--border);overflow-x:auto}.toolbar strong{margin-right:auto;white-space:nowrap}.toolbar button{background:white;border:1px solid var(--border);border-radius:8px;padding:7px 10px;min-height:38px;white-space:nowrap}.toolbar span{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}.viewport{position:relative;overflow:hidden;touch-action:none;background-color:#eef4fb;background-image:radial-gradient(#c2d0e2 1px,transparent 1px);background-size:22px 22px}.world{position:absolute;left:0;top:0;transform-origin:0 0}.links{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.edge{pointer-events:stroke;cursor:pointer}.edge .hit{stroke:transparent;stroke-width:22;fill:none}.edge .stroke{stroke:#74869d;stroke-width:2.3;fill:none}.edge[data-kind=composition] .stroke{stroke:#405b79;stroke-width:2.8}.edge:hover .stroke,.edge.selected .stroke{stroke:var(--focus);stroke-width:3.6}.edge-label,.mult{paint-order:stroke;stroke:#eef4fb;stroke-width:7px;pointer-events:none}.edge-label{font-size:12px;font-weight:750;fill:#42546d}.mult{font-size:13px;font-weight:800;fill:#263c58}.cards{position:absolute;inset:0;pointer-events:none}.card{position:absolute;width:238px;height:190px;border:1.5px solid #aebed1;border-radius:10px;background:white;box-shadow:0 8px 20px #15284215;overflow:hidden;pointer-events:auto;text-align:left;color:var(--ink);padding:0;cursor:grab;touch-action:none;user-select:none}.card:active{cursor:grabbing}.card.selected{outline:3px solid var(--focus);z-index:2}.card-title{font-size:15px;font-weight:800;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card[data-group=org] .card-title{background:#e5f1fc;border-left:5px solid var(--org)}.card[data-group=form] .card-title{background:#f0eafd;border-left:5px solid var(--form)}.card[data-group=run] .card-title{background:#e1f5ef;border-left:5px solid var(--run)}.card .tag{font-size:10px;color:#705399;margin-left:5px}.attr{padding:1px 11px;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.45}.attr:first-of-type{padding-top:7px}.card-more{position:absolute;bottom:0;left:0;right:0;background:#f7f9fc;border-top:1px solid #dce4ee;padding:5px 11px;color:#52667d;font-size:10px}.inspector{overflow:auto;background:#fff;border-left:1px solid var(--border);min-height:0}.inspect-head{padding:18px 21px 14px;background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:3}.inspect-head small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#637b99}.inspect-head h2{font-size:23px;line-height:1.2;margin:5px 0 7px;overflow-wrap:anywhere}.inspect-head p{margin:0;color:var(--muted);font-size:13px}.inspect-body{padding:18px 21px 38px}.inspect-body h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin:23px 0 9px;color:#526782}.inspect-body p{margin:7px 0;line-height:1.55}.box{border:1px solid #c8d8e9;background:#f1f7fd;border-radius:9px;padding:11px 12px;margin:10px 0}.box.purple{border-color:#d9c9ec;background:#f8f4fd}.box.green{border-color:#b9e3d4;background:#eefaf5}.field{padding:10px 0;border-bottom:1px solid #e4eaf1}.field code{font-size:12px;color:#143e6d;font-weight:750}.field p{margin:4px 0 0;font-size:13px}.field small{color:#536b82}.edge-button{display:block;width:100%;margin:6px 0;padding:8px 9px;text-align:left;background:#f8fafc;color:var(--ink);border:1px solid var(--border);border-radius:8px;font-size:12px}.legend{font-size:12px;color:#506179;padding:8px 15px;border-top:1px solid var(--border);background:#fafcff}.script{position:fixed;inset:0;z-index:20;background:#14253c;color:white;overflow:auto;padding:38px clamp(20px,5vw,90px)}.script[hidden]{display:none}.script article{max-width:850px;margin:auto;font-size:18px;line-height:1.7}.script h2{font-size:34px}.script h3{color:#a8d6ff;margin-top:32px}.script button{position:fixed;right:22px;top:18px;border:0;border-radius:8px;background:white;color:#14253c;padding:10px 14px}.script a{color:#bcdcff}.note{font-size:12px;color:#627489}.mode-list{display:grid;gap:7px}.mode-list button{text-align:left;border:1px solid var(--border);border-radius:8px;background:#f8fafc;padding:9px;color:var(--ink)}
+    .card{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;appearance:none}.card-title+.attr{padding-top:7px}.app.focus .workspace{grid-template-columns:minmax(0,1fr)}.app.focus .inspector{display:none}@media(max-width:900px){.workspace{grid-template-columns:minmax(0,1fr) 310px}.head-actions a{display:none}}@media(max-width:700px){.app{height:auto;min-height:100dvh;grid-template-rows:auto auto auto}header{padding:13px 15px;align-items:flex-start}header h1{font-size:19px}.head-actions{flex-shrink:0}.workspace{display:block}.main{height:60dvh;min-height:430px}.inspector{max-height:none;border-left:0;border-top:1px solid var(--border)}.script article{font-size:16px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header><div><div class="eyebrow">TLCN · Bản tập trung vào domain model</div><h1>FlowPilot — các khái niệm nghiệp vụ</h1><p>Quan hệ nghiệp vụ được vẽ bằng UML; khóa ngoại và chi tiết lưu trữ để ở bản thiết kế dữ liệu.</p></div><div class="head-actions"><a href="ClassDiagram_Presentation.html">Xem bản cài đặt</a><button type="button" id="openScript">Lời trình bày</button></div></header>
+  <nav class="tabs" id="tabs" aria-label="Góc nhìn mô hình miền"></nav>
+  <div class="workspace"><main class="main"><div class="toolbar"><strong id="sceneTitle"></strong><button type="button" id="zoomOut" aria-label="Thu nhỏ">−</button><span id="zoomValue">100%</span><button type="button" id="zoomIn" aria-label="Phóng to">+</button><button type="button" id="fit">Vừa khung</button><button type="button" id="toggleInspector">Ẩn giải thích</button><button type="button" id="reset">Đặt lại vị trí</button></div><div class="viewport" id="viewport"><div class="world" id="world"><svg class="links" id="links" aria-label="Các quan hệ UML"></svg><div class="cards" id="cards"></div></div></div></main><aside class="inspector" id="inspector" aria-live="polite"></aside></div>
+</div>
+<div class="script" id="script" hidden><button type="button" id="closeScript">Đóng</button><article><div class="eyebrow">Lời trình bày · 4–5 phút</div><h2>Từ con người, đến quy tắc, rồi đến một đơn cụ thể</h2><p>“Em xin trình bày domain model của hệ thống duyệt đơn. Em tập trung vào các khái niệm và quy tắc nghiệp vụ, nên không lặp khóa ngoại bên cạnh một đường quan hệ UML. Khóa ngoại PostgreSQL sẽ nằm ở ERD hoặc thiết kế dữ liệu.”</p><h3>1 · Tổ chức và quyền</h3><p>“Một User có thể có nhiều EmployeeAssignment theo thời gian hoặc khi kiêm nhiệm. Mỗi phân công cho biết người ấy thuộc OrganizationalUnit nào và giữ Position nào. Quan hệ quản lý trực tiếp đặt giữa hai EmployeeAssignment, vì cấp trên là người đang giữ một phân công cụ thể chứ không chỉ là một tài khoản. Position nói về chức danh; SystemRole nói về quyền sử dụng phần mềm. RoleAssignment ghi việc cấp một SystemRole cho một phân công nhân sự trong một khoảng thời gian. Permission là thao tác nguyên tử; vai trò và quyền có quan hệ nhiều–nhiều. Bảng RolePermission là chi tiết triển khai, không cần đứng thành class miền nếu nó không có hành vi riêng.”</p><h3>2 · Mẫu và quy trình</h3><p>“FormTemplate là mẫu đơn, gồm các FormField. Mẫu có thể được gửi duyệt và phát sinh FormReviewEvent. Trước khi sửa phiên bản đã dùng, hệ thống lưu FormTemplateRevision để bảo toàn nội dung cũ. Mẫu gắn với Workflow: bản nháp quy trình có thể chỉnh, còn mỗi lần công bố sẽ tạo WorkflowVersion bất biến. Trong một version có các WorkflowStep theo thứ tự; mỗi bước có quy tắc Selector để tìm người duyệt, ConditionGroup để quyết định có chạy bước hay không, và có thể có SlaPolicy về thời hạn.”</p><h3>3 · Đơn và thực thi</h3><p>“Request là tờ đơn cụ thể, có thể lưu nháp. Khi nộp, nó sinh một WorkflowInstance chạy theo đúng WorkflowVersion đã chốt. Instance đi qua nhiều WorkflowStepRun; một lần chạy bước có thể giao nhiều ApprovalTask nếu cấu hình ALL hoặc ANY. Mỗi tác vụ có tối đa một TaskDecision. Nếu đơn R1 bị từ chối, người nộp lấy dữ liệu để tạo R2; R1 và các quyết định cũ không bị sửa lại.”</p><h3>Vì sao không vẽ toàn bộ bảng?</h3><p>“PasswordHash, các khóa ngoại, RolePermission, AuditLog, Notification và cách lưu JSON là quan trọng khi triển khai, nhưng không phải trọng tâm của sơ đồ miền này. Em giữ chúng ở bản thiết kế dữ liệu. Còn ở đây em giữ quan hệ, multiplicity và sự khác nhau giữa định nghĩa quy trình với một lần thực thi.”</p><p><a href="ClassDiagram_Domain_Transcript.md">Mở transcript dạng Markdown</a></p></article></div>
+<script>
+(()=>{'use strict';
+const A=(s)=>s.trim().split('\n').filter(Boolean).map(line=>{const [name,meaning,example='']=line.split('|');return{name,meaning,example}});
+const C=(id,group,purpose,why,example,raw,tag='')=>({id,group,purpose,why,example,attrs:A(raw),tag});
+const classes=[
+ C('User','org','Một con người dùng hệ thống.','Không gộp với EmployeeAssignment: chuyển phòng hoặc kiêm nhiệm không tạo người dùng mới.','An là một User nhưng có thể đã giữ hai phân công.',`
+fullName: String|Tên dùng để nhận diện người trong nghiệp vụ.|Nguyễn Văn An
+email: String|Địa chỉ liên hệ và đăng nhập.|an@congty.vn
+status: UserStatus|Người dùng đang được phép sử dụng hệ thống hay không.|ACTIVE`),
+ C('OrganizationalUnit','org','Đơn vị trong cơ cấu công ty.','Không gộp với Position vì phòng ban là nơi làm việc, chức danh là vai trò nhân sự.','Phòng Phần mềm nằm trong Khối Công nghệ.',`
+name: String|Tên đơn vị.|Phòng Phần mềm
+code: String|Mã đơn vị ổn định.|IT-SW
+type: OrganizationalUnitType|Cấp/loại đơn vị.|DEPARTMENT
+status: OrganizationalUnitStatus|Đơn vị còn hoạt động hay không.|ACTIVE`),
+ C('Position','org','Chức danh có thể được nhiều người đảm nhiệm.','Không gộp với phân công vì chức danh tồn tại dù người giữ thay đổi.','Trưởng phòng là Position; Bình là người hiện giữ.',`
+name: String|Tên chức danh.|Trưởng phòng
+code: String|Mã chức danh.|DEPT_HEAD
+rankLevel: Int|Cấp bậc tham khảo trong tổ chức, không tự cấp quyền hệ thống.|3
+type: PositionType|Nhóm chức danh.|MANAGER
+status: PositionStatus|Có còn dùng cho phân công mới không.|ACTIVE`),
+ C('EmployeeAssignment','org','Một lần người giữ chức danh tại một đơn vị.','Tách khỏi User để giữ lịch sử điều chuyển, kiêm nhiệm; tách khỏi RoleAssignment vì chức vụ không đồng nghĩa quyền phần mềm.','An là nhân viên Phòng Phần mềm từ đầu năm 2026.',`
+type: AssignmentType|Phân công chính thức, kiêm nhiệm hoặc tạm thời.|OFFICIAL
+isPrimary: Boolean|Đánh dấu phân công chính khi đồng thời có nhiều phân công.|true
+startedAt: DateTime|Thời điểm bắt đầu phân công.|2026-01-01
+endedAt: DateTime?|Thời điểm kết thúc; trống nếu còn hiệu lực.|null`),
+ C('SystemRole','org','Tập các quyền thao tác trong hệ thống.','Tách khỏi Position vì “Trưởng phòng” là chức danh còn “APPROVER” là vai trò phần mềm.','APPROVER chứa quyền duyệt đơn được giao.',`
+code: SystemRoleCode|Mã vai trò theo tập giá trị đã thống nhất.|APPROVER
+name: String|Tên vai trò dễ hiểu.|Người phê duyệt
+description: String?|Mô tả vai trò.|Duyệt đơn được giao
+isActive: Boolean|Vai trò còn được cấp mới hay không.|true`),
+ C('RoleAssignment','org','Việc cấp một vai trò cho một phân công nhân sự.','Tách khỏi EmployeeAssignment để quyền có thời hạn và lịch sử thu hồi riêng.','Phân công của Bình được cấp APPROVER từ 01/10.',`
+scopeType: RoleScopeType|Phạm vi quyền: toàn hệ thống hoặc theo đơn vị.|ORGANIZATIONAL_UNIT
+validFrom: DateTime|Lúc quyền bắt đầu.|2026-10-01
+validUntil: DateTime?|Hạn dự kiến nếu có.|2026-12-31
+revokedAt: DateTime?|Lúc bị thu hồi sớm nếu có.|null`),
+ C('Permission','org','Một thao tác được phép thực hiện.','Tách khỏi SystemRole vì một quyền có thể nằm trong nhiều vai trò.','REQUEST_APPROVE dùng cho vai trò APPROVER và SYSTEM_ADMIN.',`
+code: PermissionCode|Mã quyền nguyên tử.|REQUEST_APPROVE
+name: String|Tên thao tác dễ đọc.|Phê duyệt đơn
+description: String?|Ý nghĩa quyền.|Ra quyết định trên tác vụ được giao`),
+ C('FormTemplate','form','Mẫu đơn được quản lý qua vòng đời soạn, duyệt và sử dụng.','Không gộp với Workflow: nội dung cần điền và đường đi phê duyệt thay đổi độc lập.','Mẫu “Đề nghị mua thiết bị” đang ở phiên bản 2.',`
+code: String|Mã nghiệp vụ ổn định của mẫu.|PURCHASE_REQUEST
+name: String|Tên mẫu hiển thị cho người nộp.|Đề nghị mua thiết bị
+description: String?|Mục đích sử dụng mẫu.|Mua công cụ làm việc
+status: FormTemplateStatus|Đang soạn, chờ duyệt hoặc đang dùng.|ACTIVE
+version: Int|Phiên bản hiện tại của cấu trúc mẫu.|2
+submittedAt: DateTime?|Thời điểm gửi mẫu để kiểm duyệt.|2026-10-01
+reviewedAt: DateTime?|Thời điểm có kết quả kiểm duyệt.|2026-10-02`),
+ C('FormField','form','Một ô dữ liệu trong mẫu đơn.','Tách ra để mô tả kiểu, bắt buộc và thứ tự của từng ô.','Ô amount là số tiền cần mua.',`
+key: String|Mã ô dùng khi đối chiếu dữ liệu đơn và điều kiện.|amount
+label: String|Nhãn hiển thị.|Số tiền
+type: FieldType|Kiểu dữ liệu được nhập.|NUMBER
+isRequired: Boolean|Có bắt buộc điền không.|true
+order: Int|Thứ tự trên biểu mẫu.|3
+options: List<String>|Các lựa chọn nếu ô là kiểu chọn; trống với kiểu số.|[]`),
+ C('FormTemplateRevision','form','Ảnh chụp mẫu cũ trước khi sửa.','Tách khỏi mẫu hiện hành để đơn cũ có thể được hiểu theo đúng cấu trúc lúc nó được nộp.','Trước khi sửa mẫu v1 thành v2, lưu revision v1.',`
+version: Int|Số phiên bản được lưu lại.|1
+snapshot: FormSnapshot|Nội dung mẫu đã đóng băng; PostgreSQL có thể lưu JSONB.|Các field của v1
+recordedAt: DateTime|Lúc tạo ảnh chụp.|2026-10-03`),
+ C('FormReviewEvent','form','Một sự kiện trong quá trình kiểm duyệt mẫu.','Tách khỏi FormTemplate để giữ nhiều lần gửi, yêu cầu sửa hoặc chấp thuận; không ghi đè lịch sử.','Cô kiểm duyệt yêu cầu sửa nhãn “Chi phí” trước khi duyệt.',`
+eventType: FormReviewEventType|Loại sự kiện duyệt mẫu.|CHANGES_REQUESTED
+comment: String?|Nhận xét của người kiểm duyệt.|Đổi tên ô số tiền
+occurredAt: DateTime|Lúc sự kiện diễn ra.|2026-10-02 09:00`),
+ C('Workflow','form','Quy trình gắn với mẫu, có cấu hình đang chỉnh sửa.','Tách khỏi WorkflowVersion: bản nháp có thể đổi, bản đã công bố không đổi.','Quy trình mua thiết bị đang soạn thêm bước CFO.',`
+status: WorkflowStatus|Quy trình còn được sử dụng không.|ACTIVE
+draftDefinition: WorkflowDefinition?|Định nghĩa đang chỉnh, chưa công bố; khi lưu có thể là JSONB.|Thêm bước CFO
+updatedAt: DateTime|Lần chỉnh cấu hình gần nhất.|2026-10-04
+currentVersionNumber: Int|Số version hiện hành đã công bố; lúc cài đặt có thể dùng publishedVersionId.|2`),
+ C('WorkflowVersion','form','Một phiên bản quy trình đã công bố, bất biến.','Tách khỏi Workflow để đơn đã nộp không bị đổi đường duyệt khi quản trị sửa quy trình.','Version 2 thêm CFO cho đơn từ 20 triệu.',`
+version: Int|Số lần công bố quy trình.|2
+templateVersion: Int|Phiên bản mẫu đi kèm lúc công bố.|3
+changeNote: String?|Lý do thay đổi.|Thêm bước CFO
+publishedAt: DateTime|Thời điểm công bố.|2026-10-05`),
+ C('WorkflowStep','form','Một chặng duyệt trong phiên bản quy trình.','Tách khái niệm bước định nghĩa khỏi WorkflowStepRun là lần bước đó thực sự chạy cho một đơn.','Bước 2: CFO duyệt khi amount ≥ 20 triệu.',`
+key: String|Mã bước ổn định trong một version.|cfo-review
+name: String|Tên bước cho người đọc.|CFO duyệt
+order: Int|Thứ tự chạy trong quy trình.|2
+mode: StepMode|ALL: mọi người được giao; ANY: chỉ cần một người.|ANY`,'value object'),
+ C('Selector','form','Quy tắc tìm người duyệt khi bước bắt đầu.','Không gộp với EmployeeAssignment: selector là cách tìm, assignment là kết quả cụ thể tại thời điểm chạy.','POSITION=CFO tìm người đang giữ chức danh CFO.',`
+type: SelectorType|DIRECT_MANAGER, MANAGER_LEVEL, POSITION, ASSIGNMENT hoặc ROLE.|POSITION
+level: Int?|Số cấp quản lý, chỉ dùng cho MANAGER_LEVEL.|2`,'value object'),
+ C('ConditionGroup','form','Nhóm điều kiện quyết định bước có chạy.','Tách khỏi WorkflowStep để có thể kết hợp nhiều điều kiện ALL/ANY.','Cần amount ≥ 20 triệu và khẩn cấp.',`
+mode: ConditionMode|ALL: mọi điều kiện đúng; ANY: chỉ cần một.|ALL`,'value object'),
+ C('Condition','form','Một phép so sánh dữ liệu đơn.','Tách thành phần nhỏ để nhóm điều kiện có thể chứa nhiều quy tắc.','amount GTE 20000000.',`
+operator: ConditionOperator|Phép so sánh EQ, GT, GTE, LT, LTE, IN...|GTE
+value: ScalarValue|Giá trị để so sánh với câu trả lời của FormField.|20000000`,'value object'),
+ C('SlaPolicy','form','Thời hạn xử lý cho một bước duyệt.','Là chính sách tùy chọn, không phải mọi bước đều cần thời hạn.','CFO có 48 giờ để xử lý; nhắc trước 4 giờ.',`
+minutes: Int|Thời lượng xử lý tính theo phút.|2880
+remindBeforeMinutes: Int|Nhắc trước hạn bao nhiêu phút.|240`,'value object'),
+ C('Request','run','Một tờ đơn cụ thể do nhân sự tạo và nộp.','Tách khỏi Workflow: quy trình là quy tắc tái sử dụng, Request là dữ liệu của một lần nộp.','An tạo đơn mua laptop 25 triệu, lưu nháp rồi nộp.',`
+requestCode: String?|Mã đơn được cấp khi nộp nếu quy định như vậy.|REQ-2026-001
+formData: FormAnswers|Các câu trả lời theo key của FormField; PostgreSQL có thể lưu JSONB.|amount=25000000
+status: RequestStatus|DRAFT, PENDING, APPROVED, REJECTED hoặc CANCELLED.|PENDING
+createdAt: DateTime|Thời điểm tạo, cần cho bản nháp.|2026-10-06
+submittedAt: DateTime?|Lúc nộp đơn.|2026-10-07
+decidedAt: DateTime?|Lúc có kết quả cuối.|2026-10-08`),
+ C('WorkflowInstance','run','Một lần vận hành quy trình cho đúng một Request.','Tách khỏi WorkflowVersion: version là công thức, instance là một lần thực hiện theo công thức ấy.','Đơn REQ-001 chạy theo version 2.',`
+status: InstanceStatus|Trạng thái của lần chạy.|RUNNING
+currentStepIndex: Int|Vị trí bước đang/chờ xử lý trong chuỗi bước.|1
+startedAt: DateTime|Lúc bắt đầu chạy.|2026-10-07
+completedAt: DateTime?|Lúc hoàn tất nếu có.|null`),
+ C('WorkflowStepRun','run','Một lần chạy thực tế của một WorkflowStep.','Cần riêng với bước định nghĩa vì điều kiện có thể làm bước bị bỏ qua và mỗi đơn có kết quả khác nhau.','Bước CFO của đơn 25 triệu được kích hoạt.',`
+stepIndex: Int|Vị trí bước trong version đã chốt.|1
+status: StepRunStatus|PENDING, RUNNING, SKIPPED hoặc COMPLETED.|RUNNING
+conditionMatched: Boolean?|Kết quả kiểm tra điều kiện; trống trước khi đánh giá.|true
+startedAt: DateTime?|Lúc bước bắt đầu.|2026-10-07
+completedAt: DateTime?|Lúc bước kết thúc.|null`),
+ C('ApprovalTask','run','Việc phê duyệt được giao cho một nhân sự cụ thể.','Tách khỏi WorkflowStepRun vì một bước ALL/ANY có thể có nhiều người được giao.','Bước CFO tạo task cho chị Hà.',`
+status: ApprovalTaskStatus|Đang chờ, đã quyết định hoặc bị hủy.|PENDING
+createdAt: DateTime|Lúc giao tác vụ.|2026-10-07
+dueAt: DateTime?|Hạn xử lý theo SLA nếu có.|2026-10-09`),
+ C('TaskDecision','run','Quyết định cuối của một ApprovalTask.','Tách khỏi task để biểu diễn rõ task có thể chưa có quyết định và giữ người ra quyết định, thời điểm, nhận xét.','Chị Hà phê duyệt task của mình lúc 09:30.',`
+decision: DecisionType|APPROVE hoặc REJECT.|APPROVE
+comment: String?|Lý do/nhận xét; có thể bắt buộc khi từ chối.|Đồng ý mua
+decidedAt: DateTime|Lúc ra quyết định.|2026-10-08 09:30`)
+];
+const byId=Object.fromEntries(classes.map(c=>[c.id,c]));
+const E=(from,to,a,b,label,why,kind='association',example='')=>({from,to,a,b,label,why,kind,example});
+const org=[
+ E('User','EmployeeAssignment','1','0..*','has','Một người có thể có nhiều phân công qua thời gian; mỗi phân công thuộc đúng một người.','','An chuyển phòng: vẫn một User, có phân công cũ và mới.'),
+ E('OrganizationalUnit','EmployeeAssignment','1','0..*','contains','Mỗi phân công thuộc một đơn vị; một đơn vị có thể có nhiều phân công.','','Phòng Phần mềm có phân công của An và Bình.'),
+ E('Position','EmployeeAssignment','1','0..*','is held in','Mỗi phân công giữ một chức danh; chức danh có thể xuất hiện ở nhiều phân công.','','Nhiều phòng có thể có chức danh Nhân viên.'),
+ E('OrganizationalUnit','OrganizationalUnit','0..1','0..*','parent / children','Một đơn vị có tối đa một cha, và một cha chứa nhiều đơn vị con.','','Khối Công nghệ là cha của Phòng Phần mềm.'),
+ E('EmployeeAssignment','EmployeeAssignment','0..1','0..*','manager / subordinates','Một phân công có tối đa một quản lý trực tiếp; một quản lý có thể có nhiều cấp dưới.','','Bình quản lý các phân công của An và Lan.'),
+ E('EmployeeAssignment','RoleAssignment','1','0..*','receives','Một phân công có thể được cấp nhiều vai trò theo thời gian; mỗi lần cấp gắn với đúng một phân công.','','Bình có APPROVER từ tháng 10 và AUDITOR từ tháng 11.'),
+ E('SystemRole','RoleAssignment','1','0..*','is granted by','Mỗi lần cấp chọn đúng một vai trò; một vai trò có thể cấp cho nhiều phân công.','','Vai trò APPROVER được cấp cho Bình và Hà.'),
+ E('SystemRole','Permission','0..*','0..*','includes','Vai trò gồm nhiều quyền; cùng một quyền có thể thuộc nhiều vai trò. Bảng RolePermission chỉ là cách triển khai quan hệ này.','','APPROVER và SYSTEM_ADMIN đều có REQUEST_APPROVE.')
+];
+const form=[
+ E('FormTemplate','FormField','1','0..*','contains','Field thuộc cấu trúc của mẫu; mẫu bản nháp có thể chưa thêm field.','composition','Mẫu mua thiết bị gồm amount, itemName và reason.'),
+ E('FormTemplate','FormTemplateRevision','1','0..*','has old revisions','Revision chỉ được tạo trước khi sửa bản đã dùng; mẫu v1 có thể chưa có revision.','','Trước khi chuyển v1 thành v2 thì lưu revision v1.'),
+ E('FormTemplate','FormReviewEvent','1','0..*','records review','Một mẫu có nhiều sự kiện gửi duyệt, yêu cầu sửa, chấp thuận; mỗi sự kiện thuộc một mẫu.','','Mẫu bị yêu cầu sửa rồi mới được duyệt.'),
+ E('FormTemplate','Workflow','1','0..1','is used by','Mỗi Workflow gắn với đúng một mẫu; mẫu chưa cấu hình duyệt có thể chưa có Workflow.','','Mẫu mua thiết bị có một quy trình duyệt.'),
+ E('Workflow','WorkflowVersion','1','1..*','publishes','Theo quy ước đồ án: một Workflow có ít nhất một version đã công bố; mỗi version thuộc một Workflow.','','Workflow W có version 1 và version 2; v2 là bản hiện hành.'),
+ E('WorkflowVersion','WorkflowStep','1','1..*','defines','Một version đã công bố gồm ít nhất một bước; bước là thành phần định nghĩa, không phải lần chạy.','composition','Version 2 có bước Trưởng phòng và CFO.'),
+ E('WorkflowStep','Selector','1','1..*','selects','Mỗi bước phải có ít nhất một quy tắc tìm người duyệt; selector thuộc bước đó.','composition','Bước Trưởng phòng dùng DIRECT_MANAGER.'),
+ E('WorkflowStep','ConditionGroup','1','0..1','runs when','Bước có thể có hoặc không có nhóm điều kiện.','composition','Bước CFO chỉ chạy khi amount ≥ 20 triệu.'),
+ E('ConditionGroup','Condition','1','1..*','contains','Một nhóm điều kiện có ít nhất một phép so sánh; điều kiện không đứng riêng.','composition','Nhóm ALL gồm amount ≥ 20 triệu và urgent=true.'),
+ E('WorkflowStep','SlaPolicy','1','0..1','has SLA','SLA là tùy chọn cho từng bước.','composition','Bước CFO có hạn 48 giờ.')
+];
+const run=[
+ E('Request','WorkflowInstance','1','0..1','starts','Request nháp chưa chạy quy trình; khi nộp sinh tối đa một instance theo mô hình hiện tại.','composition','Đơn nháp của An chưa có instance; sau khi nộp thì có.'),
+ E('WorkflowInstance','WorkflowStepRun','1','0..*','runs steps','Instance có thể chưa khởi tạo bước; mỗi bước thực thi thuộc đúng một instance.','composition','Instance của đơn An chạy bước trưởng phòng rồi bước CFO.'),
+ E('WorkflowStepRun','ApprovalTask','1','0..*','assigns','Bước bỏ qua có 0 task; bước ALL/ANY có thể giao nhiều task.','composition','Bước ALL giao task cho Hà và Bình.'),
+ E('ApprovalTask','TaskDecision','1','0..1','records decision','Task chưa xử lý không có quyết định; sau xử lý có tối đa một quyết định.','composition','Task của Hà có một quyết định APPROVE.')
+];
+const bridges=[
+ E('EmployeeAssignment','Request','1','0..*','submits','Mỗi đơn có đúng một người nộp trong ngữ cảnh phân công; một phân công nộp nhiều đơn.','','An nộp nhiều đơn khi thuộc Phòng Phần mềm.'),
+ E('Workflow','Request','1','0..*','governs','Mỗi đơn chọn một quy trình; một quy trình áp dụng cho nhiều đơn.','','Quy trình mua thiết bị xử lý 100 đơn.'),
+ E('WorkflowVersion','WorkflowInstance','1','0..*','is pinned by','Mỗi instance chốt đúng một version; nhiều đơn cũ vẫn chạy version cũ sau khi công bố version mới.','','REQ-001 tiếp tục dùng v1 dù hôm sau công bố v2.'),
+ E('WorkflowStep','WorkflowStepRun','1','0..*','is executed as','Một bước định nghĩa có thể chạy trong nhiều đơn; một StepRun diễn giải một bước thuộc version đã chốt.','','Bước CFO trong version 2 chạy cho nhiều đơn trên 20 triệu.'),
+ E('EmployeeAssignment','ApprovalTask','1','0..*','is assigned','Mỗi task được giao cho đúng một phân công nhân sự; một phân công nhận nhiều task.','','Hà nhận hai task từ hai đơn khác nhau.'),
+ E('EmployeeAssignment','TaskDecision','1','0..*','decides','Mỗi quyết định do đúng một phân công nhân sự đưa ra.','','Hà ra quyết định khi đang giữ phân công CFO.'),
+ E('FormField','Condition','1','0..*','is tested by','Điều kiện kiểm tra một field của mẫu; một field có thể được dùng trong nhiều điều kiện.','','Field amount được so sánh với ngưỡng 20 triệu.'),
+ E('Selector','Position','0..*','0..1','targets position','Chỉ selector kiểu POSITION mới chỉ định chức danh; kiểu khác không liên kết Position.','','POSITION chọn chức danh CFO.'),
+ E('Selector','EmployeeAssignment','0..*','0..1','targets assignment','Chỉ selector kiểu ASSIGNMENT mới chỉ đích danh phân công; DIRECT_MANAGER được phân giải lúc chạy.','','ASSIGNMENT chỉ rõ phân công của chị Hà.'),
+ E('Selector','SystemRole','0..*','0..1','targets role','Chỉ selector kiểu ROLE mới chỉ vai trò hệ thống.','','ROLE chọn người đang có APPROVER.'),
+ E('SlaPolicy','EmployeeAssignment','0..*','0..1','escalates to','SLA có thể chỉ định một phân công nhận thông báo leo thang; không bắt buộc.','','Quá hạn thì chuyển cho quản lý của Hà.')
+];
+const sceneDefs={
+ overview:{title:'Luồng đọc mô hình miền',w:1910,h:840,ids:['User','EmployeeAssignment','FormTemplate','Workflow','WorkflowVersion','Request','WorkflowInstance','WorkflowStepRun','ApprovalTask','TaskDecision'],positions:{User:[70,70],EmployeeAssignment:[390,70],FormTemplate:[720,70],Workflow:[1050,70],WorkflowVersion:[1380,70],Request:[390,470],WorkflowInstance:[720,470],WorkflowStepRun:[1050,470],ApprovalTask:[1380,470],TaskDecision:[1660,470]},edges:[org[0],form[3],form[4],bridges[0],bridges[1],run[0],run[1],run[2],run[3]]},
+ org:{title:'01 · Tổ chức và quyền',w:1250,h:850,ids:['User','OrganizationalUnit','Position','EmployeeAssignment','SystemRole','RoleAssignment','Permission'],positions:{User:[50,30],OrganizationalUnit:[470,30],Position:[900,30],EmployeeAssignment:[470,320],SystemRole:[900,320],RoleAssignment:[470,610],Permission:[900,610]},edges:org},
+ form:{title:'02 · Biểu mẫu và quy trình',w:1950,h:850,ids:['FormTemplate','FormField','FormTemplateRevision','FormReviewEvent','Workflow','WorkflowVersion','WorkflowStep','Selector','ConditionGroup','Condition','SlaPolicy'],positions:{FormTemplate:[70,230],FormField:[70,610],FormTemplateRevision:[350,610],FormReviewEvent:[370,20],Workflow:[710,230],WorkflowVersion:[1030,230],WorkflowStep:[1360,230],Selector:[1370,610],ConditionGroup:[1070,610],Condition:[640,610],SlaPolicy:[1680,610]},edges:form},
+ run:{title:'03 · Đơn và thực thi',w:1840,h:730,ids:['Request','WorkflowInstance','WorkflowStepRun','ApprovalTask','TaskDecision'],positions:{Request:[60,260],WorkflowInstance:[410,260],WorkflowStepRun:[760,260],ApprovalTask:[1110,260],TaskDecision:[1460,260]},edges:run},
+ bridge:{title:'Nối các phần của miền',w:1900,h:1120,ids:['EmployeeAssignment','SystemRole','FormField','Workflow','WorkflowVersion','WorkflowStep','Selector','Condition','SlaPolicy','Position','Request','WorkflowInstance','WorkflowStepRun','ApprovalTask','TaskDecision'],positions:{EmployeeAssignment:[60,50],SystemRole:[360,50],FormField:[660,50],Workflow:[960,50],WorkflowVersion:[1260,50],WorkflowStep:[1560,50],Selector:[360,390],Condition:[660,390],SlaPolicy:[960,390],Position:[60,390],Request:[60,790],WorkflowInstance:[360,790],WorkflowStepRun:[660,790],ApprovalTask:[960,790],TaskDecision:[1260,790]},edges:bridges}
+};
+const tabNames={overview:'Lộ trình',org:'1 · Tổ chức và quyền',form:'2 · Biểu mẫu và quy trình',run:'3 · Đơn và thực thi',bridge:'Các mối nối'};
+const viewport=document.getElementById('viewport'),world=document.getElementById('world'),cards=document.getElementById('cards'),svg=document.getElementById('links'),inspector=document.getElementById('inspector');
+let scene='overview',scale=1,offset={x:0,y:0},selected=null,custom={};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const key=()=>`flowpilot-domain-${scene}`;
+function current(){return sceneDefs[scene]}
+function pos(id){return custom[id]||{x:current().positions[id][0],y:current().positions[id][1]}}
+function save(){try{localStorage.setItem(key(),JSON.stringify(custom))}catch{}}
+function read(){try{custom=JSON.parse(localStorage.getItem(key())||'{}')}catch{custom={}}}
+function transform(){world.style.transform=`translate(${offset.x}px,${offset.y}px) scale(${scale})`;document.getElementById('zoomValue').textContent=Math.round(scale*100)+'%'}
+function fit(){const r=viewport.getBoundingClientRect(),s=current();scale=Math.min(1.08,(r.width-28)/s.w,(r.height-28)/s.h);offset={x:(r.width-s.w*scale)/2,y:(r.height-s.h*scale)/2};transform()}
+function renderTabs(){document.getElementById('tabs').innerHTML=Object.entries(tabNames).map(([id,title])=>`<button type="button" data-tab="${id}" aria-selected="${scene===id}">${title}</button>`).join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>setScene(b.dataset.tab))}
+function setScene(id){scene=id;selected=null;read();renderTabs();render();requestAnimationFrame(fit)}
+function point(a,b){const p=pos(a),q=pos(b),w=238,h=190,dx=q.x-p.x,dy=q.y-p.y;if(Math.abs(dx)>Math.abs(dy)){return {x:p.x+(dx>0?w:0),y:p.y+h/2}}return{x:p.x+w/2,y:p.y+(dy>0?h:0)}}
+function endpoint(a,b){const p=pos(b),q=pos(a),w=238,h=190,dx=q.x-p.x,dy=q.y-p.y;if(Math.abs(dx)>Math.abs(dy)){return{x:p.x+(dx>0?w:0),y:p.y+h/2}}return{x:p.x+w/2,y:p.y+(dy>0?h:0)}}
+function draw(){svg.setAttribute('viewBox',`0 0 ${current().w} ${current().h}`);svg.innerHTML='';current().edges.forEach((e,i)=>{const self=e.from===e.to;let a,b,d,lx,ly;if(self){const p=pos(e.from),y=p.y+125;a={x:p.x,y};b={x:p.x,y:y+45};d=`M ${a.x} ${a.y} C ${a.x-125} ${a.y-70}, ${a.x-125} ${b.y+70}, ${b.x} ${b.y}`;lx=a.x-132;ly=y+27}else{a=point(e.from,e.to);b=endpoint(e.from,e.to);d=`M ${a.x} ${a.y} L ${b.x} ${b.y}`;lx=(a.x+b.x)/2;ly=(a.y+b.y)/2-8}const group=document.createElementNS('http://www.w3.org/2000/svg','g');group.setAttribute('class','edge'+(selected?.type==='edge'&&selected.index===i?' selected':''));group.dataset.kind=e.kind;let diamond='';if(e.kind==='composition'){const vx=b.x-a.x,vy=b.y-a.y,len=Math.hypot(vx,vy)||1,ux=vx/len,uy=vy/len,px=-uy,py=ux,x=a.x+ux*12,y=a.y+uy*12;diamond=`<polygon points="${a.x},${a.y} ${x+px*8},${y+py*8} ${a.x+ux*24},${a.y+uy*24} ${x-px*8},${y-py*8}" fill="#405b79"/>`}group.innerHTML=`<path class="hit" d="${d}"/><path class="stroke" d="${d}"/>${diamond}<text class="edge-label" x="${lx}" y="${ly}" text-anchor="middle">${esc(e.label)}</text><text class="mult" x="${self?a.x-7:a.x+(b.x-a.x)*.11}" y="${self?a.y-8:a.y+(b.y-a.y)*.11-8}" text-anchor="middle">${esc(e.a)}</text><text class="mult" x="${self?b.x-7:b.x+(a.x-b.x)*.11}" y="${self?b.y+14:b.y+(a.y-b.y)*.11-8}" text-anchor="middle">${esc(e.b)}</text>`;group.onclick=()=>selectEdge(i);svg.append(group)})}
+function render(){const s=current();document.getElementById('sceneTitle').textContent=s.title;world.style.width=s.w+'px';world.style.height=s.h+'px';cards.innerHTML='';s.ids.forEach(id=>{const c=byId[id],p=pos(id),b=document.createElement('button');b.type='button';b.className='card'+(selected?.type==='class'&&selected.id===id?' selected':'');b.dataset.group=c.group;b.dataset.id=id;b.style.left=p.x+'px';b.style.top=p.y+'px';b.setAttribute('aria-label',`Class ${id}: ${c.purpose}. Bấm để xem chi tiết, kéo để di chuyển.`);b.innerHTML=`<div class="card-title">${esc(id)}${c.tag?`<span class="tag">«${esc(c.tag)}»</span>`:''}</div>${c.attrs.slice(0,7).map(a=>`<div class="attr">− ${esc(a.name)}</div>`).join('')}<div class="card-more">${c.attrs.length} thuộc tính · bấm để giải thích</div>`;let origin=null,moved=false;b.addEventListener('pointerdown',ev=>{if(ev.button!==0)return;origin={x:ev.clientX,y:ev.clientY,px:pos(id).x,py:pos(id).y};moved=false;b.setPointerCapture(ev.pointerId)});b.addEventListener('pointermove',ev=>{if(!origin)return;const dx=(ev.clientX-origin.x)/scale,dy=(ev.clientY-origin.y)/scale;if(Math.hypot(dx,dy)>5)moved=true;if(!moved)return;custom[id]={x:Math.max(0,Math.min(s.w-238,origin.px+dx)),y:Math.max(0,Math.min(s.h-190,origin.py+dy))};b.style.left=custom[id].x+'px';b.style.top=custom[id].y+'px';draw()});b.addEventListener('pointerup',()=>{if(moved)save();origin=null});b.onclick=ev=>{if(moved){moved=false;ev.preventDefault();return}selectClass(id)};b.onkeydown=ev=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(ev.key))return;ev.preventDefault();const p=pos(id),delta=ev.shiftKey?20:8;custom[id]={x:Math.max(0,Math.min(s.w-238,p.x+(ev.key==='ArrowRight'?delta:ev.key==='ArrowLeft'?-delta:0))),y:Math.max(0,Math.min(s.h-190,p.y+(ev.key==='ArrowDown'?delta:ev.key==='ArrowUp'?-delta:0)))};b.style.left=custom[id].x+'px';b.style.top=custom[id].y+'px';draw();save()};cards.append(b)});draw();showScene()}
+function showScene(){const s=current();const intro=scene==='overview'?'Đọc từ trái sang phải: nhân sự → mẫu và quy trình → đơn → tác vụ → quyết định. Đây là bản đồ dẫn chuyện; ba tab tiếp theo là các phần class diagram, tab cuối là quan hệ nối phần.':scene==='org'?'Câu hỏi miền: ai đang ở đâu, giữ chức gì và có quyền gì?':scene==='form'?'Câu hỏi miền: mẫu gồm các ô nào và quy tắc duyệt nào đã được công bố?':scene==='run'?'Câu hỏi miền: một tờ đơn cụ thể được giao việc và quyết định ra sao?':'Các đường ở đây nối ba phần. Selector là quy tắc tìm, EmployeeAssignment là người thực tế được chọn lúc chạy.';inspector.innerHTML=`<div class="inspect-head"><small>Hướng dẫn đọc</small><h2>${esc(s.title)}</h2><p>Chọn class hoặc đường nối để xem giải thích.</p></div><div class="inspect-body"><div class="box">${esc(intro)}</div><h3>Thứ tự nên nói</h3><div class="mode-list">${s.ids.map(id=>`<button type="button" data-node="${id}">${esc(id)} — ${esc(byId[id].purpose)}</button>`).join('')}</div><h3>Quy ước</h3><p>Hình thoi đặc = thành phần thuộc vòng đời đối tượng chứa. Đường liền = liên kết miền. Số gần đầu class cho biết có bao nhiêu đối tượng ở đầu ấy ứng với một đối tượng ở đầu kia.</p><p class="note">Không ghi khóa ngoại ở class nếu đường quan hệ đã diễn tả cùng thông tin. Database vẫn có các khóa ngoại cần thiết.</p></div>`;inspector.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>selectClass(b.dataset.node))}
+function selectClass(id){selected={type:'class',id};document.querySelectorAll('.card').forEach(el=>el.classList.toggle('selected',el.dataset.id===id));draw();const c=byId[id],rels=[...org,...form,...run,...bridges].filter(e=>e.from===id||e.to===id);inspector.innerHTML=`<div class="inspect-head"><small>${c.group==='org'?'1 · Tổ chức và quyền':c.group==='form'?'2 · Biểu mẫu và quy trình':'3 · Đơn và thực thi'}</small><h2>${esc(id)}</h2><p>${esc(c.purpose)}</p></div><div class="inspect-body"><h3>Vì sao tách class?</h3><div class="box purple">${esc(c.why)}</div><h3>Ví dụ</h3><div class="box">${esc(c.example)}</div><h3>Từng thuộc tính</h3>${c.attrs.map(a=>`<div class="field"><code>${esc(a.name)}</code><p>${esc(a.meaning)}</p>${a.example?`<small>Ví dụ: ${esc(a.example)}</small>`:''}</div>`).join('')}<h3>Quan hệ miền</h3><div class="mode-list">${rels.map(e=>`<button type="button" data-relationship="${esc(e.from)}|${esc(e.to)}|${esc(e.label)}">${esc(e.from)} ${esc(e.a)} — ${esc(e.label)} — ${esc(e.b)} ${esc(e.to)}</button>`).join('')}</div><p class="note">ID/khóa ngoại và loại cột JSONB sẽ được quyết định ở ERD; các thuộc tính trên là ý nghĩa nghiệp vụ.</p></div>`;inspector.querySelectorAll('[data-relationship]').forEach(b=>b.onclick=()=>jumpEdge(b.dataset.relationship));inspector.scrollTop=0}
+function jumpEdge(identity){const [from,to,label]=identity.split('|');const order=['org','form','run','bridge','overview'];for(const sid of order){const idx=sceneDefs[sid].edges.findIndex(e=>e.from===from&&e.to===to&&e.label===label);if(idx>=0){if(sid!==scene){setScene(sid);requestAnimationFrame(()=>selectEdge(idx))}else selectEdge(idx);return}}}
+function selectEdge(i){selected={type:'edge',index:i};draw();const e=current().edges[i];inspector.innerHTML=`<div class="inspect-head"><small>${e.kind==='composition'?'Composition · hình thoi đặc':'Association · đường liền'}</small><h2>${esc(e.from)} ↔ ${esc(e.to)}</h2><p>${esc(e.label)}</p></div><div class="inspect-body"><h3>Multiplicity đọc thế nào?</h3><div class="box green"><strong>${esc(e.from)} “${esc(e.a)}” — “${esc(e.b)}” ${esc(e.to)}</strong><p>Một đối tượng ${esc(e.from)} gắn với ${esc(e.b)} đối tượng ${esc(e.to)}; đọc chiều ngược lại dùng ${esc(e.a)}.</p></div><h3>Ý nghĩa nghiệp vụ</h3><p>${esc(e.why)}</p>${e.example?`<h3>Ví dụ</h3><div class="box">${esc(e.example)}</div>`:''}<h3>Vì sao vẽ đường?</h3><p>${e.kind==='composition'?'Đối tượng con là thành phần định nghĩa hoặc thực thi của đối tượng chứa. Hình thoi đặt ở đầu lớp chứa.':'Đây là quan hệ cần hiểu ở miền nghiệp vụ, không chỉ là cột khóa ngoại trong database.'}</p><div class="mode-list"><button type="button" data-node="${esc(e.from)}">Mở ${esc(e.from)}</button><button type="button" data-node="${esc(e.to)}">Mở ${esc(e.to)}</button></div></div>`;inspector.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>selectClass(b.dataset.node));inspector.scrollTop=0}
+document.getElementById('zoomIn').onclick=()=>{scale=Math.min(2,scale*1.2);transform()};document.getElementById('zoomOut').onclick=()=>{scale=Math.max(.25,scale/1.2);transform()};document.getElementById('fit').onclick=fit;document.getElementById('toggleInspector').onclick=()=>{const focused=document.querySelector('.app').classList.toggle('focus');document.getElementById('toggleInspector').textContent=focused?'Hiện giải thích':'Ẩn giải thích';fit()};document.getElementById('reset').onclick=()=>{custom={};try{localStorage.removeItem(key())}catch{}render();fit()};
+let pan=null;viewport.addEventListener('pointerdown',ev=>{if(ev.target.closest('.card,.edge'))return;pan={x:ev.clientX,y:ev.clientY,ox:offset.x,oy:offset.y};viewport.setPointerCapture(ev.pointerId)});viewport.addEventListener('pointermove',ev=>{if(!pan)return;offset={x:pan.ox+ev.clientX-pan.x,y:pan.oy+ev.clientY-pan.y};transform()});viewport.addEventListener('pointerup',()=>pan=null);viewport.addEventListener('wheel',ev=>{ev.preventDefault();const old=scale,newScale=Math.max(.25,Math.min(2,scale*(ev.deltaY<0?1.1:.9))),r=viewport.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;offset={x:x-(x-offset.x)*newScale/old,y:y-(y-offset.y)*newScale/old};scale=newScale;transform()},{passive:false});
+const script=document.getElementById('script');document.getElementById('openScript').onclick=()=>{script.hidden=false;document.getElementById('closeScript').focus()};document.getElementById('closeScript').onclick=()=>{script.hidden=true;document.getElementById('openScript').focus()};window.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!script.hidden){script.hidden=true;document.getElementById('openScript').focus()}});
+window.addEventListener('resize',()=>fit());setScene('overview');
+})();
+</script>
+</body>
+</html>

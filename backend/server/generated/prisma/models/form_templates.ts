@@ -35,7 +35,6 @@ export type Form_templatesSumAggregateOutputType = {
 }
 
 export type Form_templatesMinAggregateOutputType = {
-  version: number | null
   id: string | null
   code: string | null
   name: string | null
@@ -47,10 +46,10 @@ export type Form_templatesMinAggregateOutputType = {
   submitted_at: Date | null
   reviewed_at: Date | null
   review_comment: string | null
+  version: number | null
 }
 
 export type Form_templatesMaxAggregateOutputType = {
-  version: number | null
   id: string | null
   code: string | null
   name: string | null
@@ -62,10 +61,10 @@ export type Form_templatesMaxAggregateOutputType = {
   submitted_at: Date | null
   reviewed_at: Date | null
   review_comment: string | null
+  version: number | null
 }
 
 export type Form_templatesCountAggregateOutputType = {
-  version: number
   id: number
   code: number
   name: number
@@ -77,6 +76,7 @@ export type Form_templatesCountAggregateOutputType = {
   submitted_at: number
   reviewed_at: number
   review_comment: number
+  version: number
   _all: number
 }
 
@@ -90,7 +90,6 @@ export type Form_templatesSumAggregateInputType = {
 }
 
 export type Form_templatesMinAggregateInputType = {
-  version?: true
   id?: true
   code?: true
   name?: true
@@ -102,10 +101,10 @@ export type Form_templatesMinAggregateInputType = {
   submitted_at?: true
   reviewed_at?: true
   review_comment?: true
+  version?: true
 }
 
 export type Form_templatesMaxAggregateInputType = {
-  version?: true
   id?: true
   code?: true
   name?: true
@@ -117,10 +116,10 @@ export type Form_templatesMaxAggregateInputType = {
   submitted_at?: true
   reviewed_at?: true
   review_comment?: true
+  version?: true
 }
 
 export type Form_templatesCountAggregateInputType = {
-  version?: true
   id?: true
   code?: true
   name?: true
@@ -132,6 +131,7 @@ export type Form_templatesCountAggregateInputType = {
   submitted_at?: true
   reviewed_at?: true
   review_comment?: true
+  version?: true
   _all?: true
 }
 
@@ -222,7 +222,6 @@ export type form_templatesGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 export type Form_templatesGroupByOutputType = {
-  version: number
   id: string
   code: string
   name: string
@@ -234,6 +233,7 @@ export type Form_templatesGroupByOutputType = {
   submitted_at: Date | null
   reviewed_at: Date | null
   review_comment: string | null
+  version: number
   _count: Form_templatesCountAggregateOutputType | null
   _avg: Form_templatesAvgAggregateOutputType | null
   _sum: Form_templatesSumAggregateOutputType | null
@@ -260,7 +260,6 @@ export type form_templatesWhereInput = {
   AND?: Prisma.form_templatesWhereInput | Prisma.form_templatesWhereInput[]
   OR?: Prisma.form_templatesWhereInput[]
   NOT?: Prisma.form_templatesWhereInput | Prisma.form_templatesWhereInput[]
-  version?: Prisma.IntFilter<"form_templates"> | number
   id?: Prisma.UuidFilter<"form_templates"> | string
   code?: Prisma.StringFilter<"form_templates"> | string
   name?: Prisma.StringFilter<"form_templates"> | string
@@ -272,17 +271,17 @@ export type form_templatesWhereInput = {
   submitted_at?: Prisma.DateTimeNullableFilter<"form_templates"> | Date | string | null
   reviewed_at?: Prisma.DateTimeNullableFilter<"form_templates"> | Date | string | null
   review_comment?: Prisma.StringNullableFilter<"form_templates"> | string | null
-  form_template_revisions?: Prisma.Form_template_revisionsListRelationFilter
+  version?: Prisma.IntFilter<"form_templates"> | number
   form_fields?: Prisma.Form_fieldsListRelationFilter
   form_review_events?: Prisma.Form_review_eventsListRelationFilter
-  notifications?: Prisma.NotificationsListRelationFilter
+  form_template_revisions?: Prisma.Form_template_revisionsListRelationFilter
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
+  notifications?: Prisma.NotificationsListRelationFilter
   workflows?: Prisma.XOR<Prisma.WorkflowsNullableScalarRelationFilter, Prisma.workflowsWhereInput> | null
 }
 
 export type form_templatesOrderByWithRelationInput = {
-  version?: Prisma.SortOrder
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -294,12 +293,13 @@ export type form_templatesOrderByWithRelationInput = {
   submitted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewed_at?: Prisma.SortOrderInput | Prisma.SortOrder
   review_comment?: Prisma.SortOrderInput | Prisma.SortOrder
-  form_template_revisions?: Prisma.form_template_revisionsOrderByRelationAggregateInput
+  version?: Prisma.SortOrder
   form_fields?: Prisma.form_fieldsOrderByRelationAggregateInput
   form_review_events?: Prisma.form_review_eventsOrderByRelationAggregateInput
-  notifications?: Prisma.notificationsOrderByRelationAggregateInput
+  form_template_revisions?: Prisma.form_template_revisionsOrderByRelationAggregateInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsOrderByWithRelationInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsOrderByWithRelationInput
+  notifications?: Prisma.notificationsOrderByRelationAggregateInput
   workflows?: Prisma.workflowsOrderByWithRelationInput
 }
 
@@ -309,7 +309,6 @@ export type form_templatesWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.form_templatesWhereInput | Prisma.form_templatesWhereInput[]
   OR?: Prisma.form_templatesWhereInput[]
   NOT?: Prisma.form_templatesWhereInput | Prisma.form_templatesWhereInput[]
-  version?: Prisma.IntFilter<"form_templates"> | number
   name?: Prisma.StringFilter<"form_templates"> | string
   description?: Prisma.StringFilter<"form_templates"> | string
   status?: Prisma.StringFilter<"form_templates"> | string
@@ -319,17 +318,17 @@ export type form_templatesWhereUniqueInput = Prisma.AtLeast<{
   submitted_at?: Prisma.DateTimeNullableFilter<"form_templates"> | Date | string | null
   reviewed_at?: Prisma.DateTimeNullableFilter<"form_templates"> | Date | string | null
   review_comment?: Prisma.StringNullableFilter<"form_templates"> | string | null
-  form_template_revisions?: Prisma.Form_template_revisionsListRelationFilter
+  version?: Prisma.IntFilter<"form_templates"> | number
   form_fields?: Prisma.Form_fieldsListRelationFilter
   form_review_events?: Prisma.Form_review_eventsListRelationFilter
-  notifications?: Prisma.NotificationsListRelationFilter
+  form_template_revisions?: Prisma.Form_template_revisionsListRelationFilter
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsNullableScalarRelationFilter, Prisma.employee_assignmentsWhereInput> | null
+  notifications?: Prisma.NotificationsListRelationFilter
   workflows?: Prisma.XOR<Prisma.WorkflowsNullableScalarRelationFilter, Prisma.workflowsWhereInput> | null
 }, "id" | "code">
 
 export type form_templatesOrderByWithAggregationInput = {
-  version?: Prisma.SortOrder
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -341,6 +340,7 @@ export type form_templatesOrderByWithAggregationInput = {
   submitted_at?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewed_at?: Prisma.SortOrderInput | Prisma.SortOrder
   review_comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  version?: Prisma.SortOrder
   _count?: Prisma.form_templatesCountOrderByAggregateInput
   _avg?: Prisma.form_templatesAvgOrderByAggregateInput
   _max?: Prisma.form_templatesMaxOrderByAggregateInput
@@ -352,7 +352,6 @@ export type form_templatesScalarWhereWithAggregatesInput = {
   AND?: Prisma.form_templatesScalarWhereWithAggregatesInput | Prisma.form_templatesScalarWhereWithAggregatesInput[]
   OR?: Prisma.form_templatesScalarWhereWithAggregatesInput[]
   NOT?: Prisma.form_templatesScalarWhereWithAggregatesInput | Prisma.form_templatesScalarWhereWithAggregatesInput[]
-  version?: Prisma.IntWithAggregatesFilter<"form_templates"> | number
   id?: Prisma.UuidWithAggregatesFilter<"form_templates"> | string
   code?: Prisma.StringWithAggregatesFilter<"form_templates"> | string
   name?: Prisma.StringWithAggregatesFilter<"form_templates"> | string
@@ -364,10 +363,10 @@ export type form_templatesScalarWhereWithAggregatesInput = {
   submitted_at?: Prisma.DateTimeNullableWithAggregatesFilter<"form_templates"> | Date | string | null
   reviewed_at?: Prisma.DateTimeNullableWithAggregatesFilter<"form_templates"> | Date | string | null
   review_comment?: Prisma.StringNullableWithAggregatesFilter<"form_templates"> | string | null
+  version?: Prisma.IntWithAggregatesFilter<"form_templates"> | number
 }
 
 export type form_templatesCreateInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -377,17 +376,17 @@ export type form_templatesCreateInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsCreateNestedManyWithoutForm_templatesInput
-  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -399,15 +398,15 @@ export type form_templatesUncheckedCreateInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsUncheckedCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsUncheckedCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsUncheckedCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUpdateInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -417,17 +416,17 @@ export type form_templatesUpdateInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUpdateManyWithoutForm_templatesNestedInput
-  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -439,15 +438,15 @@ export type form_templatesUncheckedUpdateInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUncheckedUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUncheckedUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesCreateManyInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -459,10 +458,10 @@ export type form_templatesCreateManyInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
+  version?: number
 }
 
 export type form_templatesUpdateManyMutationInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -472,10 +471,10 @@ export type form_templatesUpdateManyMutationInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type form_templatesUncheckedUpdateManyInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -487,6 +486,7 @@ export type form_templatesUncheckedUpdateManyInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type Form_templatesListRelationFilter = {
@@ -505,7 +505,6 @@ export type Form_templatesScalarRelationFilter = {
 }
 
 export type form_templatesCountOrderByAggregateInput = {
-  version?: Prisma.SortOrder
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -517,6 +516,7 @@ export type form_templatesCountOrderByAggregateInput = {
   submitted_at?: Prisma.SortOrder
   reviewed_at?: Prisma.SortOrder
   review_comment?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type form_templatesAvgOrderByAggregateInput = {
@@ -524,7 +524,6 @@ export type form_templatesAvgOrderByAggregateInput = {
 }
 
 export type form_templatesMaxOrderByAggregateInput = {
-  version?: Prisma.SortOrder
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -536,10 +535,10 @@ export type form_templatesMaxOrderByAggregateInput = {
   submitted_at?: Prisma.SortOrder
   reviewed_at?: Prisma.SortOrder
   review_comment?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type form_templatesMinOrderByAggregateInput = {
-  version?: Prisma.SortOrder
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -551,6 +550,7 @@ export type form_templatesMinOrderByAggregateInput = {
   submitted_at?: Prisma.SortOrder
   reviewed_at?: Prisma.SortOrder
   review_comment?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type form_templatesSumOrderByAggregateInput = {
@@ -719,7 +719,6 @@ export type form_templatesUpdateOneRequiredWithoutWorkflowsNestedInput = {
 }
 
 export type form_templatesCreateWithoutEmployee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -729,16 +728,16 @@ export type form_templatesCreateWithoutEmployee_assignments_form_templates_creat
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsCreateNestedManyWithoutForm_templatesInput
-  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateWithoutEmployee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -749,9 +748,10 @@ export type form_templatesUncheckedCreateWithoutEmployee_assignments_form_templa
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsUncheckedCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsUncheckedCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsUncheckedCreateNestedOneWithoutForm_templatesInput
 }
@@ -767,7 +767,6 @@ export type form_templatesCreateManyEmployee_assignments_form_templates_created_
 }
 
 export type form_templatesCreateWithoutEmployee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -777,16 +776,16 @@ export type form_templatesCreateWithoutEmployee_assignments_form_templates_revie
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsCreateNestedManyWithoutForm_templatesInput
-  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateWithoutEmployee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -797,9 +796,10 @@ export type form_templatesUncheckedCreateWithoutEmployee_assignments_form_templa
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsUncheckedCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsUncheckedCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsUncheckedCreateNestedOneWithoutForm_templatesInput
 }
@@ -834,7 +834,6 @@ export type form_templatesScalarWhereInput = {
   AND?: Prisma.form_templatesScalarWhereInput | Prisma.form_templatesScalarWhereInput[]
   OR?: Prisma.form_templatesScalarWhereInput[]
   NOT?: Prisma.form_templatesScalarWhereInput | Prisma.form_templatesScalarWhereInput[]
-  version?: Prisma.IntFilter<"form_templates"> | number
   id?: Prisma.UuidFilter<"form_templates"> | string
   code?: Prisma.StringFilter<"form_templates"> | string
   name?: Prisma.StringFilter<"form_templates"> | string
@@ -846,6 +845,7 @@ export type form_templatesScalarWhereInput = {
   submitted_at?: Prisma.DateTimeNullableFilter<"form_templates"> | Date | string | null
   reviewed_at?: Prisma.DateTimeNullableFilter<"form_templates"> | Date | string | null
   review_comment?: Prisma.StringNullableFilter<"form_templates"> | string | null
+  version?: Prisma.IntFilter<"form_templates"> | number
 }
 
 export type form_templatesUpsertWithWhereUniqueWithoutEmployee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsInput = {
@@ -865,7 +865,6 @@ export type form_templatesUpdateManyWithWhereWithoutEmployee_assignments_form_te
 }
 
 export type form_templatesCreateWithoutForm_fieldsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -875,16 +874,16 @@ export type form_templatesCreateWithoutForm_fieldsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_review_events?: Prisma.form_review_eventsCreateNestedManyWithoutForm_templatesInput
-  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateWithoutForm_fieldsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -896,8 +895,9 @@ export type form_templatesUncheckedCreateWithoutForm_fieldsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_review_events?: Prisma.form_review_eventsUncheckedCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsUncheckedCreateNestedOneWithoutForm_templatesInput
 }
@@ -919,7 +919,6 @@ export type form_templatesUpdateToOneWithWhereWithoutForm_fieldsInput = {
 }
 
 export type form_templatesUpdateWithoutForm_fieldsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -929,16 +928,16 @@ export type form_templatesUpdateWithoutForm_fieldsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_review_events?: Prisma.form_review_eventsUpdateManyWithoutForm_templatesNestedInput
-  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateWithoutForm_fieldsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -950,14 +949,14 @@ export type form_templatesUncheckedUpdateWithoutForm_fieldsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_review_events?: Prisma.form_review_eventsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUncheckedUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesCreateWithoutForm_review_eventsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -967,16 +966,16 @@ export type form_templatesCreateWithoutForm_review_eventsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsCreateNestedManyWithoutForm_templatesInput
-  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateWithoutForm_review_eventsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -988,8 +987,9 @@ export type form_templatesUncheckedCreateWithoutForm_review_eventsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsUncheckedCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsUncheckedCreateNestedOneWithoutForm_templatesInput
 }
@@ -1011,7 +1011,6 @@ export type form_templatesUpdateToOneWithWhereWithoutForm_review_eventsInput = {
 }
 
 export type form_templatesUpdateWithoutForm_review_eventsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1021,16 +1020,16 @@ export type form_templatesUpdateWithoutForm_review_eventsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUpdateManyWithoutForm_templatesNestedInput
-  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateWithoutForm_review_eventsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1042,14 +1041,14 @@ export type form_templatesUncheckedUpdateWithoutForm_review_eventsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUncheckedUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesCreateWithoutForm_template_revisionsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1059,16 +1058,16 @@ export type form_templatesCreateWithoutForm_template_revisionsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
+  version?: number
   form_fields?: Prisma.form_fieldsCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsCreateNestedManyWithoutForm_templatesInput
-  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateWithoutForm_template_revisionsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1080,6 +1079,7 @@ export type form_templatesUncheckedCreateWithoutForm_template_revisionsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
+  version?: number
   form_fields?: Prisma.form_fieldsUncheckedCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsUncheckedCreateNestedManyWithoutForm_templatesInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutForm_templatesInput
@@ -1103,7 +1103,6 @@ export type form_templatesUpdateToOneWithWhereWithoutForm_template_revisionsInpu
 }
 
 export type form_templatesUpdateWithoutForm_template_revisionsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1113,16 +1112,16 @@ export type form_templatesUpdateWithoutForm_template_revisionsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUpdateManyWithoutForm_templatesNestedInput
-  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateWithoutForm_template_revisionsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1134,6 +1133,7 @@ export type form_templatesUncheckedUpdateWithoutForm_template_revisionsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUncheckedUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUncheckedUpdateManyWithoutForm_templatesNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutForm_templatesNestedInput
@@ -1141,7 +1141,6 @@ export type form_templatesUncheckedUpdateWithoutForm_template_revisionsInput = {
 }
 
 export type form_templatesCreateWithoutNotificationsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1151,16 +1150,16 @@ export type form_templatesCreateWithoutNotificationsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsInput
   workflows?: Prisma.workflowsCreateNestedOneWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateWithoutNotificationsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1172,9 +1171,10 @@ export type form_templatesUncheckedCreateWithoutNotificationsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsUncheckedCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsUncheckedCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
   workflows?: Prisma.workflowsUncheckedCreateNestedOneWithoutForm_templatesInput
 }
 
@@ -1195,7 +1195,6 @@ export type form_templatesUpdateToOneWithWhereWithoutNotificationsInput = {
 }
 
 export type form_templatesUpdateWithoutNotificationsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1205,16 +1204,16 @@ export type form_templatesUpdateWithoutNotificationsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsNestedInput
   workflows?: Prisma.workflowsUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateWithoutNotificationsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1226,14 +1225,14 @@ export type form_templatesUncheckedUpdateWithoutNotificationsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUncheckedUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUncheckedUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesCreateWithoutWorkflowsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1243,16 +1242,16 @@ export type form_templatesCreateWithoutWorkflowsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsCreateNestedManyWithoutForm_templatesInput
-  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsCreateNestedManyWithoutForm_templatesInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsCreateNestedOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsInput
+  notifications?: Prisma.notificationsCreateNestedManyWithoutForm_templatesInput
 }
 
 export type form_templatesUncheckedCreateWithoutWorkflowsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1264,9 +1263,10 @@ export type form_templatesUncheckedCreateWithoutWorkflowsInput = {
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
+  version?: number
   form_fields?: Prisma.form_fieldsUncheckedCreateNestedManyWithoutForm_templatesInput
   form_review_events?: Prisma.form_review_eventsUncheckedCreateNestedManyWithoutForm_templatesInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedCreateNestedManyWithoutForm_templatesInput
   notifications?: Prisma.notificationsUncheckedCreateNestedManyWithoutForm_templatesInput
 }
 
@@ -1287,7 +1287,6 @@ export type form_templatesUpdateToOneWithWhereWithoutWorkflowsInput = {
 }
 
 export type form_templatesUpdateWithoutWorkflowsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1297,16 +1296,16 @@ export type form_templatesUpdateWithoutWorkflowsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUpdateManyWithoutForm_templatesNestedInput
-  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsNestedInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateWithoutWorkflowsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1318,14 +1317,14 @@ export type form_templatesUncheckedUpdateWithoutWorkflowsInput = {
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUncheckedUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutForm_templatesNestedInput
 }
 
 export type form_templatesCreateManyEmployee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1336,10 +1335,10 @@ export type form_templatesCreateManyEmployee_assignments_form_templates_created_
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
+  version?: number
 }
 
 export type form_templatesCreateManyEmployee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsInput = {
-  version?: number
   id?: string
   code: string
   name: string
@@ -1350,10 +1349,10 @@ export type form_templatesCreateManyEmployee_assignments_form_templates_reviewer
   submitted_at?: Date | string | null
   reviewed_at?: Date | string | null
   review_comment?: string | null
+  version?: number
 }
 
 export type form_templatesUpdateWithoutEmployee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1363,16 +1362,16 @@ export type form_templatesUpdateWithoutEmployee_assignments_form_templates_creat
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUpdateManyWithoutForm_templatesNestedInput
-  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_reviewer_assignment_idToemployee_assignmentsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateWithoutEmployee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1383,15 +1382,15 @@ export type form_templatesUncheckedUpdateWithoutEmployee_assignments_form_templa
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUncheckedUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUncheckedUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateManyWithoutEmployee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1402,10 +1401,10 @@ export type form_templatesUncheckedUpdateManyWithoutEmployee_assignments_form_te
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type form_templatesUpdateWithoutEmployee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1415,16 +1414,16 @@ export type form_templatesUpdateWithoutEmployee_assignments_form_templates_revie
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUpdateManyWithoutForm_templatesNestedInput
-  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUpdateManyWithoutForm_templatesNestedInput
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: Prisma.employee_assignmentsUpdateOneWithoutForm_templates_form_templates_created_by_assignment_idToemployee_assignmentsNestedInput
+  notifications?: Prisma.notificationsUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateWithoutEmployee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1435,15 +1434,15 @@ export type form_templatesUncheckedUpdateWithoutEmployee_assignments_form_templa
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   form_fields?: Prisma.form_fieldsUncheckedUpdateManyWithoutForm_templatesNestedInput
   form_review_events?: Prisma.form_review_eventsUncheckedUpdateManyWithoutForm_templatesNestedInput
+  form_template_revisions?: Prisma.form_template_revisionsUncheckedUpdateManyWithoutForm_templatesNestedInput
   notifications?: Prisma.notificationsUncheckedUpdateManyWithoutForm_templatesNestedInput
   workflows?: Prisma.workflowsUncheckedUpdateOneWithoutForm_templatesNestedInput
 }
 
 export type form_templatesUncheckedUpdateManyWithoutEmployee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsInput = {
-  version?: Prisma.IntFieldUpdateOperationsInput | number
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1454,6 +1453,7 @@ export type form_templatesUncheckedUpdateManyWithoutEmployee_assignments_form_te
   submitted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   review_comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -1462,16 +1462,16 @@ export type form_templatesUncheckedUpdateManyWithoutEmployee_assignments_form_te
  */
 
 export type Form_templatesCountOutputType = {
-  form_template_revisions: number
   form_fields: number
   form_review_events: number
+  form_template_revisions: number
   notifications: number
 }
 
 export type Form_templatesCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  form_template_revisions?: boolean | Form_templatesCountOutputTypeCountForm_template_revisionsArgs
   form_fields?: boolean | Form_templatesCountOutputTypeCountForm_fieldsArgs
   form_review_events?: boolean | Form_templatesCountOutputTypeCountForm_review_eventsArgs
+  form_template_revisions?: boolean | Form_templatesCountOutputTypeCountForm_template_revisionsArgs
   notifications?: boolean | Form_templatesCountOutputTypeCountNotificationsArgs
 }
 
@@ -1483,13 +1483,6 @@ export type Form_templatesCountOutputTypeDefaultArgs<ExtArgs extends runtime.Typ
    * Select specific fields to fetch from the Form_templatesCountOutputType
    */
   select?: Prisma.Form_templatesCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * Form_templatesCountOutputType without action
- */
-export type Form_templatesCountOutputTypeCountForm_template_revisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.form_template_revisionsWhereInput
 }
 
 /**
@@ -1509,13 +1502,19 @@ export type Form_templatesCountOutputTypeCountForm_review_eventsArgs<ExtArgs ext
 /**
  * Form_templatesCountOutputType without action
  */
+export type Form_templatesCountOutputTypeCountForm_template_revisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.form_template_revisionsWhereInput
+}
+
+/**
+ * Form_templatesCountOutputType without action
+ */
 export type Form_templatesCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.notificationsWhereInput
 }
 
 
 export type form_templatesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  version?: boolean
   id?: boolean
   code?: boolean
   name?: boolean
@@ -1527,18 +1526,18 @@ export type form_templatesSelect<ExtArgs extends runtime.Types.Extensions.Intern
   submitted_at?: boolean
   reviewed_at?: boolean
   review_comment?: boolean
-  form_template_revisions?: boolean | Prisma.form_templates$form_template_revisionsArgs<ExtArgs>
+  version?: boolean
   form_fields?: boolean | Prisma.form_templates$form_fieldsArgs<ExtArgs>
   form_review_events?: boolean | Prisma.form_templates$form_review_eventsArgs<ExtArgs>
-  notifications?: boolean | Prisma.form_templates$notificationsArgs<ExtArgs>
+  form_template_revisions?: boolean | Prisma.form_templates$form_template_revisionsArgs<ExtArgs>
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsArgs<ExtArgs>
+  notifications?: boolean | Prisma.form_templates$notificationsArgs<ExtArgs>
   workflows?: boolean | Prisma.form_templates$workflowsArgs<ExtArgs>
   _count?: boolean | Prisma.Form_templatesCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["form_templates"]>
 
 export type form_templatesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  version?: boolean
   id?: boolean
   code?: boolean
   name?: boolean
@@ -1550,12 +1549,12 @@ export type form_templatesSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   submitted_at?: boolean
   reviewed_at?: boolean
   review_comment?: boolean
+  version?: boolean
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsArgs<ExtArgs>
 }, ExtArgs["result"]["form_templates"]>
 
 export type form_templatesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  version?: boolean
   id?: boolean
   code?: boolean
   name?: boolean
@@ -1567,12 +1566,12 @@ export type form_templatesSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   submitted_at?: boolean
   reviewed_at?: boolean
   review_comment?: boolean
+  version?: boolean
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsArgs<ExtArgs>
 }, ExtArgs["result"]["form_templates"]>
 
 export type form_templatesSelectScalar = {
-  version?: boolean
   id?: boolean
   code?: boolean
   name?: boolean
@@ -1584,16 +1583,17 @@ export type form_templatesSelectScalar = {
   submitted_at?: boolean
   reviewed_at?: boolean
   review_comment?: boolean
+  version?: boolean
 }
 
-export type form_templatesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"version" | "id" | "code" | "name" | "description" | "status" | "created_at" | "created_by_assignment_id" | "reviewer_assignment_id" | "submitted_at" | "reviewed_at" | "review_comment", ExtArgs["result"]["form_templates"]>
+export type form_templatesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "description" | "status" | "created_at" | "created_by_assignment_id" | "reviewer_assignment_id" | "submitted_at" | "reviewed_at" | "review_comment" | "version", ExtArgs["result"]["form_templates"]>
 export type form_templatesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  form_template_revisions?: boolean | Prisma.form_templates$form_template_revisionsArgs<ExtArgs>
   form_fields?: boolean | Prisma.form_templates$form_fieldsArgs<ExtArgs>
   form_review_events?: boolean | Prisma.form_templates$form_review_eventsArgs<ExtArgs>
-  notifications?: boolean | Prisma.form_templates$notificationsArgs<ExtArgs>
+  form_template_revisions?: boolean | Prisma.form_templates$form_template_revisionsArgs<ExtArgs>
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsArgs<ExtArgs>
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments?: boolean | Prisma.form_templates$employee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsArgs<ExtArgs>
+  notifications?: boolean | Prisma.form_templates$notificationsArgs<ExtArgs>
   workflows?: boolean | Prisma.form_templates$workflowsArgs<ExtArgs>
   _count?: boolean | Prisma.Form_templatesCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1609,16 +1609,15 @@ export type form_templatesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type $form_templatesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "form_templates"
   objects: {
-    form_template_revisions: Prisma.$form_template_revisionsPayload<ExtArgs>[]
     form_fields: Prisma.$form_fieldsPayload<ExtArgs>[]
     form_review_events: Prisma.$form_review_eventsPayload<ExtArgs>[]
-    notifications: Prisma.$notificationsPayload<ExtArgs>[]
+    form_template_revisions: Prisma.$form_template_revisionsPayload<ExtArgs>[]
     employee_assignments_form_templates_created_by_assignment_idToemployee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs> | null
     employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs> | null
+    notifications: Prisma.$notificationsPayload<ExtArgs>[]
     workflows: Prisma.$workflowsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    version: number
     id: string
     code: string
     name: string
@@ -1630,6 +1629,7 @@ export type $form_templatesPayload<ExtArgs extends runtime.Types.Extensions.Inte
     submitted_at: Date | null
     reviewed_at: Date | null
     review_comment: string | null
+    version: number
   }, ExtArgs["result"]["form_templates"]>
   composites: {}
 }
@@ -1713,8 +1713,8 @@ export interface form_templatesDelegate<ExtArgs extends runtime.Types.Extensions
    * // Get first 10 Form_templates
    * const form_templates = await prisma.form_templates.findMany({ take: 10 })
    * 
-   * // Only select the `version`
-   * const form_templatesWithVersionOnly = await prisma.form_templates.findMany({ select: { version: true } })
+   * // Only select the `id`
+   * const form_templatesWithIdOnly = await prisma.form_templates.findMany({ select: { id: true } })
    * 
    */
   findMany<T extends form_templatesFindManyArgs>(args?: Prisma.SelectSubset<T, form_templatesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$form_templatesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -1758,9 +1758,9 @@ export interface form_templatesDelegate<ExtArgs extends runtime.Types.Extensions
    *   ]
    * })
    * 
-   * // Create many Form_templates and only return the `version`
-   * const form_templatesWithVersionOnly = await prisma.form_templates.createManyAndReturn({
-   *   select: { version: true },
+   * // Create many Form_templates and only return the `id`
+   * const form_templatesWithIdOnly = await prisma.form_templates.createManyAndReturn({
+   *   select: { id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -1849,9 +1849,9 @@ export interface form_templatesDelegate<ExtArgs extends runtime.Types.Extensions
    *   ]
    * })
    * 
-   * // Update zero or more Form_templates and only return the `version`
-   * const form_templatesWithVersionOnly = await prisma.form_templates.updateManyAndReturn({
-   *   select: { version: true },
+   * // Update zero or more Form_templates and only return the `id`
+   * const form_templatesWithIdOnly = await prisma.form_templates.updateManyAndReturn({
+   *   select: { id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -2024,12 +2024,12 @@ readonly fields: form_templatesFieldRefs;
  */
 export interface Prisma__form_templatesClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  form_template_revisions<T extends Prisma.form_templates$form_template_revisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$form_template_revisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$form_template_revisionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   form_fields<T extends Prisma.form_templates$form_fieldsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$form_fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$form_fieldsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   form_review_events<T extends Prisma.form_templates$form_review_eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$form_review_eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$form_review_eventsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  notifications<T extends Prisma.form_templates$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$notificationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  form_template_revisions<T extends Prisma.form_templates$form_template_revisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$form_template_revisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$form_template_revisionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   employee_assignments_form_templates_created_by_assignment_idToemployee_assignments<T extends Prisma.form_templates$employee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$employee_assignments_form_templates_created_by_assignment_idToemployee_assignmentsArgs<ExtArgs>>): Prisma.Prisma__employee_assignmentsClient<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments<T extends Prisma.form_templates$employee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$employee_assignments_form_templates_reviewer_assignment_idToemployee_assignmentsArgs<ExtArgs>>): Prisma.Prisma__employee_assignmentsClient<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  notifications<T extends Prisma.form_templates$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$notificationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workflows<T extends Prisma.form_templates$workflowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templates$workflowsArgs<ExtArgs>>): Prisma.Prisma__workflowsClient<runtime.Types.Result.GetResult<Prisma.$workflowsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2060,7 +2060,6 @@ export interface Prisma__form_templatesClient<T, Null = never, ExtArgs extends r
  * Fields of the form_templates model
  */
 export interface form_templatesFieldRefs {
-  readonly version: Prisma.FieldRef<"form_templates", 'Int'>
   readonly id: Prisma.FieldRef<"form_templates", 'String'>
   readonly code: Prisma.FieldRef<"form_templates", 'String'>
   readonly name: Prisma.FieldRef<"form_templates", 'String'>
@@ -2072,6 +2071,7 @@ export interface form_templatesFieldRefs {
   readonly submitted_at: Prisma.FieldRef<"form_templates", 'DateTime'>
   readonly reviewed_at: Prisma.FieldRef<"form_templates", 'DateTime'>
   readonly review_comment: Prisma.FieldRef<"form_templates", 'String'>
+  readonly version: Prisma.FieldRef<"form_templates", 'Int'>
 }
     
 
@@ -2473,30 +2473,6 @@ export type form_templatesDeleteManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
- * form_templates.form_template_revisions
- */
-export type form_templates$form_template_revisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the form_template_revisions
-   */
-  select?: Prisma.form_template_revisionsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the form_template_revisions
-   */
-  omit?: Prisma.form_template_revisionsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.form_template_revisionsInclude<ExtArgs> | null
-  where?: Prisma.form_template_revisionsWhereInput
-  orderBy?: Prisma.form_template_revisionsOrderByWithRelationInput | Prisma.form_template_revisionsOrderByWithRelationInput[]
-  cursor?: Prisma.form_template_revisionsWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.Form_template_revisionsScalarFieldEnum | Prisma.Form_template_revisionsScalarFieldEnum[]
-}
-
-/**
  * form_templates.form_fields
  */
 export type form_templates$form_fieldsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2545,27 +2521,27 @@ export type form_templates$form_review_eventsArgs<ExtArgs extends runtime.Types.
 }
 
 /**
- * form_templates.notifications
+ * form_templates.form_template_revisions
  */
-export type form_templates$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type form_templates$form_template_revisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the notifications
+   * Select specific fields to fetch from the form_template_revisions
    */
-  select?: Prisma.notificationsSelect<ExtArgs> | null
+  select?: Prisma.form_template_revisionsSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the notifications
+   * Omit specific fields from the form_template_revisions
    */
-  omit?: Prisma.notificationsOmit<ExtArgs> | null
+  omit?: Prisma.form_template_revisionsOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.notificationsInclude<ExtArgs> | null
-  where?: Prisma.notificationsWhereInput
-  orderBy?: Prisma.notificationsOrderByWithRelationInput | Prisma.notificationsOrderByWithRelationInput[]
-  cursor?: Prisma.notificationsWhereUniqueInput
+  include?: Prisma.form_template_revisionsInclude<ExtArgs> | null
+  where?: Prisma.form_template_revisionsWhereInput
+  orderBy?: Prisma.form_template_revisionsOrderByWithRelationInput | Prisma.form_template_revisionsOrderByWithRelationInput[]
+  cursor?: Prisma.form_template_revisionsWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.NotificationsScalarFieldEnum | Prisma.NotificationsScalarFieldEnum[]
+  distinct?: Prisma.Form_template_revisionsScalarFieldEnum | Prisma.Form_template_revisionsScalarFieldEnum[]
 }
 
 /**
@@ -2604,6 +2580,30 @@ export type form_templates$employee_assignments_form_templates_reviewer_assignme
    */
   include?: Prisma.employee_assignmentsInclude<ExtArgs> | null
   where?: Prisma.employee_assignmentsWhereInput
+}
+
+/**
+ * form_templates.notifications
+ */
+export type form_templates$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the notifications
+   */
+  select?: Prisma.notificationsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the notifications
+   */
+  omit?: Prisma.notificationsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.notificationsInclude<ExtArgs> | null
+  where?: Prisma.notificationsWhereInput
+  orderBy?: Prisma.notificationsOrderByWithRelationInput | Prisma.notificationsOrderByWithRelationInput[]
+  cursor?: Prisma.notificationsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationsScalarFieldEnum | Prisma.NotificationsScalarFieldEnum[]
 }
 
 /**

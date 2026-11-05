@@ -14,10 +14,36 @@ async function proxy(req: NextRequest, ctx: { params: Promise<{ path: string[] }
     if (v) headers.set(h, v);
   }
   try {
+    let body: Uint8Array | undefined;
+    if (!['GET', 'HEAD'].includes(req.method) && req.body) {
+      const reader = req.body.getReader(),
+        chunks: Uint8Array[] = [],
+        limit = 3 * 1024 * 1024;
+      let total = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        total += value.byteLength;
+        if (total > limit) {
+          await reader.cancel();
+          return NextResponse.json(
+            { message: 'Nội dung vượt giới hạn cho phép.' },
+            { status: 413 },
+          );
+        }
+        chunks.push(value);
+      }
+      body = new Uint8Array(total);
+      let offset = 0;
+      for (const chunk of chunks) {
+        body.set(chunk, offset);
+        offset += chunk.byteLength;
+      }
+    }
     const upstream = await fetch(url, {
       method: req.method,
       headers,
-      body: ['GET', 'HEAD'].includes(req.method) ? undefined : await req.arrayBuffer(),
+      body: body as BodyInit | undefined,
       cache: 'no-store',
       redirect: 'manual',
       signal: AbortSignal.timeout(15000),
@@ -31,6 +57,10 @@ async function proxy(req: NextRequest, ctx: { params: Promise<{ path: string[] }
     });
     for (const cookie of upstream.headers.getSetCookie())
       result.headers.append('Set-Cookie', cookie);
+    for (const name of ['content-disposition', 'x-content-type-options', 'x-request-id']) {
+      const value = upstream.headers.get(name);
+      if (value) result.headers.set(name, value);
+    }
     return result;
   } catch {
     return NextResponse.json(

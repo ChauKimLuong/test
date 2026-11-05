@@ -75,10 +75,21 @@ export type Template = {
   review_comment?: string;
   request_count: number;
   fields: Field[];
-  review_events?: { id: string; event_type: string; comment?: string | null; occurred_at: string; actor_name: string }[];
+  review_events?: {
+    id: string;
+    event_type: string;
+    comment?: string | null;
+    occurred_at: string;
+    actor_name: string;
+  }[];
 };
 export type RequestItem = {
-  template_snapshot: {version:number};
+  revision: number;
+  instance: any;
+  steps: any[];
+  tasks: any[];
+  submissions: any[];
+  template_snapshot: { version: number };
   id: string;
   request_code: string | null;
   form_name: string;
@@ -113,8 +124,36 @@ export const statusLabels: Record<string, string> = {
   LOCKED: 'Đã khóa',
   PENDING_REVIEW: 'Chờ thẩm định',
   RETURNED: 'Cần bổ sung',
+  RUNNING: 'Đang xử lý',
+  BLOCKED: 'Cần kiểm tra quy trình',
+  SKIPPED: 'Bỏ qua theo điều kiện',
+  WAITING: 'Chưa tới bước',
 };
 export const eventLabels: Record<string, string> = {
+  TASK_TRANSFERRED: 'Chuyển giao nhiệm vụ',
+  DELEGATION_CREATED: 'Tạo lịch ủy quyền',
+  DELEGATION_REVOKED: 'Thu hồi lịch ủy quyền',
+  DELEGATION_SKIPPED: 'Ủy quyền chưa phù hợp',
+  SLA_REMINDER: 'Nhắc trước hạn',
+  SLA_OVERDUE: 'Nhiệm vụ quá hạn',
+  SLA_ESCALATION_FAILED: 'Chưa thể chuyển cấp',
+  REQUEST_COMMENTED: 'Trao đổi trên hồ sơ',
+  ATTACHMENT_UPLOADED: 'Thêm phiên bản tài liệu',
+  ATTACHMENT_ARCHIVED: 'Gỡ tài liệu khỏi lần gửi tiếp theo',
+  WORKFLOW_PUBLISHED: 'Ban hành phiên bản quy trình',
+  WORKFLOW_DRAFT_SAVED: 'Lưu bản nháp quy trình',
+  WORKFLOW_STEP_STARTED: 'Bắt đầu bước phê duyệt',
+  WORKFLOW_STEP_SKIPPED: 'Bỏ qua bước theo điều kiện',
+  WORKFLOW_STEP_APPROVED: 'Hoàn tất bước phê duyệt',
+  WORKFLOW_STEP_REJECTED: 'Bước bị từ chối',
+  WORKFLOW_STEP_RETURNED: 'Trả bước để bổ sung',
+  WORKFLOW_BLOCKED: 'Quy trình cần kiểm tra',
+  WORKFLOW_RETRIED: 'Thử lại bước bị chặn',
+  TASK_APPROVED: 'Đồng ý nhiệm vụ',
+  TASK_REJECTED: 'Từ chối nhiệm vụ',
+  TASK_RETURNED: 'Yêu cầu bổ sung',
+  REQUEST_RETURNED: 'Trả hồ sơ để bổ sung',
+  REQUEST_RESUBMITTED: 'Gửi lại sau bổ sung',
   WORKFLOW_CREATED: 'Tạo cấu hình duyệt',
   WORKFLOW_APPROVER_CHANGED: 'Thay đổi người duyệt',
   WORKFLOW_STATUS_CHANGED: 'Đổi trạng thái quy trình',
@@ -141,7 +180,13 @@ export const initials = (name: string) =>
     .slice(-2)
     .map((s) => s[0])
     .join('');
-export const can = (a: Actor | undefined, p: string) => !!a?.permissions[p]?.length;
+export const can = (a: Actor | undefined, p: string, unit?: string) =>
+  unit === undefined
+    ? !!a?.permissions[p]?.length
+    : !!a?.permissions[p]?.some(
+        (scope) =>
+          scope === 'ORGANIZATION' || (scope === 'ORGANIZATIONAL_UNIT' && unit === a.unitId),
+      );
 export function downloadCsv(name: string, headers: string[], rows: unknown[][]) {
   const cell = (v: unknown) => {
     let s = String(v ?? '');

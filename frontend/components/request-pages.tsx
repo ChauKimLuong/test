@@ -1,7 +1,10 @@
 'use client';
+import { useUnsavedNavigation } from './unsaved-navigation';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { MoneyInput } from './money-input';
+import { isMoneyField } from '../lib/money-input';
 import {
   ArrowLeft,
   ArrowRight,
@@ -17,6 +20,8 @@ import {
   Clock,
   ShieldCheck,
 } from '@phosphor-icons/react';
+import { WorkflowProgress, SubmissionHistory } from './workflow-progress';
+import { RequestCollaboration } from './operations-pages';
 import { api, can, Field, Template, RequestItem, fmtDate, eventLabels, money } from '../lib/api';
 import {
   Avatar,
@@ -90,6 +95,15 @@ export function FormInputs({
                 />
                 Xác nhận {f.label.toLowerCase()}
               </label>
+            ) : isMoneyField(f) ? (
+              <MoneyInput
+                id={'field-' + f.key}
+                value={values[f.key] ?? ''}
+                aria-invalid={!!errors[f.key]}
+                aria-describedby={errors[f.key] ? 'error-' + f.key : undefined}
+                placeholder="Ví dụ: 20.000.000"
+                onValueChange={(value) => onChange(f.key, value)}
+              />
             ) : (
               <input
                 id={'field-' + f.key}
@@ -203,6 +217,52 @@ export function Paper({
           <p>{request.decision_comment}</p>
         </div>
       )}
+      {request && request.tasks.length > 0 && (
+        <section className="paper-approvals">
+          <h3>Lịch sử người xử lý</h3>
+          <p>
+            Quy trình v{request.instance?.workflow_version} · Vòng gửi{' '}
+            {request.instance?.current_round}
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Vòng / bước</th>
+                <th>Người xử lý</th>
+                <th>Kết quả / thời điểm</th>
+              </tr>
+            </thead>
+            <tbody>
+              {request.tasks.map((t) => (
+                <tr key={t.id}>
+                  <td>
+                    Vòng {t.round} · {t.step_name}
+                  </td>
+                  <td>
+                    {t.assignee_snapshot.name}
+                    <br />
+                    {t.assignee_snapshot.position}
+                  </td>
+                  <td>
+                    {t.status === 'APPROVED'
+                      ? 'Đồng ý'
+                      : t.status === 'REJECTED'
+                        ? 'Từ chối'
+                        : t.status === 'RETURNED'
+                          ? 'Trả bổ sung'
+                          : t.status === 'CANCELLED'
+                            ? 'Đã hủy'
+                            : 'Đang chờ'}
+                    <br />
+                    {fmtDate(t.decided_at, true)}
+                    {t.comment && <p>{t.comment}</p>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
       <div className="paper-signatures">
         <div>
           <b>NGƯỜI ĐỀ NGHỊ</b>
@@ -220,7 +280,7 @@ export function Paper({
         </div>
       </div>
       <footer className="paper-footer">
-        Tài liệu được tạo từ FlowPilot · {request?.request_code || code}
+        Tài liệu được tạo từ ORVA · {request?.request_code || code}
         <span>Khổ A4 · 210 × 297 mm</span>
       </footer>
     </article>
@@ -254,12 +314,17 @@ export function RequestEditor({ draft, onSaved }: { draft?: RequestItem; onSaved
     [preview, setPreview] = useState(false),
     [localSaved, setLocalSaved] = useState(false);
   const createdId = useRef<string | null>(draft?.id || null),
-    dirty = useRef(false);
+    dirty = useRef(false),
+    savedRevision = useRef<number | undefined>(draft?.revision);
+  useUnsavedNavigation(() => dirty.current);
   const fields = draft?.fields || selected?.fields || [],
     name = draft?.form_name || selected?.name || '',
     code = draft?.form_code || selected?.code || '';
   const localKey =
-    'flowpilot:draft:' + actor.assignmentId + ':' + (draft?.id || (selected ? selected.id + ':v' + selected.version : 'new'));
+    'flowpilot:draft:' +
+    actor.assignmentId +
+    ':' +
+    (draft?.id || (selected ? selected.id + ':v' + selected.version : 'new'));
   useEffect(() => {
     if (!draft) return;
     try {
@@ -277,7 +342,9 @@ export function RequestEditor({ draft, onSaved }: { draft?: RequestItem; onSaved
   useEffect(() => {
     if (draft || !forms.data) return;
     const id = new URLSearchParams(window.location.search).get('template');
-    const form = forms.data.find((f) => f.id === id && f.status === 'ACTIVE' && f.workflow_status === 'ACTIVE');
+    const form = forms.data.find(
+      (f) => f.id === id && f.status === 'ACTIVE' && f.workflow_status === 'ACTIVE',
+    );
     if (form) choose(form);
   }, [forms.data]);
   useEffect(() => {
@@ -301,7 +368,9 @@ export function RequestEditor({ draft, onSaved }: { draft?: RequestItem; onSaved
           sessionStorage.removeItem('flowpilot:copy:' + actor.assignmentId);
         }
       } else {
-        const saved = localStorage.getItem('flowpilot:draft:' + actor.assignmentId + ':' + form.id + ':v' + form.version);
+        const saved = localStorage.getItem(
+          'flowpilot:draft:' + actor.assignmentId + ':' + form.id + ':v' + form.version,
+        );
         if (saved) {
           initial = JSON.parse(saved);
           setLocalSaved(true);
@@ -341,15 +410,25 @@ export function RequestEditor({ draft, onSaved }: { draft?: RequestItem; onSaved
     const ok = await action.run(
       async () => {
         if (createdId.current)
-          await api('requests/' + createdId.current, 'PUT', { formData: values });
+          savedRevision.current = (
+            await api('requests/' + createdId.current, 'PUT', {
+              formData: values,
+              expectedRevision: savedRevision.current,
+            })
+          ).revision;
         else {
           const r = await api('requests', 'POST', {
             workflowId: selected!.workflow_id,
             formData: values,
           });
           createdId.current = r.id;
+          savedRevision.current = r.revision;
         }
-        if (submit) await api('requests/' + createdId.current + '/submit', 'POST');
+        if (submit)
+          await api('requests/' + createdId.current + '/submit', 'POST', {
+            expectedRevision: savedRevision.current,
+            idempotencyKey: crypto.randomUUID(),
+          });
         dirty.current = false;
         try {
           localStorage.removeItem(localKey);
@@ -379,23 +458,35 @@ export function RequestEditor({ draft, onSaved }: { draft?: RequestItem; onSaved
           <Loading />
         ) : (
           <div className="template-grid">
-            {forms.data?.filter((f) => f.status === 'ACTIVE' && f.workflow_status === 'ACTIVE').map((f) => (
-              <button className="template-card selectable" onClick={() => choose(f)} key={f.id}>
-                <span className="template-icon">
-                  <FileText size={27} />
-                </span>
-                <span className="template-code">{f.code}</span>
-                <h2>{f.name}</h2>
-                <p>{f.description}</p>
-                <div className="template-bottom">
-                  <span>
-                    {f.fields.filter((x) => x.type !== 'SECTION').length} trường thông tin
+            {forms.data
+              ?.filter((f) => f.status === 'ACTIVE' && f.workflow_status === 'ACTIVE')
+              .map((f) => (
+                <button className="template-card selectable" onClick={() => choose(f)} key={f.id}>
+                  <span className="template-icon">
+                    <FileText size={27} />
                   </span>
-                  <ArrowRight size={19} />
-                </div>
-              </button>
-            ))}
-            {!forms.data?.some((f) => f.status === 'ACTIVE' && f.workflow_status === 'ACTIVE') && <div className="empty"><h2>Chưa có mẫu đơn sẵn dùng</h2><p>Hãy tạo mẫu đơn mới rồi gửi cấp trên thẩm định trước khi lập yêu cầu.</p>{can(actor, 'FORM_CREATE') && <Link className="button primary" href="/forms/new">Tạo mẫu đơn mới</Link>}</div>}
+                  <span className="template-code">{f.code}</span>
+                  <h2>{f.name}</h2>
+                  <p>{f.description}</p>
+                  <div className="template-bottom">
+                    <span>
+                      {f.fields.filter((x) => x.type !== 'SECTION').length} trường thông tin
+                    </span>
+                    <ArrowRight size={19} />
+                  </div>
+                </button>
+              ))}
+            {!forms.data?.some((f) => f.status === 'ACTIVE' && f.workflow_status === 'ACTIVE') && (
+              <div className="empty">
+                <h2>Chưa có mẫu đơn sẵn dùng</h2>
+                <p>Hãy tạo mẫu đơn mới rồi gửi cấp trên thẩm định trước khi lập yêu cầu.</p>
+                {can(actor, 'FORM_CREATE') && (
+                  <Link className="button primary" href="/forms/new">
+                    Tạo mẫu đơn mới
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
         )}
       </>
@@ -417,6 +508,7 @@ export function RequestEditor({ draft, onSaved }: { draft?: RequestItem; onSaved
               else {
                 setSelected(null);
                 createdId.current = null;
+                savedRevision.current = undefined;
               }
             }
           }}
@@ -426,7 +518,11 @@ export function RequestEditor({ draft, onSaved }: { draft?: RequestItem; onSaved
         <PageHeader
           eyebrow="SOẠN YÊU CẦU"
           title={name}
-          description="Hoàn thành các trường có dấu * trước khi gửi phê duyệt."
+          description={
+            draft?.status === 'RETURNED'
+              ? 'Bổ sung theo góp ý rồi gửi lại. Quy trình sẽ chạy lại từ bước đầu theo phiên bản đã chốt.'
+              : 'Hoàn thành các trường có dấu * trước khi gửi phê duyệt.'
+          }
           actions={
             <button className="button" onClick={() => setPreview(true)}>
               <Eye size={18} />
@@ -520,7 +616,7 @@ export function RequestDetail({ id }: { id: string }) {
     action = useAction(),
     router = useRouter();
   const [editing, setEditing] = useState(false),
-    [decision, setDecision] = useState<'APPROVED' | 'REJECTED' | null>(null),
+    [decision, setDecision] = useState<'APPROVED' | 'REJECTED' | 'RETURNED' | null>(null),
     [comment, setComment] = useState('');
   if (resource.loading) return <Loading />;
   if (resource.error)
@@ -533,8 +629,11 @@ export function RequestDetail({ id }: { id: string }) {
       </>
     );
   const r = resource.data!;
+  const task = r.tasks?.find(
+    (t) => t.status === 'PENDING' && t.assignee_assignment_id === actor.assignmentId,
+  );
   const own = r.requester_assignment_id === actor.assignmentId,
-    reviewer = r.approver_assignment_id === actor.assignmentId;
+    reviewer = !!task;
   if (editing)
     return (
       <RequestEditor
@@ -549,11 +648,29 @@ export function RequestDetail({ id }: { id: string }) {
     if (!can(actor, 'REQUEST_CREATE')) return;
     await action.run(async () => {
       const forms = await api<Template[]>('forms');
-      const form = forms.find((f) => f.workflow_id === r.workflow_id && f.status==='ACTIVE' && f.workflow_status==='ACTIVE');
+      const form = forms.find(
+        (f) =>
+          f.workflow_id === r.workflow_id &&
+          f.status === 'ACTIVE' &&
+          f.workflow_status === 'ACTIVE',
+      );
       if (!form) throw new Error('Biểu mẫu đã ngừng hoạt động. Vui lòng chọn mẫu mới từ thư viện.');
       sessionStorage.setItem(
         'flowpilot:copy:' + actor.assignmentId,
-        JSON.stringify({ workflowId: r.workflow_id, formData: Object.fromEntries(form.fields.filter(f=>f.type!=='SECTION' && r.fields.some(old=>old.key===f.key && old.type===f.type) && (f.type!=='SELECT' || f.options.includes(r.form_data[f.key])) && r.form_data[f.key]!==undefined).map(f=>[f.key,r.form_data[f.key]])) }),
+        JSON.stringify({
+          workflowId: r.workflow_id,
+          formData: Object.fromEntries(
+            form.fields
+              .filter(
+                (f) =>
+                  f.type !== 'SECTION' &&
+                  r.fields.some((old) => old.key === f.key && old.type === f.type) &&
+                  (f.type !== 'SELECT' || f.options.includes(r.form_data[f.key])) &&
+                  r.form_data[f.key] !== undefined,
+              )
+              .map((f) => [f.key, r.form_data[f.key]]),
+          ),
+        }),
       );
       router.push('/requests/new?template=' + form.id);
     });
@@ -568,16 +685,24 @@ export function RequestDetail({ id }: { id: string }) {
         <PageHeader
           eyebrow={r.request_code || 'BẢN NHÁP · CHƯA CẤP MÃ'}
           title={r.form_name}
-          description={'Tạo bởi ' + r.requester_name + ' · ' + fmtDate(r.created_at, true) + ' · Mẫu phiên bản ' + r.template_snapshot.version}
+          description={
+            'Tạo bởi ' +
+            r.requester_name +
+            ' · ' +
+            fmtDate(r.created_at, true) +
+            ' · Mẫu phiên bản ' +
+            r.template_snapshot.version
+          }
           actions={
             <>
               <button className="button" onClick={() => window.print()}>
                 <Printer size={18} />
                 In / Lưu PDF
               </button>
-              {own && r.status === 'DRAFT' && (
+              {own && ['DRAFT', 'RETURNED'].includes(r.status) && (
                 <button className="button primary" onClick={() => setEditing(true)}>
-                  Tiếp tục soạn <ArrowRight size={18} />
+                  {r.status === 'RETURNED' ? 'Bổ sung và gửi lại' : 'Tiếp tục soạn'}{' '}
+                  <ArrowRight size={18} />
                 </button>
               )}
               {own && r.status === 'REJECTED' && (
@@ -590,6 +715,31 @@ export function RequestDetail({ id }: { id: string }) {
           }
         />
         <ErrorBox message={action.error} />
+        {action.error && (
+          <button className="button" onClick={resource.reload}>
+            Tải lại hồ sơ và nhiệm vụ
+          </button>
+        )}
+        {r.instance?.status === 'BLOCKED' && (
+          <div className="decision-note returned">
+            <b>Quy trình cần kiểm tra</b>
+            <p>{r.instance.blocked_reason}</p>
+            {can(actor, 'WORKFLOW_OPERATE') && (
+              <button
+                className="button"
+                disabled={action.busy}
+                onClick={() =>
+                  action.run(async () => {
+                    await api('requests/' + id + '/retry', 'POST');
+                    resource.reload();
+                  }, 'Đã thử lại bước xử lý.')
+                }
+              >
+                Thử lại sau khi khắc phục
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <div className="request-layout detail-layout">
         <div className="document-canvas">
@@ -609,6 +759,7 @@ export function RequestDetail({ id }: { id: string }) {
           />
         </div>
         <aside className="request-aside no-print">
+          <WorkflowProgress request={r} />
           <section className="panel panel-pad">
             <div className="panel-heading compact">
               <h2>Trạng thái xử lý</h2>
@@ -648,7 +799,7 @@ export function RequestDetail({ id }: { id: string }) {
                     onClick={() => setDecision('APPROVED')}
                   >
                     <CheckCircle size={19} />
-                    Phê duyệt yêu cầu
+                    Đồng ý bước này
                   </button>
                 )}
                 {can(actor, 'REQUEST_REJECT') && (
@@ -662,26 +813,33 @@ export function RequestDetail({ id }: { id: string }) {
                 )}
               </div>
             )}
-            {own && ['DRAFT', 'PENDING'].includes(r.status) && can(actor, 'REQUEST_CANCEL') && (
-              <button
-                className="button danger-outline full-button"
-                disabled={action.busy}
-                onClick={async () => {
-                  if (
-                    await confirm(
-                      'Hủy yêu cầu này?',
-                      'Yêu cầu sẽ chuyển sang Đã hủy và không thể gửi lại. Hồ sơ vẫn được lưu trong lịch sử.',
-                    )
-                  )
-                    action.run(async () => {
-                      await api('requests/' + id + '/cancel', 'POST');
-                      resource.reload();
-                    }, 'Đã hủy yêu cầu.');
-                }}
-              >
-                Hủy yêu cầu
+            {reviewer && r.status === 'PENDING' && can(actor, 'REQUEST_RETURN') && (
+              <button className="button full-button" onClick={() => setDecision('RETURNED')}>
+                Trả để bổ sung
               </button>
             )}
+            {own &&
+              ['DRAFT', 'PENDING', 'RETURNED'].includes(r.status) &&
+              can(actor, 'REQUEST_CANCEL') && (
+                <button
+                  className="button danger-outline full-button"
+                  disabled={action.busy}
+                  onClick={async () => {
+                    if (
+                      await confirm(
+                        'Hủy yêu cầu này?',
+                        'Yêu cầu sẽ chuyển sang Đã hủy và không thể gửi lại. Hồ sơ vẫn được lưu trong lịch sử.',
+                      )
+                    )
+                      action.run(async () => {
+                        await api('requests/' + id + '/cancel', 'POST');
+                        resource.reload();
+                      }, 'Đã hủy yêu cầu.');
+                  }}
+                >
+                  Hủy yêu cầu
+                </button>
+              )}
             {r.status === 'REJECTED' && own && (
               <p className="helper">
                 Đơn này được giữ nguyên. Bạn có thể tạo đơn mới từ nội dung cũ để bổ sung và gửi
@@ -705,9 +863,17 @@ export function RequestDetail({ id }: { id: string }) {
           </section>
         </aside>
       </div>
+      <SubmissionHistory request={r} />
+      <RequestCollaboration request={r} onChanged={resource.reload} />
       {decision && (
         <Modal
-          title={decision === 'APPROVED' ? 'Phê duyệt yêu cầu' : 'Từ chối yêu cầu'}
+          title={
+            decision === 'APPROVED'
+              ? 'Đồng ý bước phê duyệt'
+              : decision === 'RETURNED'
+                ? 'Trả đơn để bổ sung'
+                : 'Từ chối nhiệm vụ'
+          }
           onClose={() => {
             if (!action.busy) setDecision(null);
           }}
@@ -715,7 +881,9 @@ export function RequestDetail({ id }: { id: string }) {
           <p className="modal-description">
             {r.request_code} · {r.requester_name}
             <br />
-            Quyết định sẽ được gửi đến người đề nghị và lưu vào lịch sử.
+            {decision === 'RETURNED'
+              ? 'Người gửi sẽ bổ sung rồi gửi lại từ bước đầu. Lịch sử và phiên bản quy trình được giữ.'
+              : `Nhiệm vụ: ${task?.step_name || ''}. Kết quả được kết hợp theo quy tắc của bước và lưu vào lịch sử.`}
           </p>
           <form
             onSubmit={async (e) => {
@@ -723,10 +891,20 @@ export function RequestDetail({ id }: { id: string }) {
               if (
                 await action.run(
                   async () => {
-                    await api('requests/' + id + '/decision', 'POST', { decision, comment });
+                    await api('requests/' + id + '/decision', 'POST', {
+                      decision,
+                      comment,
+                      taskId: task?.id,
+                      expectedRevision: r.revision,
+                      idempotencyKey: crypto.randomUUID(),
+                    });
                     resource.reload();
                   },
-                  decision === 'APPROVED' ? 'Đã phê duyệt yêu cầu.' : 'Đã từ chối yêu cầu.',
+                  decision === 'APPROVED'
+                    ? 'Đã đồng ý nhiệm vụ.'
+                    : decision === 'RETURNED'
+                      ? 'Đã trả đơn để bổ sung.'
+                      : 'Đã từ chối nhiệm vụ.',
                 )
               ) {
                 setDecision(null);
@@ -735,10 +913,10 @@ export function RequestDetail({ id }: { id: string }) {
             }}
           >
             <label className="field-label">
-              Nhận xét {decision === 'REJECTED' ? '*' : '(không bắt buộc)'}
+              Nhận xét {decision !== 'APPROVED' ? '*' : '(không bắt buộc)'}
               <textarea
                 autoFocus
-                required={decision === 'REJECTED'}
+                required={decision !== 'APPROVED'}
                 maxLength={2000}
                 rows={4}
                 value={comment}
@@ -766,7 +944,12 @@ export function RequestDetail({ id }: { id: string }) {
               >
                 {action.busy
                   ? 'Đang xử lý…'
-                  : 'Xác nhận ' + (decision === 'APPROVED' ? 'phê duyệt' : 'từ chối')}
+                  : 'Xác nhận ' +
+                    (decision === 'APPROVED'
+                      ? 'đồng ý'
+                      : decision === 'RETURNED'
+                        ? 'trả bổ sung'
+                        : 'từ chối')}
               </button>
             </div>
           </form>

@@ -44,8 +44,15 @@ export class AdminService {
       password = str(b.password, 'Mật khẩu', 200);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 10)
       throw new BadRequestException('Email không hợp lệ hoặc mật khẩu ngắn hơn 10 ký tự.');
-    const u = await this.db.prisma.users.create({data:{full_name:name,email,password_hash:await hashPassword(password),status:'INACTIVE'}});
-    return {id:u.id,full_name:u.full_name,email:u.email,status:u.status};
+    const u = await this.db.prisma.users.create({
+      data: {
+        full_name: name,
+        email,
+        password_hash: await hashPassword(password),
+        status: 'INACTIVE',
+      },
+    });
+    return { id: u.id, full_name: u.full_name, email: u.email, status: u.status };
   }
   async userStatus(a: Actor, id: string, b: any) {
     requirePermission(a, 'USER_MANAGE');
@@ -53,14 +60,38 @@ export class AdminService {
     const status = choice(b.status, ['ACTIVE', 'INACTIVE', 'LOCKED'], 'Trạng thái');
     if (id === a.userId && status !== 'ACTIVE')
       throw new ConflictException('Không thể khóa tài khoản đang sử dụng.');
-    if (status !== 'ACTIVE' && (await this.db.query("SELECT 1 FROM form_templates f JOIN employee_assignments ea ON ea.id=f.reviewer_assignment_id WHERE ea.user_id=$1 AND f.status='PENDING_REVIEW' LIMIT 1",[id])).length)
+    if (
+      status !== 'ACTIVE' &&
+      (
+        await this.db.query(
+          "SELECT 1 FROM form_templates f JOIN employee_assignments ea ON ea.id=f.reviewer_assignment_id WHERE ea.user_id=$1 AND f.status='PENDING_REVIEW' LIMIT 1",
+          [id],
+        )
+      ).length
+    )
       throw new ConflictException('Cần xử lý hết mẫu chờ thẩm định trước khi khóa tài khoản.');
+    if (
+      status !== 'ACTIVE' &&
+      (
+        await this.db.query(
+          "SELECT 1 FROM approval_tasks t JOIN employee_assignments ea ON ea.id=t.assignee_assignment_id WHERE ea.user_id=$1 AND t.status='PENDING' LIMIT 1",
+          [id],
+        )
+      ).length
+    )
+      throw new ConflictException('Cần xử lý hết nhiệm vụ duyệt trước khi khóa tài khoản.');
     if (status === 'ACTIVE') {
-      const [ready] = await this.db.query(`SELECT EXISTS(SELECT 1 FROM employee_assignments a JOIN role_assignments ra ON ra.employee_assignment_id=a.id AND ra.revoked_at IS NULL AND ra.valid_from<=now() AND (ra.valid_until IS NULL OR ra.valid_until>now()) JOIN system_roles sr ON sr.id=ra.system_role_id AND sr.is_active JOIN positions p ON p.id=a.position_id AND p.status='ACTIVE' JOIN organizational_units ou ON ou.id=a.organizational_unit_id AND ou.status='ACTIVE' WHERE a.user_id=$1 AND a.started_at<=now() AND (a.ended_at IS NULL OR a.ended_at>now())) AS ready`,[id]);
-      if (!ready?.ready) throw new ConflictException('Cần phân công và cấp ít nhất một vai trò trước khi kích hoạt.');
+      const [ready] = await this.db.query(
+        `SELECT EXISTS(SELECT 1 FROM employee_assignments a JOIN role_assignments ra ON ra.employee_assignment_id=a.id AND ra.revoked_at IS NULL AND ra.valid_from<=now() AND (ra.valid_until IS NULL OR ra.valid_until>now()) JOIN system_roles sr ON sr.id=ra.system_role_id AND sr.is_active JOIN positions p ON p.id=a.position_id AND p.status='ACTIVE' JOIN organizational_units ou ON ou.id=a.organizational_unit_id AND ou.status='ACTIVE' WHERE a.user_id=$1 AND a.started_at<=now() AND (a.ended_at IS NULL OR a.ended_at>now())) AS ready`,
+        [id],
+      );
+      if (!ready?.ready)
+        throw new ConflictException(
+          'Cần phân công và cấp ít nhất một vai trò trước khi kích hoạt.',
+        );
     }
-    if (!(await this.db.prisma.users.findUnique({where:{id}}))) throw new NotFoundException();
-    await this.db.prisma.users.update({where:{id},data:{status}});
+    if (!(await this.db.prisma.users.findUnique({ where: { id } }))) throw new NotFoundException();
+    await this.db.prisma.users.update({ where: { id }, data: { status } });
     if (status !== 'ACTIVE') await this.db.query('DELETE FROM sessions WHERE user_id=$1', [id]);
     return { ok: true };
   }
@@ -73,15 +104,25 @@ export class AdminService {
       parent = b.parentId ? uuid(b.parentId) : null;
     return this.db.transaction(async (c) => {
       await c.query('SELECT pg_advisory_xact_lock(7364522)');
-      const expectedParent: Record<string,string[]> = {
-        COMPANY: [], DIVISION: ['COMPANY'], DEPARTMENT: ['COMPANY','DIVISION'], TEAM: ['DEPARTMENT'],
+      const expectedParent: Record<string, string[]> = {
+        COMPANY: [],
+        DIVISION: ['COMPANY'],
+        DEPARTMENT: ['COMPANY', 'DIVISION'],
+        TEAM: ['DEPARTMENT'],
       };
       if (type === 'COMPANY') {
         if (parent) throw new BadRequestException('Công ty không có đơn vị cấp trên.');
-        if (!id && (await c.query("SELECT 1 FROM organizational_units WHERE type='COMPANY' LIMIT 1")).rowCount)
+        if (
+          !id &&
+          (await c.query("SELECT 1 FROM organizational_units WHERE type='COMPANY' LIMIT 1"))
+            .rowCount
+        )
           throw new ConflictException('Doanh nghiệp đã có đơn vị công ty.');
       } else {
-        const [p] = parent ? (await c.query('SELECT type,status FROM organizational_units WHERE id=$1',[parent])).rows : [];
+        const [p] = parent
+          ? (await c.query('SELECT type,status FROM organizational_units WHERE id=$1', [parent]))
+              .rows
+          : [];
         if (!p || p.status !== 'ACTIVE' || !expectedParent[type].includes(p.type))
           throw new BadRequestException('Đơn vị cấp trên không phù hợp với cấp tổ chức đã chọn.');
       }
@@ -90,9 +131,14 @@ export class AdminService {
         const exists = (await c.query('SELECT 1 FROM organizational_units WHERE id=$1', [id]))
           .rowCount;
         if (!exists) throw new NotFoundException();
-        if ((await c.query('SELECT 1 FROM organizational_units WHERE parent_id=$1 LIMIT 1',[id])).rowCount) {
-          const [old] = (await c.query('SELECT type FROM organizational_units WHERE id=$1',[id])).rows;
-          if (old.type !== type) throw new ConflictException('Không thể đổi loại đơn vị đang có cấp dưới.');
+        if (
+          (await c.query('SELECT 1 FROM organizational_units WHERE parent_id=$1 LIMIT 1', [id]))
+            .rowCount
+        ) {
+          const [old] = (await c.query('SELECT type FROM organizational_units WHERE id=$1', [id]))
+            .rows;
+          if (old.type !== type)
+            throw new ConflictException('Không thể đổi loại đơn vị đang có cấp dưới.');
         }
         if (parent) {
           const cycle = (
@@ -172,8 +218,12 @@ export class AdminService {
       type = choice(b.type ?? 'REGULAR', ['REGULAR', 'ACTING', 'SECONDMENT'], 'Loại phân công');
     return this.db.transaction(async (c) => {
       if (
-        !(await c.query("SELECT 1 FROM users WHERE id=$1 AND status IN ('ACTIVE','INACTIVE') FOR UPDATE", [user]))
-          .rowCount
+        !(
+          await c.query(
+            "SELECT 1 FROM users WHERE id=$1 AND status IN ('ACTIVE','INACTIVE') FOR UPDATE",
+            [user],
+          )
+        ).rowCount
       )
         throw new BadRequestException('Nhân sự chưa hoạt động.');
       if (
@@ -214,7 +264,10 @@ export class AdminService {
           [user, unit, position, manager, primary, head, type],
         )
       ).rows[0];
-      await c.query("INSERT INTO role_assignments(employee_assignment_id,system_role_id,scope_type) SELECT $1,id,'ORGANIZATIONAL_UNIT' FROM system_roles WHERE code='MEMBER'",[assignment.id]);
+      await c.query(
+        "INSERT INTO role_assignments(employee_assignment_id,system_role_id,scope_type) SELECT $1,id,'ORGANIZATIONAL_UNIT' FROM system_roles WHERE code='MEMBER'",
+        [assignment.id],
+      );
       return assignment;
     });
   }
@@ -229,12 +282,21 @@ export class AdminService {
       ).rows;
       if (!ea) throw new NotFoundException();
       if (ea.ended_at) throw new ConflictException('Phân công đã kết thúc.');
-      if ((await c.query("SELECT 1 FROM form_templates WHERE reviewer_assignment_id=$1 AND status='PENDING_REVIEW' LIMIT 1",[id])).rowCount)
-        throw new ConflictException('Cần xử lý hết mẫu chờ thẩm định trước khi kết thúc phân công.');
       if (
         (
           await c.query(
-            "SELECT 1 FROM requests WHERE approver_assignment_id=$1 AND status='PENDING' LIMIT 1",
+            "SELECT 1 FROM form_templates WHERE reviewer_assignment_id=$1 AND status='PENDING_REVIEW' LIMIT 1",
+            [id],
+          )
+        ).rowCount
+      )
+        throw new ConflictException(
+          'Cần xử lý hết mẫu chờ thẩm định trước khi kết thúc phân công.',
+        );
+      if (
+        (
+          await c.query(
+            "SELECT 1 FROM approval_tasks WHERE assignee_assignment_id=$1 AND status='PENDING' LIMIT 1",
             [id],
           )
         ).rowCount
@@ -283,7 +345,10 @@ export class AdminService {
       throw new BadRequestException('Phân công không hoạt động.');
     const [r] = await this.db.query('SELECT * FROM system_roles WHERE id=$1 AND is_active', [role]);
     if (!r) throw new BadRequestException('Vai trò không hoạt động.');
-    if (['SYSTEM_ADMIN', 'WORKFLOW_MANAGER','FORM_PUBLISHER'].includes(r.code) && scope !== 'ORGANIZATION')
+    if (
+      ['SYSTEM_ADMIN', 'WORKFLOW_MANAGER', 'FORM_PUBLISHER'].includes(r.code) &&
+      scope !== 'ORGANIZATION'
+    )
       throw new BadRequestException('Vai trò quản trị cần phạm vi toàn tổ chức.');
     return this.db.transaction(async (c) => {
       await c.query('SELECT id FROM employee_assignments WHERE id=$1 FOR UPDATE', [assignment]);
@@ -309,13 +374,31 @@ export class AdminService {
     if (!ra) throw new NotFoundException();
     if (ra.employee_assignment_id === a.assignmentId && ra.code === 'SYSTEM_ADMIN')
       throw new ConflictException('Không thể thu hồi quyền quản trị đang sử dụng.');
-    if ((await this.db.query("SELECT 1 FROM role_permissions rp JOIN permissions p ON p.id=rp.permission_id WHERE rp.system_role_id=$1 AND p.code='FORM_REVIEW'",[ra.system_role_id])).length && (await this.db.query("SELECT 1 FROM form_templates WHERE reviewer_assignment_id=$1 AND status='PENDING_REVIEW' LIMIT 1",[ra.employee_assignment_id])).length)
-      throw new ConflictException('Người này còn mẫu chờ thẩm định.');
     if (
-      ra.code === 'APPROVER' &&
       (
         await this.db.query(
-          "SELECT 1 FROM requests WHERE approver_assignment_id=$1 AND status='PENDING' LIMIT 1",
+          "SELECT 1 FROM role_permissions rp JOIN permissions p ON p.id=rp.permission_id WHERE rp.system_role_id=$1 AND p.code='FORM_REVIEW'",
+          [ra.system_role_id],
+        )
+      ).length &&
+      (
+        await this.db.query(
+          "SELECT 1 FROM form_templates WHERE reviewer_assignment_id=$1 AND status='PENDING_REVIEW' LIMIT 1",
+          [ra.employee_assignment_id],
+        )
+      ).length
+    )
+      throw new ConflictException('Người này còn mẫu chờ thẩm định.');
+    if (
+      (
+        await this.db.query(
+          "SELECT 1 FROM role_permissions rp JOIN permissions p ON p.id=rp.permission_id WHERE rp.system_role_id=$1 AND p.code IN ('REQUEST_APPROVE','REQUEST_REJECT','REQUEST_RETURN') LIMIT 1",
+          [ra.system_role_id],
+        )
+      ).length > 0 &&
+      (
+        await this.db.query(
+          "SELECT 1 FROM approval_tasks WHERE assignee_assignment_id=$1 AND status='PENDING' LIMIT 1",
           [ra.employee_assignment_id],
         )
       ).length

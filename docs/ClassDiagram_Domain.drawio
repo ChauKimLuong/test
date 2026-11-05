@@ -1,0 +1,947 @@
+<mxfile host="app.diagrams.net" agent="Codex" pages="6">
+  <diagram id="dm_all" name="00 · Toàn bộ">
+    <mxGraphModel dx="7837" dy="4158" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="6060" pageHeight="1590" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dm_all_title" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#173B68;strokeColor=none;fillColor=none;" value="FLOWPILOT  /  00 · TOÀN BỘ" vertex="1">
+          <mxGeometry height="45" width="1400" x="80" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="ZEFIRC55-HIceuIPGVky-5" edge="1" parent="1" source="dm_all_subtitle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="4809.999999999998" y="1350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_all_subtitle" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#52657B;strokeColor=none;fillColor=none;" value="Bản toàn cảnh để chỉnh sửa. Dùng các trang tiếp theo để đọc từng nhóm rõ hơn." vertex="1">
+          <mxGeometry height="32" width="1600" x="80" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="ZEFIRC55-HIceuIPGVky-4" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2080" y="898" as="sourcePoint" />
+            <mxPoint x="2280" y="1290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_all_User_attrs" connectable="0" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" value="- fullName: String&lt;br/&gt;- email: String&lt;br/&gt;- status: UserStatus" vertex="1">
+          <mxGeometry height="162" width="250" x="120" y="416" as="geometry" />
+        </mxCell>
+        <mxCell id="ZEFIRC55-HIceuIPGVky-3" connectable="0" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" value="- key: String&lt;br/&gt;- label: String&lt;br/&gt;- type: FieldType&lt;br/&gt;- isRequired: Boolean&lt;br/&gt;- order: Int&lt;br/&gt;- options: List&lt;String&gt;" vertex="1">
+          <mxGeometry height="162" width="250" x="1330" y="1231" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dm_overview" name="01 · Lộ trình">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2180" pageHeight="1100" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dm_overview_title" value="FLOWPILOT  /  01 · LỘ TRÌNH" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#173B68;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="45" width="1400" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_subtitle" value="Domain model: nối các quan hệ nghiệp vụ, không lặp ...Id. Hình thoi đặc là composition." style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#52657B;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="95" width="1600" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_User" value="User" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="150" y="240" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_User_attrs" value="- fullName: String&lt;br/&gt;- email: String&lt;br/&gt;- status: UserStatus" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_User" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_EmployeeAssignment" value="EmployeeAssignment" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="470" y="240" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_EmployeeAssignment_attrs" value="- type: AssignmentType&lt;br/&gt;- isPrimary: Boolean&lt;br/&gt;- startedAt: DateTime&lt;br/&gt;- endedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_EmployeeAssignment" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_FormTemplate" value="FormTemplate" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="800" y="240" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_FormTemplate_attrs" value="- code: String&lt;br/&gt;- name: String&lt;br/&gt;- description: String?&lt;br/&gt;- status: FormTemplateStatus&lt;br/&gt;- version: Int&lt;br/&gt;- submittedAt: DateTime?&lt;br/&gt;- reviewedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_FormTemplate" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_Workflow" value="Workflow" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="240" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_Workflow_attrs" value="- status: WorkflowStatus&lt;br/&gt;- draftDefinition: WorkflowDefinition?&lt;br/&gt;- updatedAt: DateTime&lt;br/&gt;- currentVersionNumber: Int" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_Workflow" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_WorkflowVersion" value="WorkflowVersion" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="240" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_WorkflowVersion_attrs" value="- version: Int&lt;br/&gt;- templateVersion: Int&lt;br/&gt;- changeNote: String?&lt;br/&gt;- publishedAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_WorkflowVersion" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_Request" value="Request" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="470" y="640" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_Request_attrs" value="- requestCode: String?&lt;br/&gt;- formData: FormAnswers&lt;br/&gt;- status: RequestStatus&lt;br/&gt;- createdAt: DateTime&lt;br/&gt;- submittedAt: DateTime?&lt;br/&gt;- decidedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_Request" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_WorkflowInstance" value="WorkflowInstance" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="800" y="640" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_WorkflowInstance_attrs" value="- status: InstanceStatus&lt;br/&gt;- currentStepIndex: Int&lt;br/&gt;- startedAt: DateTime&lt;br/&gt;- completedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_WorkflowInstance" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_WorkflowStepRun" value="WorkflowStepRun" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="640" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_WorkflowStepRun_attrs" value="- stepIndex: Int&lt;br/&gt;- status: StepRunStatus&lt;br/&gt;- conditionMatched: Boolean?&lt;br/&gt;- startedAt: DateTime?&lt;br/&gt;- completedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_WorkflowStepRun" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_ApprovalTask" value="ApprovalTask" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="640" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_ApprovalTask_attrs" value="- status: ApprovalTaskStatus&lt;br/&gt;- createdAt: DateTime&lt;br/&gt;- dueAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_ApprovalTask" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_TaskDecision" value="TaskDecision" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1740" y="640" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_TaskDecision_attrs" value="- decision: DecisionType&lt;br/&gt;- comment: String?&lt;br/&gt;- decidedAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_overview_TaskDecision" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e0" value="has" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_User" target="dm_overview_EmployeeAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e0_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e0">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e0_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e0">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e1" value="is used by" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_FormTemplate" target="dm_overview_Workflow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e1_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e1">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e1_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e1">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e2" value="publishes" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_Workflow" target="dm_overview_WorkflowVersion">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e2_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e2">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e2_b" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e2">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e3" value="submits" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_EmployeeAssignment" target="dm_overview_Request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e3_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e3">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e3_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e3">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e4" value="governs" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_Workflow" target="dm_overview_Request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e4_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e4">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e4_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e4">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e5" value="starts" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_Request" target="dm_overview_WorkflowInstance">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e5_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e5">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e5_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e5">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e6" value="runs steps" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_WorkflowInstance" target="dm_overview_WorkflowStepRun">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e6_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e6">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e6_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e6">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e7" value="assigns" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_WorkflowStepRun" target="dm_overview_ApprovalTask">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e7_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e7">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e7_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e7">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e8" value="records decision" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_overview_ApprovalTask" target="dm_overview_TaskDecision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_overview_e8_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e8">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_overview_e8_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_overview_e8">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dm_org" name="02 · Tổ chức và quyền">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1410" pageHeight="1110" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dm_org_title" value="FLOWPILOT  /  02 · TỔ CHỨC VÀ QUYỀN" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#173B68;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="45" width="1250" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_subtitle" value="Domain model: nối các quan hệ nghiệp vụ, không lặp ...Id. Hình thoi đặc là composition." style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#52657B;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="95" width="1250" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_User" value="User" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="130" y="200" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_User_attrs" value="- fullName: String&lt;br/&gt;- email: String&lt;br/&gt;- status: UserStatus" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_org_User" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_OrganizationalUnit" value="OrganizationalUnit" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="550" y="200" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_OrganizationalUnit_attrs" value="- name: String&lt;br/&gt;- code: String&lt;br/&gt;- type: OrganizationalUnitType&lt;br/&gt;- status: OrganizationalUnitStatus" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_org_OrganizationalUnit" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_Position" value="Position" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="980" y="200" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_Position_attrs" value="- name: String&lt;br/&gt;- code: String&lt;br/&gt;- rankLevel: Int&lt;br/&gt;- type: PositionType&lt;br/&gt;- status: PositionStatus" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_org_Position" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_EmployeeAssignment" value="EmployeeAssignment" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="550" y="490" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_EmployeeAssignment_attrs" value="- type: AssignmentType&lt;br/&gt;- isPrimary: Boolean&lt;br/&gt;- startedAt: DateTime&lt;br/&gt;- endedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_org_EmployeeAssignment" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_SystemRole" value="SystemRole" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="980" y="490" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_SystemRole_attrs" value="- code: SystemRoleCode&lt;br/&gt;- name: String&lt;br/&gt;- description: String?&lt;br/&gt;- isActive: Boolean" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_org_SystemRole" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_RoleAssignment" value="RoleAssignment" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="550" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_RoleAssignment_attrs" value="- scopeType: RoleScopeType&lt;br/&gt;- validFrom: DateTime&lt;br/&gt;- validUntil: DateTime?&lt;br/&gt;- revokedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_org_RoleAssignment" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_Permission" value="Permission" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="980" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_Permission_attrs" value="- code: PermissionCode&lt;br/&gt;- name: String&lt;br/&gt;- description: String?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_org_Permission" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_e0" value="has" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_User" target="dm_org_EmployeeAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_e0_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e0">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e0_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e0">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e1" value="contains" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_OrganizationalUnit" target="dm_org_EmployeeAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_e1_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e1">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e1_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e1">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e2" value="is held in" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_Position" target="dm_org_EmployeeAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_e2_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e2">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e2_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e2">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e3" value="parent / children" style="edgeStyle=orthogonalEdgeStyle;loopStyle=orthogonalLoopStyle;orthogonalLoop=1;rounded=0;html=1;exitX=0;exitY=0.35;entryX=0;entryY=0.72;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_OrganizationalUnit" target="dm_org_OrganizationalUnit">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="475" y="270" />
+              <mxPoint x="475" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e3_a" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e3">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e3_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e3">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e4" value="manager / subordinates" style="edgeStyle=orthogonalEdgeStyle;loopStyle=orthogonalLoopStyle;orthogonalLoop=1;rounded=0;html=1;exitX=0;exitY=0.35;entryX=0;entryY=0.72;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_EmployeeAssignment" target="dm_org_EmployeeAssignment">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="475" y="560" />
+              <mxPoint x="475" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e4_a" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e4">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e4_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e4">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e5" value="receives" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_EmployeeAssignment" target="dm_org_RoleAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_e5_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e5">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e5_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e5">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e6" value="is granted by" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_SystemRole" target="dm_org_RoleAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_e6_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e6">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e6_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e6">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e7" value="includes" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_org_SystemRole" target="dm_org_Permission">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_org_e7_a" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e7">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_org_e7_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_org_e7">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dm_form" name="03 · Mẫu và quy trình">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2310" pageHeight="1110" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dm_form_title" value="FLOWPILOT  /  03 · MẪU VÀ QUY TRÌNH" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#173B68;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="45" width="1400" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_subtitle" value="Domain model: nối các quan hệ nghiệp vụ, không lặp ...Id. Hình thoi đặc là composition." style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#52657B;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="95" width="1600" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormTemplate" value="FormTemplate" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="150" y="400" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormTemplate_attrs" value="- code: String&lt;br/&gt;- name: String&lt;br/&gt;- description: String?&lt;br/&gt;- status: FormTemplateStatus&lt;br/&gt;- version: Int&lt;br/&gt;- submittedAt: DateTime?&lt;br/&gt;- reviewedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_FormTemplate" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormField" value="FormField" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="150" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormField_attrs" value="- key: String&lt;br/&gt;- label: String&lt;br/&gt;- type: FieldType&lt;br/&gt;- isRequired: Boolean&lt;br/&gt;- order: Int&lt;br/&gt;- options: List&lt;String&gt;" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_FormField" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormTemplateRevision" value="FormTemplateRevision" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="430" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormTemplateRevision_attrs" value="- version: Int&lt;br/&gt;- snapshot: FormSnapshot&lt;br/&gt;- recordedAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_FormTemplateRevision" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormReviewEvent" value="FormReviewEvent" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="440" y="190" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_FormReviewEvent_attrs" value="- eventType: FormReviewEventType&lt;br/&gt;- comment: String?&lt;br/&gt;- occurredAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_FormReviewEvent" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_Workflow" value="Workflow" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="680" y="400" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_Workflow_attrs" value="- status: WorkflowStatus&lt;br/&gt;- draftDefinition: WorkflowDefinition?&lt;br/&gt;- updatedAt: DateTime&lt;br/&gt;- currentVersionNumber: Int" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_Workflow" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_WorkflowVersion" value="WorkflowVersion" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="400" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_WorkflowVersion_attrs" value="- version: Int&lt;br/&gt;- templateVersion: Int&lt;br/&gt;- changeNote: String?&lt;br/&gt;- publishedAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_WorkflowVersion" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_WorkflowStep" value="WorkflowStep" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1530" y="400" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_WorkflowStep_attrs" value="«value object»&lt;br/&gt;- key: String&lt;br/&gt;- name: String&lt;br/&gt;- order: Int&lt;br/&gt;- mode: StepMode" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_WorkflowStep" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_Selector" value="Selector" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1530" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_Selector_attrs" value="«value object»&lt;br/&gt;- type: SelectorType&lt;br/&gt;- level: Int?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_Selector" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_ConditionGroup" value="ConditionGroup" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_ConditionGroup_attrs" value="«value object»&lt;br/&gt;- mode: ConditionMode" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_ConditionGroup" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_Condition" value="Condition" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="730" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_Condition_attrs" value="«value object»&lt;br/&gt;- operator: ConditionOperator&lt;br/&gt;- value: ScalarValue" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_Condition" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_SlaPolicy" value="SlaPolicy" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1910" y="780" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_SlaPolicy_attrs" value="«value object»&lt;br/&gt;- minutes: Int&lt;br/&gt;- remindBeforeMinutes: Int" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_form_SlaPolicy" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e0" value="contains" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_FormTemplate" target="dm_form_FormField">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e0_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e0">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e0_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e0">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e1" value="has old revisions" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_FormTemplate" target="dm_form_FormTemplateRevision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e1_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e1">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e1_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e1">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e2" value="records review" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_FormTemplate" target="dm_form_FormReviewEvent">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e2_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e2">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e2_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e2">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e3" value="is used by" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_FormTemplate" target="dm_form_Workflow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e3_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e3">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e3_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e3">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e4" value="publishes" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_Workflow" target="dm_form_WorkflowVersion">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e4_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e4">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e4_b" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e4">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e5" value="defines" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_WorkflowVersion" target="dm_form_WorkflowStep">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e5_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e5">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e5_b" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e5">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e6" value="selects" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_WorkflowStep" target="dm_form_Selector">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e6_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e6">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e6_b" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e6">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e7" value="runs when" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_WorkflowStep" target="dm_form_ConditionGroup">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e7_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e7">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e7_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e7">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e8" value="contains" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_ConditionGroup" target="dm_form_Condition">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e8_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e8">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e8_b" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e8">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e9" value="has SLA" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_form_WorkflowStep" target="dm_form_SlaPolicy">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_form_e9_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e9">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_form_e9_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_form_e9">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dm_run" name="04 · Đơn và thực thi">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2120" pageHeight="990" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dm_run_title" value="FLOWPILOT  /  04 · ĐƠN VÀ THỰC THI" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#173B68;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="45" width="1400" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_subtitle" value="Domain model: nối các quan hệ nghiệp vụ, không lặp ...Id. Hình thoi đặc là composition." style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#52657B;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="95" width="1600" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_Request" value="Request" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="430" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_Request_attrs" value="- requestCode: String?&lt;br/&gt;- formData: FormAnswers&lt;br/&gt;- status: RequestStatus&lt;br/&gt;- createdAt: DateTime&lt;br/&gt;- submittedAt: DateTime?&lt;br/&gt;- decidedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_run_Request" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_WorkflowInstance" value="WorkflowInstance" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="530" y="430" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_WorkflowInstance_attrs" value="- status: InstanceStatus&lt;br/&gt;- currentStepIndex: Int&lt;br/&gt;- startedAt: DateTime&lt;br/&gt;- completedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_run_WorkflowInstance" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_WorkflowStepRun" value="WorkflowStepRun" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="920" y="430" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_WorkflowStepRun_attrs" value="- stepIndex: Int&lt;br/&gt;- status: StepRunStatus&lt;br/&gt;- conditionMatched: Boolean?&lt;br/&gt;- startedAt: DateTime?&lt;br/&gt;- completedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_run_WorkflowStepRun" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_ApprovalTask" value="ApprovalTask" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="430" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_ApprovalTask_attrs" value="- status: ApprovalTaskStatus&lt;br/&gt;- createdAt: DateTime&lt;br/&gt;- dueAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_run_ApprovalTask" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_TaskDecision" value="TaskDecision" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1700" y="430" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_TaskDecision_attrs" value="- decision: DecisionType&lt;br/&gt;- comment: String?&lt;br/&gt;- decidedAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_run_TaskDecision" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_e0" value="starts" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_run_Request" target="dm_run_WorkflowInstance">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_e0_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e0">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_run_e0_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e0">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_run_e1" value="runs steps" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_run_WorkflowInstance" target="dm_run_WorkflowStepRun">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_e1_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e1">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_run_e1_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e1">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_run_e2" value="assigns" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_run_WorkflowStepRun" target="dm_run_ApprovalTask">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_e2_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e2">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_run_e2_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e2">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_run_e3" value="records decision" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#344E70;strokeWidth=2.5;startArrow=diamond;startFill=1;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_run_ApprovalTask" target="dm_run_TaskDecision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_run_e3_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e3">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_run_e3_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_run_e3">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="dm_bridge" name="05 · Quan hệ nối phần">
+    <mxGraphModel dx="0" dy="0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2060" pageHeight="1380" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dm_bridge_title" value="FLOWPILOT  /  05 · QUAN HỆ NỐI PHẦN" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#173B68;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="45" width="1400" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_subtitle" value="Domain model: nối các quan hệ nghiệp vụ, không lặp ...Id. Hình thoi đặc là composition." style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#52657B;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="80" y="95" width="1600" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_EmployeeAssignment" value="EmployeeAssignment" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="220" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_EmployeeAssignment_attrs" value="- type: AssignmentType&lt;br/&gt;- isPrimary: Boolean&lt;br/&gt;- startedAt: DateTime&lt;br/&gt;- endedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_EmployeeAssignment" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_SystemRole" value="SystemRole" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="440" y="220" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_SystemRole_attrs" value="- code: SystemRoleCode&lt;br/&gt;- name: String&lt;br/&gt;- description: String?&lt;br/&gt;- isActive: Boolean" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_SystemRole" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_FormField" value="FormField" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="740" y="220" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_FormField_attrs" value="- key: String&lt;br/&gt;- label: String&lt;br/&gt;- type: FieldType&lt;br/&gt;- isRequired: Boolean&lt;br/&gt;- order: Int&lt;br/&gt;- options: List&lt;String&gt;" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_FormField" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Workflow" value="Workflow" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="220" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Workflow_attrs" value="- status: WorkflowStatus&lt;br/&gt;- draftDefinition: WorkflowDefinition?&lt;br/&gt;- updatedAt: DateTime&lt;br/&gt;- currentVersionNumber: Int" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_Workflow" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowVersion" value="WorkflowVersion" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="220" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowVersion_attrs" value="- version: Int&lt;br/&gt;- templateVersion: Int&lt;br/&gt;- changeNote: String?&lt;br/&gt;- publishedAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_WorkflowVersion" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowStep" value="WorkflowStep" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1640" y="220" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowStep_attrs" value="«value object»&lt;br/&gt;- key: String&lt;br/&gt;- name: String&lt;br/&gt;- order: Int&lt;br/&gt;- mode: StepMode" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_WorkflowStep" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Selector" value="Selector" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="440" y="560" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Selector_attrs" value="«value object»&lt;br/&gt;- type: SelectorType&lt;br/&gt;- level: Int?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_Selector" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Condition" value="Condition" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="740" y="560" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Condition_attrs" value="«value object»&lt;br/&gt;- operator: ConditionOperator&lt;br/&gt;- value: ScalarValue" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_Condition" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_SlaPolicy" value="SlaPolicy" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#F1EBFB;swimlaneFillColor=#FFFFFF;strokeColor=#6B52A3;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="560" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_SlaPolicy_attrs" value="«value object»&lt;br/&gt;- minutes: Int&lt;br/&gt;- remindBeforeMinutes: Int" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_SlaPolicy" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Position" value="Position" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E7F2FC;swimlaneFillColor=#FFFFFF;strokeColor=#28679C;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="560" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Position_attrs" value="- name: String&lt;br/&gt;- code: String&lt;br/&gt;- rankLevel: Int&lt;br/&gt;- type: PositionType&lt;br/&gt;- status: PositionStatus" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_Position" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Request" value="Request" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="140" y="960" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_Request_attrs" value="- requestCode: String?&lt;br/&gt;- formData: FormAnswers&lt;br/&gt;- status: RequestStatus&lt;br/&gt;- createdAt: DateTime&lt;br/&gt;- submittedAt: DateTime?&lt;br/&gt;- decidedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_Request" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowInstance" value="WorkflowInstance" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="440" y="960" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowInstance_attrs" value="- status: InstanceStatus&lt;br/&gt;- currentStepIndex: Int&lt;br/&gt;- startedAt: DateTime&lt;br/&gt;- completedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_WorkflowInstance" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowStepRun" value="WorkflowStepRun" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="740" y="960" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_WorkflowStepRun_attrs" value="- stepIndex: Int&lt;br/&gt;- status: StepRunStatus&lt;br/&gt;- conditionMatched: Boolean?&lt;br/&gt;- startedAt: DateTime?&lt;br/&gt;- completedAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_WorkflowStepRun" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_ApprovalTask" value="ApprovalTask" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="960" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_ApprovalTask_attrs" value="- status: ApprovalTaskStatus&lt;br/&gt;- createdAt: DateTime&lt;br/&gt;- dueAt: DateTime?" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_ApprovalTask" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_TaskDecision" value="TaskDecision" style="swimlane;html=1;horizontal=1;startSize=34;fillColor=#E5F5EF;swimlaneFillColor=#FFFFFF;strokeColor=#187B64;strokeWidth=2;fontColor=#17283E;fontSize=15;fontStyle=1;rounded=0;container=1;collapsible=0;whiteSpace=wrap;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="960" width="250" height="196" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_TaskDecision_attrs" value="- decision: DecisionType&lt;br/&gt;- comment: String?&lt;br/&gt;- decidedAt: DateTime" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;fontColor=#26364D;strokeColor=none;fillColor=none;connectable=0;" vertex="1" parent="dm_bridge_TaskDecision" connectable="0">
+          <mxGeometry x="0" y="34" width="250" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e0" value="submits" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_EmployeeAssignment" target="dm_bridge_Request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e0_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e0">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e0_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e0">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e1" value="governs" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_Workflow" target="dm_bridge_Request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e1_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e1">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e1_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e1">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e2" value="is pinned by" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_WorkflowVersion" target="dm_bridge_WorkflowInstance">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e2_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e2">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e2_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e2">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e3" value="is executed as" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_WorkflowStep" target="dm_bridge_WorkflowStepRun">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e3_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e3">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e3_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e3">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e4" value="is assigned" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_EmployeeAssignment" target="dm_bridge_ApprovalTask">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e4_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e4">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e4_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e4">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e5" value="decides" style="edgeStyle=none;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_EmployeeAssignment" target="dm_bridge_TaskDecision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e5_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e5">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e5_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e5">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e6" value="is tested by" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_FormField" target="dm_bridge_Condition">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e6_a" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e6">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e6_b" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e6">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e7" value="targets position" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_Selector" target="dm_bridge_Position">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e7_a" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e7">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e7_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e7">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e8" value="targets assignment" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_Selector" target="dm_bridge_EmployeeAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e8_a" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e8">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e8_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e8">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e9" value="targets role" style="edgeStyle=none;rounded=0;html=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_Selector" target="dm_bridge_SystemRole">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e9_a" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e9">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e9_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e9">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e10" value="escalates to" style="edgeStyle=none;rounded=0;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitPerimeter=1;entryPerimeter=1;strokeColor=#61758E;strokeWidth=2;startArrow=none;startFill=0;endArrow=none;fontSize=12;fontColor=#273D57;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="dm_bridge_SlaPolicy" target="dm_bridge_EmployeeAssignment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dm_bridge_e10_a" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e10">
+          <mxGeometry x="-0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dm_bridge_e10_b" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;movable=1;fontSize=12;fontStyle=1;fontColor=#163454;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="dm_bridge_e10">
+          <mxGeometry x="0.84" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

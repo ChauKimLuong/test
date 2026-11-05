@@ -20,8 +20,18 @@ export type workflowsModel = runtime.Types.Result.DefaultSelection<Prisma.$workf
 
 export type AggregateWorkflows = {
   _count: WorkflowsCountAggregateOutputType | null
+  _avg: WorkflowsAvgAggregateOutputType | null
+  _sum: WorkflowsSumAggregateOutputType | null
   _min: WorkflowsMinAggregateOutputType | null
   _max: WorkflowsMaxAggregateOutputType | null
+}
+
+export type WorkflowsAvgAggregateOutputType = {
+  draft_revision: number | null
+}
+
+export type WorkflowsSumAggregateOutputType = {
+  draft_revision: number | null
 }
 
 export type WorkflowsMinAggregateOutputType = {
@@ -31,6 +41,8 @@ export type WorkflowsMinAggregateOutputType = {
   target_position_id: string | null
   status: string | null
   updated_at: Date | null
+  draft_revision: number | null
+  published_version_id: string | null
 }
 
 export type WorkflowsMaxAggregateOutputType = {
@@ -40,6 +52,8 @@ export type WorkflowsMaxAggregateOutputType = {
   target_position_id: string | null
   status: string | null
   updated_at: Date | null
+  draft_revision: number | null
+  published_version_id: string | null
 }
 
 export type WorkflowsCountAggregateOutputType = {
@@ -49,9 +63,20 @@ export type WorkflowsCountAggregateOutputType = {
   target_position_id: number
   status: number
   updated_at: number
+  draft_definition: number
+  draft_revision: number
+  published_version_id: number
   _all: number
 }
 
+
+export type WorkflowsAvgAggregateInputType = {
+  draft_revision?: true
+}
+
+export type WorkflowsSumAggregateInputType = {
+  draft_revision?: true
+}
 
 export type WorkflowsMinAggregateInputType = {
   id?: true
@@ -60,6 +85,8 @@ export type WorkflowsMinAggregateInputType = {
   target_position_id?: true
   status?: true
   updated_at?: true
+  draft_revision?: true
+  published_version_id?: true
 }
 
 export type WorkflowsMaxAggregateInputType = {
@@ -69,6 +96,8 @@ export type WorkflowsMaxAggregateInputType = {
   target_position_id?: true
   status?: true
   updated_at?: true
+  draft_revision?: true
+  published_version_id?: true
 }
 
 export type WorkflowsCountAggregateInputType = {
@@ -78,6 +107,9 @@ export type WorkflowsCountAggregateInputType = {
   target_position_id?: true
   status?: true
   updated_at?: true
+  draft_definition?: true
+  draft_revision?: true
+  published_version_id?: true
   _all?: true
 }
 
@@ -119,6 +151,18 @@ export type WorkflowsAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: WorkflowsAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: WorkflowsSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: WorkflowsMinAggregateInputType
@@ -149,6 +193,8 @@ export type workflowsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: WorkflowsCountAggregateInputType | true
+  _avg?: WorkflowsAvgAggregateInputType
+  _sum?: WorkflowsSumAggregateInputType
   _min?: WorkflowsMinAggregateInputType
   _max?: WorkflowsMaxAggregateInputType
 }
@@ -160,7 +206,12 @@ export type WorkflowsGroupByOutputType = {
   target_position_id: string | null
   status: string
   updated_at: Date
+  draft_definition: runtime.JsonValue | null
+  draft_revision: number
+  published_version_id: string | null
   _count: WorkflowsCountAggregateOutputType | null
+  _avg: WorkflowsAvgAggregateOutputType | null
+  _sum: WorkflowsSumAggregateOutputType | null
   _min: WorkflowsMinAggregateOutputType | null
   _max: WorkflowsMaxAggregateOutputType | null
 }
@@ -190,8 +241,13 @@ export type workflowsWhereInput = {
   target_position_id?: Prisma.UuidNullableFilter<"workflows"> | string | null
   status?: Prisma.StringFilter<"workflows"> | string
   updated_at?: Prisma.DateTimeFilter<"workflows"> | Date | string
+  draft_definition?: Prisma.JsonNullableFilter<"workflows">
+  draft_revision?: Prisma.IntFilter<"workflows"> | number
+  published_version_id?: Prisma.UuidNullableFilter<"workflows"> | string | null
   audit_logs?: Prisma.Audit_logsListRelationFilter
   requests?: Prisma.RequestsListRelationFilter
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.Workflow_versionsListRelationFilter
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.XOR<Prisma.Workflow_versionsNullableScalarRelationFilter, Prisma.workflow_versionsWhereInput> | null
   form_templates?: Prisma.XOR<Prisma.Form_templatesScalarRelationFilter, Prisma.form_templatesWhereInput>
   positions?: Prisma.XOR<Prisma.PositionsNullableScalarRelationFilter, Prisma.positionsWhereInput> | null
 }
@@ -203,8 +259,13 @@ export type workflowsOrderByWithRelationInput = {
   target_position_id?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  draft_definition?: Prisma.SortOrderInput | Prisma.SortOrder
+  draft_revision?: Prisma.SortOrder
+  published_version_id?: Prisma.SortOrderInput | Prisma.SortOrder
   audit_logs?: Prisma.audit_logsOrderByRelationAggregateInput
   requests?: Prisma.requestsOrderByRelationAggregateInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsOrderByRelationAggregateInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsOrderByWithRelationInput
   form_templates?: Prisma.form_templatesOrderByWithRelationInput
   positions?: Prisma.positionsOrderByWithRelationInput
 }
@@ -212,6 +273,7 @@ export type workflowsOrderByWithRelationInput = {
 export type workflowsWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   form_template_id?: string
+  id_published_version_id?: Prisma.workflowsIdPublished_version_idCompoundUniqueInput
   AND?: Prisma.workflowsWhereInput | Prisma.workflowsWhereInput[]
   OR?: Prisma.workflowsWhereInput[]
   NOT?: Prisma.workflowsWhereInput | Prisma.workflowsWhereInput[]
@@ -219,11 +281,16 @@ export type workflowsWhereUniqueInput = Prisma.AtLeast<{
   target_position_id?: Prisma.UuidNullableFilter<"workflows"> | string | null
   status?: Prisma.StringFilter<"workflows"> | string
   updated_at?: Prisma.DateTimeFilter<"workflows"> | Date | string
+  draft_definition?: Prisma.JsonNullableFilter<"workflows">
+  draft_revision?: Prisma.IntFilter<"workflows"> | number
+  published_version_id?: Prisma.UuidNullableFilter<"workflows"> | string | null
   audit_logs?: Prisma.Audit_logsListRelationFilter
   requests?: Prisma.RequestsListRelationFilter
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.Workflow_versionsListRelationFilter
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.XOR<Prisma.Workflow_versionsNullableScalarRelationFilter, Prisma.workflow_versionsWhereInput> | null
   form_templates?: Prisma.XOR<Prisma.Form_templatesScalarRelationFilter, Prisma.form_templatesWhereInput>
   positions?: Prisma.XOR<Prisma.PositionsNullableScalarRelationFilter, Prisma.positionsWhereInput> | null
-}, "id" | "form_template_id">
+}, "id" | "form_template_id" | "id_published_version_id">
 
 export type workflowsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -232,9 +299,14 @@ export type workflowsOrderByWithAggregationInput = {
   target_position_id?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  draft_definition?: Prisma.SortOrderInput | Prisma.SortOrder
+  draft_revision?: Prisma.SortOrder
+  published_version_id?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.workflowsCountOrderByAggregateInput
+  _avg?: Prisma.workflowsAvgOrderByAggregateInput
   _max?: Prisma.workflowsMaxOrderByAggregateInput
   _min?: Prisma.workflowsMinOrderByAggregateInput
+  _sum?: Prisma.workflowsSumOrderByAggregateInput
 }
 
 export type workflowsScalarWhereWithAggregatesInput = {
@@ -247,15 +319,21 @@ export type workflowsScalarWhereWithAggregatesInput = {
   target_position_id?: Prisma.UuidNullableWithAggregatesFilter<"workflows"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"workflows"> | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"workflows"> | Date | string
+  draft_definition?: Prisma.JsonNullableWithAggregatesFilter<"workflows">
+  draft_revision?: Prisma.IntWithAggregatesFilter<"workflows"> | number
+  published_version_id?: Prisma.UuidNullableWithAggregatesFilter<"workflows"> | string | null
 }
 
 export type workflowsCreateInput = {
-  id?: string
   approver_type: string
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutWorkflowsInput
   requests?: Prisma.requestsCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsCreateNestedOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsInput
   form_templates: Prisma.form_templatesCreateNestedOneWithoutWorkflowsInput
   positions?: Prisma.positionsCreateNestedOneWithoutWorkflowsInput
 }
@@ -267,17 +345,24 @@ export type workflowsUncheckedCreateInput = {
   target_position_id?: string | null
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutWorkflowsInput
   requests?: Prisma.requestsUncheckedCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
 }
 
 export type workflowsUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
   audit_logs?: Prisma.audit_logsUpdateManyWithoutWorkflowsNestedInput
   requests?: Prisma.requestsUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsUpdateOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsNestedInput
   form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutWorkflowsNestedInput
   positions?: Prisma.positionsUpdateOneWithoutWorkflowsNestedInput
 }
@@ -289,8 +374,12 @@ export type workflowsUncheckedUpdateInput = {
   target_position_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutWorkflowsNestedInput
   requests?: Prisma.requestsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
 }
 
 export type workflowsCreateManyInput = {
@@ -300,13 +389,17 @@ export type workflowsCreateManyInput = {
   target_position_id?: string | null
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
 }
 
 export type workflowsUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type workflowsUncheckedUpdateManyInput = {
@@ -316,6 +409,9 @@ export type workflowsUncheckedUpdateManyInput = {
   target_position_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WorkflowsNullableScalarRelationFilter = {
@@ -338,6 +434,11 @@ export type WorkflowsScalarRelationFilter = {
   isNot?: Prisma.workflowsWhereInput
 }
 
+export type workflowsIdPublished_version_idCompoundUniqueInput = {
+  id: string
+  published_version_id: string
+}
+
 export type workflowsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   form_template_id?: Prisma.SortOrder
@@ -345,6 +446,13 @@ export type workflowsCountOrderByAggregateInput = {
   target_position_id?: Prisma.SortOrder
   status?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  draft_definition?: Prisma.SortOrder
+  draft_revision?: Prisma.SortOrder
+  published_version_id?: Prisma.SortOrder
+}
+
+export type workflowsAvgOrderByAggregateInput = {
+  draft_revision?: Prisma.SortOrder
 }
 
 export type workflowsMaxOrderByAggregateInput = {
@@ -354,6 +462,8 @@ export type workflowsMaxOrderByAggregateInput = {
   target_position_id?: Prisma.SortOrder
   status?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  draft_revision?: Prisma.SortOrder
+  published_version_id?: Prisma.SortOrder
 }
 
 export type workflowsMinOrderByAggregateInput = {
@@ -363,6 +473,12 @@ export type workflowsMinOrderByAggregateInput = {
   target_position_id?: Prisma.SortOrder
   status?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  draft_revision?: Prisma.SortOrder
+  published_version_id?: Prisma.SortOrder
+}
+
+export type workflowsSumOrderByAggregateInput = {
+  draft_revision?: Prisma.SortOrder
 }
 
 export type workflowsCreateNestedOneWithoutAudit_logsInput = {
@@ -469,12 +585,61 @@ export type workflowsUpdateOneRequiredWithoutRequestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.workflowsUpdateToOneWithWhereWithoutRequestsInput, Prisma.workflowsUpdateWithoutRequestsInput>, Prisma.workflowsUncheckedUpdateWithoutRequestsInput>
 }
 
+export type workflowsCreateNestedOneWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  create?: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>
+  connectOrCreate?: Prisma.workflowsCreateOrConnectWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput
+  connect?: Prisma.workflowsWhereUniqueInput
+}
+
+export type workflowsCreateNestedOneWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  create?: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+  connectOrCreate?: Prisma.workflowsCreateOrConnectWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput
+  connect?: Prisma.workflowsWhereUniqueInput
+}
+
+export type workflowsUncheckedCreateNestedOneWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  create?: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+  connectOrCreate?: Prisma.workflowsCreateOrConnectWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput
+  connect?: Prisma.workflowsWhereUniqueInput
+}
+
+export type workflowsUpdateOneRequiredWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsNestedInput = {
+  create?: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>
+  connectOrCreate?: Prisma.workflowsCreateOrConnectWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput
+  upsert?: Prisma.workflowsUpsertWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput
+  connect?: Prisma.workflowsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.workflowsUpdateToOneWithWhereWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput, Prisma.workflowsUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>, Prisma.workflowsUncheckedUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>
+}
+
+export type workflowsUpdateOneWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsNestedInput = {
+  create?: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+  connectOrCreate?: Prisma.workflowsCreateOrConnectWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput
+  upsert?: Prisma.workflowsUpsertWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput
+  disconnect?: Prisma.workflowsWhereInput | boolean
+  delete?: Prisma.workflowsWhereInput | boolean
+  connect?: Prisma.workflowsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.workflowsUpdateToOneWithWhereWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>, Prisma.workflowsUncheckedUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+}
+
+export type workflowsUncheckedUpdateOneWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsNestedInput = {
+  create?: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+  connectOrCreate?: Prisma.workflowsCreateOrConnectWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput
+  upsert?: Prisma.workflowsUpsertWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput
+  disconnect?: Prisma.workflowsWhereInput | boolean
+  delete?: Prisma.workflowsWhereInput | boolean
+  connect?: Prisma.workflowsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.workflowsUpdateToOneWithWhereWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>, Prisma.workflowsUncheckedUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+}
+
 export type workflowsCreateWithoutAudit_logsInput = {
-  id?: string
   approver_type: string
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
   requests?: Prisma.requestsCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsCreateNestedOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsInput
   form_templates: Prisma.form_templatesCreateNestedOneWithoutWorkflowsInput
   positions?: Prisma.positionsCreateNestedOneWithoutWorkflowsInput
 }
@@ -486,7 +651,11 @@ export type workflowsUncheckedCreateWithoutAudit_logsInput = {
   target_position_id?: string | null
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
   requests?: Prisma.requestsUncheckedCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
 }
 
 export type workflowsCreateOrConnectWithoutAudit_logsInput = {
@@ -506,11 +675,14 @@ export type workflowsUpdateToOneWithWhereWithoutAudit_logsInput = {
 }
 
 export type workflowsUpdateWithoutAudit_logsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
   requests?: Prisma.requestsUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsUpdateOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsNestedInput
   form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutWorkflowsNestedInput
   positions?: Prisma.positionsUpdateOneWithoutWorkflowsNestedInput
 }
@@ -522,16 +694,23 @@ export type workflowsUncheckedUpdateWithoutAudit_logsInput = {
   target_position_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requests?: Prisma.requestsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
 }
 
 export type workflowsCreateWithoutForm_templatesInput = {
-  id?: string
   approver_type: string
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutWorkflowsInput
   requests?: Prisma.requestsCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsCreateNestedOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsInput
   positions?: Prisma.positionsCreateNestedOneWithoutWorkflowsInput
 }
 
@@ -541,8 +720,12 @@ export type workflowsUncheckedCreateWithoutForm_templatesInput = {
   target_position_id?: string | null
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutWorkflowsInput
   requests?: Prisma.requestsUncheckedCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
 }
 
 export type workflowsCreateOrConnectWithoutForm_templatesInput = {
@@ -562,12 +745,15 @@ export type workflowsUpdateToOneWithWhereWithoutForm_templatesInput = {
 }
 
 export type workflowsUpdateWithoutForm_templatesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
   audit_logs?: Prisma.audit_logsUpdateManyWithoutWorkflowsNestedInput
   requests?: Prisma.requestsUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsUpdateOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsNestedInput
   positions?: Prisma.positionsUpdateOneWithoutWorkflowsNestedInput
 }
 
@@ -577,17 +763,24 @@ export type workflowsUncheckedUpdateWithoutForm_templatesInput = {
   target_position_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutWorkflowsNestedInput
   requests?: Prisma.requestsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
 }
 
 export type workflowsCreateWithoutPositionsInput = {
-  id?: string
   approver_type: string
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutWorkflowsInput
   requests?: Prisma.requestsCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsCreateNestedOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsInput
   form_templates: Prisma.form_templatesCreateNestedOneWithoutWorkflowsInput
 }
 
@@ -597,8 +790,12 @@ export type workflowsUncheckedCreateWithoutPositionsInput = {
   approver_type: string
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutWorkflowsInput
   requests?: Prisma.requestsUncheckedCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
 }
 
 export type workflowsCreateOrConnectWithoutPositionsInput = {
@@ -637,14 +834,20 @@ export type workflowsScalarWhereInput = {
   target_position_id?: Prisma.UuidNullableFilter<"workflows"> | string | null
   status?: Prisma.StringFilter<"workflows"> | string
   updated_at?: Prisma.DateTimeFilter<"workflows"> | Date | string
+  draft_definition?: Prisma.JsonNullableFilter<"workflows">
+  draft_revision?: Prisma.IntFilter<"workflows"> | number
+  published_version_id?: Prisma.UuidNullableFilter<"workflows"> | string | null
 }
 
 export type workflowsCreateWithoutRequestsInput = {
-  id?: string
   approver_type: string
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
   audit_logs?: Prisma.audit_logsCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsCreateNestedOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsInput
   form_templates: Prisma.form_templatesCreateNestedOneWithoutWorkflowsInput
   positions?: Prisma.positionsCreateNestedOneWithoutWorkflowsInput
 }
@@ -656,7 +859,11 @@ export type workflowsUncheckedCreateWithoutRequestsInput = {
   target_position_id?: string | null
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
   audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
 }
 
 export type workflowsCreateOrConnectWithoutRequestsInput = {
@@ -676,11 +883,14 @@ export type workflowsUpdateToOneWithWhereWithoutRequestsInput = {
 }
 
 export type workflowsUpdateWithoutRequestsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
   audit_logs?: Prisma.audit_logsUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsUpdateOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsNestedInput
   form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutWorkflowsNestedInput
   positions?: Prisma.positionsUpdateOneWithoutWorkflowsNestedInput
 }
@@ -692,7 +902,149 @@ export type workflowsUncheckedUpdateWithoutRequestsInput = {
   target_position_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
+}
+
+export type workflowsCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  approver_type: string
+  status?: string
+  updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  audit_logs?: Prisma.audit_logsCreateNestedManyWithoutWorkflowsInput
+  requests?: Prisma.requestsCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsCreateNestedOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsInput
+  form_templates: Prisma.form_templatesCreateNestedOneWithoutWorkflowsInput
+  positions?: Prisma.positionsCreateNestedOneWithoutWorkflowsInput
+}
+
+export type workflowsUncheckedCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  id?: string
+  form_template_id: string
+  approver_type: string
+  target_position_id?: string | null
+  status?: string
+  updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
+  audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutWorkflowsInput
+  requests?: Prisma.requestsUncheckedCreateNestedManyWithoutWorkflowsInput
+}
+
+export type workflowsCreateOrConnectWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  where: Prisma.workflowsWhereUniqueInput
+  create: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>
+}
+
+export type workflowsCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  approver_type: string
+  status?: string
+  updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  audit_logs?: Prisma.audit_logsCreateNestedManyWithoutWorkflowsInput
+  requests?: Prisma.requestsCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
+  form_templates: Prisma.form_templatesCreateNestedOneWithoutWorkflowsInput
+  positions?: Prisma.positionsCreateNestedOneWithoutWorkflowsInput
+}
+
+export type workflowsUncheckedCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  form_template_id: string
+  approver_type: string
+  target_position_id?: string | null
+  status?: string
+  updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  audit_logs?: Prisma.audit_logsUncheckedCreateNestedManyWithoutWorkflowsInput
+  requests?: Prisma.requestsUncheckedCreateNestedManyWithoutWorkflowsInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedCreateNestedManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsInput
+}
+
+export type workflowsCreateOrConnectWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  where: Prisma.workflowsWhereUniqueInput
+  create: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+}
+
+export type workflowsUpsertWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  update: Prisma.XOR<Prisma.workflowsUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput, Prisma.workflowsUncheckedUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>
+  create: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>
+  where?: Prisma.workflowsWhereInput
+}
+
+export type workflowsUpdateToOneWithWhereWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  where?: Prisma.workflowsWhereInput
+  data: Prisma.XOR<Prisma.workflowsUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput, Prisma.workflowsUncheckedUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput>
+}
+
+export type workflowsUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  approver_type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  audit_logs?: Prisma.audit_logsUpdateManyWithoutWorkflowsNestedInput
+  requests?: Prisma.requestsUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsUpdateOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsNestedInput
+  form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutWorkflowsNestedInput
+  positions?: Prisma.positionsUpdateOneWithoutWorkflowsNestedInput
+}
+
+export type workflowsUncheckedUpdateWithoutWorkflow_versions_workflow_versions_workflow_idToworkflowsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  form_template_id?: Prisma.StringFieldUpdateOperationsInput | string
+  approver_type?: Prisma.StringFieldUpdateOperationsInput | string
+  target_position_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  requests?: Prisma.requestsUncheckedUpdateManyWithoutWorkflowsNestedInput
+}
+
+export type workflowsUpsertWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  update: Prisma.XOR<Prisma.workflowsUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+  create: Prisma.XOR<Prisma.workflowsCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedCreateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+  where?: Prisma.workflowsWhereInput
+}
+
+export type workflowsUpdateToOneWithWhereWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  where?: Prisma.workflowsWhereInput
+  data: Prisma.XOR<Prisma.workflowsUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput, Prisma.workflowsUncheckedUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput>
+}
+
+export type workflowsUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  approver_type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  audit_logs?: Prisma.audit_logsUpdateManyWithoutWorkflowsNestedInput
+  requests?: Prisma.requestsUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
+  form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutWorkflowsNestedInput
+  positions?: Prisma.positionsUpdateOneWithoutWorkflowsNestedInput
+}
+
+export type workflowsUncheckedUpdateWithoutWorkflow_versions_workflows_id_published_version_idToworkflow_versionsInput = {
+  form_template_id?: Prisma.StringFieldUpdateOperationsInput | string
+  approver_type?: Prisma.StringFieldUpdateOperationsInput | string
+  target_position_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  requests?: Prisma.requestsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
 }
 
 export type workflowsCreateManyPositionsInput = {
@@ -701,15 +1053,21 @@ export type workflowsCreateManyPositionsInput = {
   approver_type: string
   status?: string
   updated_at?: Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: number
+  published_version_id?: string | null
 }
 
 export type workflowsUpdateWithoutPositionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
   audit_logs?: Prisma.audit_logsUpdateManyWithoutWorkflowsNestedInput
   requests?: Prisma.requestsUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: Prisma.workflow_versionsUpdateOneWithoutWorkflows_workflows_id_published_version_idToworkflow_versionsNestedInput
   form_templates?: Prisma.form_templatesUpdateOneRequiredWithoutWorkflowsNestedInput
 }
 
@@ -719,8 +1077,12 @@ export type workflowsUncheckedUpdateWithoutPositionsInput = {
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audit_logs?: Prisma.audit_logsUncheckedUpdateManyWithoutWorkflowsNestedInput
   requests?: Prisma.requestsUncheckedUpdateManyWithoutWorkflowsNestedInput
+  workflow_versions_workflow_versions_workflow_idToworkflows?: Prisma.workflow_versionsUncheckedUpdateManyWithoutWorkflows_workflow_versions_workflow_idToworkflowsNestedInput
 }
 
 export type workflowsUncheckedUpdateManyWithoutPositionsInput = {
@@ -729,6 +1091,9 @@ export type workflowsUncheckedUpdateManyWithoutPositionsInput = {
   approver_type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  draft_definition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  draft_revision?: Prisma.IntFieldUpdateOperationsInput | number
+  published_version_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -739,11 +1104,13 @@ export type workflowsUncheckedUpdateManyWithoutPositionsInput = {
 export type WorkflowsCountOutputType = {
   audit_logs: number
   requests: number
+  workflow_versions_workflow_versions_workflow_idToworkflows: number
 }
 
 export type WorkflowsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   audit_logs?: boolean | WorkflowsCountOutputTypeCountAudit_logsArgs
   requests?: boolean | WorkflowsCountOutputTypeCountRequestsArgs
+  workflow_versions_workflow_versions_workflow_idToworkflows?: boolean | WorkflowsCountOutputTypeCountWorkflow_versions_workflow_versions_workflow_idToworkflowsArgs
 }
 
 /**
@@ -770,6 +1137,13 @@ export type WorkflowsCountOutputTypeCountRequestsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.requestsWhereInput
 }
 
+/**
+ * WorkflowsCountOutputType without action
+ */
+export type WorkflowsCountOutputTypeCountWorkflow_versions_workflow_versions_workflow_idToworkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.workflow_versionsWhereInput
+}
+
 
 export type workflowsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -778,8 +1152,13 @@ export type workflowsSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   target_position_id?: boolean
   status?: boolean
   updated_at?: boolean
+  draft_definition?: boolean
+  draft_revision?: boolean
+  published_version_id?: boolean
   audit_logs?: boolean | Prisma.workflows$audit_logsArgs<ExtArgs>
   requests?: boolean | Prisma.workflows$requestsArgs<ExtArgs>
+  workflow_versions_workflow_versions_workflow_idToworkflows?: boolean | Prisma.workflows$workflow_versions_workflow_versions_workflow_idToworkflowsArgs<ExtArgs>
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: boolean | Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs>
   form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   positions?: boolean | Prisma.workflows$positionsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowsCountOutputTypeDefaultArgs<ExtArgs>
@@ -792,6 +1171,10 @@ export type workflowsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   target_position_id?: boolean
   status?: boolean
   updated_at?: boolean
+  draft_definition?: boolean
+  draft_revision?: boolean
+  published_version_id?: boolean
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: boolean | Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs>
   form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   positions?: boolean | Prisma.workflows$positionsArgs<ExtArgs>
 }, ExtArgs["result"]["workflows"]>
@@ -803,6 +1186,10 @@ export type workflowsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   target_position_id?: boolean
   status?: boolean
   updated_at?: boolean
+  draft_definition?: boolean
+  draft_revision?: boolean
+  published_version_id?: boolean
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: boolean | Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs>
   form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   positions?: boolean | Prisma.workflows$positionsArgs<ExtArgs>
 }, ExtArgs["result"]["workflows"]>
@@ -814,21 +1201,28 @@ export type workflowsSelectScalar = {
   target_position_id?: boolean
   status?: boolean
   updated_at?: boolean
+  draft_definition?: boolean
+  draft_revision?: boolean
+  published_version_id?: boolean
 }
 
-export type workflowsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "form_template_id" | "approver_type" | "target_position_id" | "status" | "updated_at", ExtArgs["result"]["workflows"]>
+export type workflowsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "form_template_id" | "approver_type" | "target_position_id" | "status" | "updated_at" | "draft_definition" | "draft_revision" | "published_version_id", ExtArgs["result"]["workflows"]>
 export type workflowsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   audit_logs?: boolean | Prisma.workflows$audit_logsArgs<ExtArgs>
   requests?: boolean | Prisma.workflows$requestsArgs<ExtArgs>
+  workflow_versions_workflow_versions_workflow_idToworkflows?: boolean | Prisma.workflows$workflow_versions_workflow_versions_workflow_idToworkflowsArgs<ExtArgs>
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: boolean | Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs>
   form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   positions?: boolean | Prisma.workflows$positionsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type workflowsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: boolean | Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs>
   form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   positions?: boolean | Prisma.workflows$positionsArgs<ExtArgs>
 }
 export type workflowsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  workflow_versions_workflows_id_published_version_idToworkflow_versions?: boolean | Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs>
   form_templates?: boolean | Prisma.form_templatesDefaultArgs<ExtArgs>
   positions?: boolean | Prisma.workflows$positionsArgs<ExtArgs>
 }
@@ -838,6 +1232,8 @@ export type $workflowsPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     audit_logs: Prisma.$audit_logsPayload<ExtArgs>[]
     requests: Prisma.$requestsPayload<ExtArgs>[]
+    workflow_versions_workflow_versions_workflow_idToworkflows: Prisma.$workflow_versionsPayload<ExtArgs>[]
+    workflow_versions_workflows_id_published_version_idToworkflow_versions: Prisma.$workflow_versionsPayload<ExtArgs> | null
     form_templates: Prisma.$form_templatesPayload<ExtArgs>
     positions: Prisma.$positionsPayload<ExtArgs> | null
   }
@@ -848,6 +1244,9 @@ export type $workflowsPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     target_position_id: string | null
     status: string
     updated_at: Date
+    draft_definition: runtime.JsonValue | null
+    draft_revision: number
+    published_version_id: string | null
   }, ExtArgs["result"]["workflows"]>
   composites: {}
 }
@@ -1244,6 +1643,8 @@ export interface Prisma__workflowsClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   audit_logs<T extends Prisma.workflows$audit_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.workflows$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$audit_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requests<T extends Prisma.workflows$requestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.workflows$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$requestsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workflow_versions_workflow_versions_workflow_idToworkflows<T extends Prisma.workflows$workflow_versions_workflow_versions_workflow_idToworkflowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.workflows$workflow_versions_workflow_versions_workflow_idToworkflowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$workflow_versionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workflow_versions_workflows_id_published_version_idToworkflow_versions<T extends Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs>>): Prisma.Prisma__workflow_versionsClient<runtime.Types.Result.GetResult<Prisma.$workflow_versionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   form_templates<T extends Prisma.form_templatesDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.form_templatesDefaultArgs<ExtArgs>>): Prisma.Prisma__form_templatesClient<runtime.Types.Result.GetResult<Prisma.$form_templatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   positions<T extends Prisma.workflows$positionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.workflows$positionsArgs<ExtArgs>>): Prisma.Prisma__positionsClient<runtime.Types.Result.GetResult<Prisma.$positionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1281,6 +1682,9 @@ export interface workflowsFieldRefs {
   readonly target_position_id: Prisma.FieldRef<"workflows", 'String'>
   readonly status: Prisma.FieldRef<"workflows", 'String'>
   readonly updated_at: Prisma.FieldRef<"workflows", 'DateTime'>
+  readonly draft_definition: Prisma.FieldRef<"workflows", 'Json'>
+  readonly draft_revision: Prisma.FieldRef<"workflows", 'Int'>
+  readonly published_version_id: Prisma.FieldRef<"workflows", 'String'>
 }
     
 
@@ -1727,6 +2131,49 @@ export type workflows$requestsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.RequestsScalarFieldEnum | Prisma.RequestsScalarFieldEnum[]
+}
+
+/**
+ * workflows.workflow_versions_workflow_versions_workflow_idToworkflows
+ */
+export type workflows$workflow_versions_workflow_versions_workflow_idToworkflowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the workflow_versions
+   */
+  select?: Prisma.workflow_versionsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the workflow_versions
+   */
+  omit?: Prisma.workflow_versionsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.workflow_versionsInclude<ExtArgs> | null
+  where?: Prisma.workflow_versionsWhereInput
+  orderBy?: Prisma.workflow_versionsOrderByWithRelationInput | Prisma.workflow_versionsOrderByWithRelationInput[]
+  cursor?: Prisma.workflow_versionsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Workflow_versionsScalarFieldEnum | Prisma.Workflow_versionsScalarFieldEnum[]
+}
+
+/**
+ * workflows.workflow_versions_workflows_id_published_version_idToworkflow_versions
+ */
+export type workflows$workflow_versions_workflows_id_published_version_idToworkflow_versionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the workflow_versions
+   */
+  select?: Prisma.workflow_versionsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the workflow_versions
+   */
+  omit?: Prisma.workflow_versionsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.workflow_versionsInclude<ExtArgs> | null
+  where?: Prisma.workflow_versionsWhereInput
 }
 
 /**

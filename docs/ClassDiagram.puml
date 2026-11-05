@@ -1,0 +1,257 @@
+@startuml
+title FlowPilot — Mô hình miền và runtime quy trình (01/10/2026)
+hide circle
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+package "Tổ chức và quyền" {
+ class User {
+  id : UUID
+  email : String
+  fullName : String
+  status : UserStatus
+ }
+ class OrganizationalUnit {
+  id : UUID
+  parentId : UUID?
+  type : COMPANY / DIVISION / DEPARTMENT / TEAM
+ }
+ class Position { id : UUID
+  rankLevel : Integer
+ }
+ class EmployeeAssignment {
+  id : UUID
+  managerAssignmentId : UUID?
+  startedAt : Timestamp
+  endedAt : Timestamp?
+  isUnitHead : Boolean
+ }
+ class SystemRole { id : UUID }
+ class Permission { code : String }
+ class RoleAssignment {
+  scopeType : ORGANIZATION / ORGANIZATIONAL_UNIT
+  validFrom : Timestamp
+  validUntil : Timestamp?
+  revokedAt : Timestamp?
+ }
+}
+package "Biểu mẫu và định nghĩa" {
+ class FormTemplate { id : UUID
+  version : Integer
+  status : FormStatus
+ }
+ class FormField { key : String
+  type : FieldType
+  options : JSON
+ }
+ class FormTemplateRevision { version : Integer
+  snapshot : JSON
+ }
+ class Workflow {
+  id : UUID
+  draftDefinition : JSON
+  draftRevision : Integer
+  publishedVersionId : UUID?
+  status : ACTIVE / INACTIVE
+ }
+ class WorkflowVersion {
+  version : Integer
+  templateVersion : Integer
+  definition : JSON
+  publishedByAssignmentId : UUID?
+  changeNote : String
+ }
+ class WorkflowStep <<value object>> {
+  id : String
+  name : String
+  mode : ALL / ANY
+  assignees : Selector[]
+  when : ConditionGroup?
+  sla : SlaPolicy?
+ }
+}
+package "Hồ sơ và thực thi" {
+ class Request {
+  id : UUID
+  requestCode : String?
+  requesterAssignmentId : UUID
+  templateSnapshot : JSON
+  formData : JSON
+  revision : Integer
+  status : DRAFT / PENDING / RETURNED / APPROVED / REJECTED / CANCELLED
+ }
+ class RequestSubmission { round : Integer
+  formDataSnapshot : JSON
+  requesterSnapshot : JSON
+  submittedAt : Timestamp
+ }
+ class WorkflowInstance {
+  workflowVersionId : UUID
+  currentRound : Integer
+  currentStep : Integer
+  status : InstanceStatus
+  blockedReason : String?
+ }
+ class WorkflowStepRun { round : Integer
+  stepId : String
+  mode : ALL / ANY
+  conditionResult : JSON
+  status : StepStatus
+ }
+ class ApprovalTask { assigneeAssignmentId : UUID
+  dueAt : Timestamp?
+  remindAt : Timestamp?
+  escalationAssignmentId : UUID?
+  assigneeUserId : UUID
+  assigneeSnapshot : JSON
+  status : TaskStatus
+ }
+ class TaskDecision { actorAssignmentId : UUID
+  decision : APPROVED / REJECTED / RETURNED
+  comment : String?
+ }
+ class MutationReceipt { action : String
+  key : String
+  payloadHash : String
+ }
+ class AuditLog { eventType : String
+  details : JSON
+  occurredAt : Timestamp
+ }
+ class Notification { recipientAssignmentId : UUID
+  readAt : Timestamp?
+ }
+}
+package "Dịch vụ miền" {
+ class RequestsService <<service>> {
+  submit()
+  update()
+  decide()
+  cancel()
+  detail()
+ }
+ class WorkflowsService <<service>> {
+  save()
+  publish()
+  restore()
+  simulate()
+ }
+ class WorkflowEngine <<service>> {
+  submit()
+  advance()
+  decide()
+  retry()
+  cancel()
+ }
+ class WorkflowRules <<module>> {
+  validateDefinition()
+  evaluate()
+  resolve()
+  eligible()
+ }
+}
+User "1" -- "0..*" EmployeeAssignment
+OrganizationalUnit "1" -- "0..*" EmployeeAssignment
+OrganizationalUnit "0..1" -- "0..*" OrganizationalUnit : parent
+Position "1" -- "0..*" EmployeeAssignment
+EmployeeAssignment "0..1" -- "0..*" EmployeeAssignment : manager
+EmployeeAssignment "1" -- "0..*" RoleAssignment
+SystemRole "1" -- "0..*" RoleAssignment
+SystemRole "*" -- "*" Permission : role_permissions
+FormTemplate "1" *-- "1..*" FormField
+FormTemplate "1" -- "1..*" FormTemplateRevision
+FormTemplate "1" -- "1" Workflow
+Workflow "1" -- "0..*" WorkflowVersion
+WorkflowVersion "1" *-- "1..*" WorkflowStep : definition JSON
+Workflow "1" -- "0..*" Request
+EmployeeAssignment "1" -- "0..*" Request : requester
+Request "1" -- "0..1" WorkflowInstance
+WorkflowVersion "1" -- "0..*" WorkflowInstance : pinned
+Request "1" -- "0..*" RequestSubmission
+WorkflowInstance "1" -- "0..*" WorkflowStepRun
+WorkflowStepRun "1" -- "0..*" ApprovalTask
+EmployeeAssignment "1" -- "0..*" ApprovalTask : assigned
+ApprovalTask "1" -- "0..1" TaskDecision
+EmployeeAssignment "1" -- "0..*" TaskDecision : actor
+Request "1" -- "0..*" MutationReceipt
+Request "0..1" -- "0..*" AuditLog
+Workflow "0..1" -- "0..*" AuditLog
+EmployeeAssignment "1" -- "0..*" AuditLog : actor
+Request "0..1" -- "0..*" Notification
+FormTemplate "0..1" -- "0..*" Notification
+EmployeeAssignment "1" -- "0..*" Notification : recipient
+RequestsService ..> WorkflowEngine
+WorkflowsService ..> WorkflowRules
+WorkflowEngine ..> WorkflowRules
+note bottom of WorkflowStep
+ Value object bên trong JSON definition.
+ Bảng runtime là WorkflowStepRun.
+end note
+note bottom of AuditLog
+ Tối đa một requestId hoặc workflowId.
+ Sự kiện tổ chức có thể không gắn hồ sơ/quy trình.
+ Nhật ký chỉ thêm mới.
+end note
+note bottom of Notification
+ Đúng một requestId hoặc formTemplateId.
+end note
+package "Vận hành và cộng tác" {
+ class ApprovalDelegation {
+  ownerAssignmentId : UUID
+  delegateAssignmentId : UUID
+  startsAt : Timestamp
+  endsAt : Timestamp
+  revokedAt : Timestamp?
+ }
+ class TaskTransfer {
+  fromTaskId : UUID
+  toTaskId : UUID
+  kind : MANUAL / DELEGATION / ESCALATION
+  reason : String
+ }
+ class SlaPolicy <<value object>> {
+  minutes : Integer
+  remindBeforeMinutes : Integer
+  escalationAssignmentId : UUID?
+ }
+ class SlaEvent { event : REMINDER / OVERDUE / ESCALATION_FAILED }
+ class RequestAttachment {
+  documentId : UUID
+  version : Integer
+  sha256 : String
+  content : Bytes
+  archivedAt : Timestamp?
+ }
+ class SubmissionAttachment <<join>> { submissionId : UUID
+  attachmentId : UUID
+ }
+ class RequestComment { body : String
+  actorAssignmentId : UUID
+ }
+ class OperationsService <<service>> {
+  delegate()
+  revoke()
+  transfer()
+  sweep()
+  upload()
+  comment()
+  metrics()
+ }
+}
+WorkflowStep "1" *-- "0..1" SlaPolicy
+EmployeeAssignment "1" -- "0..*" ApprovalDelegation : owner
+EmployeeAssignment "1" -- "0..*" ApprovalDelegation : delegate
+ApprovalDelegation "0..1" -- "0..*" TaskTransfer
+ApprovalTask "1" -- "0..1" TaskTransfer : from
+TaskTransfer "0..1" -- "1" ApprovalTask : replacement
+ApprovalTask "1" -- "0..*" SlaEvent
+Request "1" -- "0..*" RequestAttachment
+Request "1" -- "0..*" RequestComment
+RequestSubmission "1" -- "0..*" SubmissionAttachment
+RequestAttachment "1" -- "0..*" SubmissionAttachment
+EmployeeAssignment "1" -- "0..*" RequestAttachment : uploader
+EmployeeAssignment "1" -- "0..*" RequestComment : author
+OperationsService ..> ApprovalDelegation
+OperationsService ..> RequestAttachment
+OperationsService ..> RequestComment
+OperationsService ..> WorkflowStepRun : metrics
+@enduml

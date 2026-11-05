@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { randomUUID } from 'node:crypto';
 import { NestFactory } from '@nestjs/core';
 import {
   Module,
@@ -24,6 +25,9 @@ import { AuthService, SessionGuard, AuthRequest } from './auth';
 import { RequestsService } from './requests';
 import { FormsService } from './forms';
 import { AdminService } from './admin';
+import { WorkflowsService } from './workflows';
+import { WorkflowEngine } from './workflow-engine';
+import { OperationsService } from './operations';
 @Catch()
 class ApiErrors implements ExceptionFilter {
   catch(error: any, host: ArgumentsHost) {
@@ -49,10 +53,15 @@ class ApiErrors implements ExceptionFilter {
       return;
     }
     if (error.type === 'entity.too.large') {
-      response.status(413).json({ message: 'Nội dung vượt quá giới hạn 256 KB.' });
+      response
+        .status(413)
+        .json({
+          message:
+            'Nội dung vượt giới hạn cho phép (tài liệu tối đa 2 MiB; JSON thông thường 256 KB).',
+        });
       return;
     }
-    console.error(error);
+    console.error({ requestId: host.switchToHttp().getRequest().requestId, error });
     response.status(500).json({ message: 'Không thể xử lý yêu cầu. Vui lòng thử lại.' });
   }
 }
@@ -65,10 +74,87 @@ class ApiController {
     private requests: RequestsService,
     private forms: FormsService,
     private admin: AdminService,
+    private workflowDefinitions: WorkflowsService,
+    private operations: OperationsService,
   ) {}
   @Get('health') async health() {
     await this.db.query('SELECT 1');
     return { status: 'ok', database: 'connected' };
+  }
+  @Get('operations/directory') delegationDirectory(@Req() r: AuthRequest) {
+    return this.operations.directory(r.actor);
+  }
+  @Get('operations/delegations') delegations(@Req() r: AuthRequest) {
+    return this.operations.delegations(r.actor);
+  }
+  @Post('operations/delegations') delegate(@Req() r: AuthRequest, @Body() b: any) {
+    return this.operations.delegate(r.actor, b);
+  }
+  @Post('operations/delegations/:id/revoke') revokeDelegation(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    return this.operations.revoke(r.actor, id);
+  }
+  @Post('operations/sla/run') checkSla(@Req() r: AuthRequest) {
+    return this.operations.run(r.actor);
+  }
+  @Get('operations/metrics') metrics(@Req() r: AuthRequest, @Query() q: any) {
+    return this.operations.metrics(r.actor, q);
+  }
+  @Get('requests/:id/transfer-candidates') transferCandidates(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    return this.operations.candidates(r.actor, id);
+  }
+  @Post('requests/:id/transfer') transfer(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.operations.transfer(r.actor, id, b);
+  }
+  @Get('requests/:id/collaboration') collaboration(@Req() r: AuthRequest, @Param('id') id: string) {
+    return this.operations.collaboration(r.actor, id);
+  }
+  @Post('requests/:id/comments') comment(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.operations.comment(r.actor, id, b);
+  }
+  @Post('requests/:id/attachments') upload(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.operations.upload(r.actor, id, b);
+  }
+  @Post('requests/:id/attachments/:attachmentId/archive') archive(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Param('attachmentId') at: string,
+    @Body() b: any,
+  ) {
+    return this.operations.archive(r.actor, id, at, b);
+  }
+  @Get('requests/:id/attachments/:attachmentId') async download(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Param('attachmentId') at: string,
+    @Res() res: Response,
+  ) {
+    const file = await this.operations.download(r.actor, id, at);
+    res.setHeader('Content-Type', file.mime_type);
+    res.setHeader(
+      'Content-Disposition',
+      "attachment; filename*=UTF-8''" + encodeURIComponent(file.filename),
+    );
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Cache-Control', 'private, no-store');
+    res.send(file.content);
   }
   @Post('auth/login') login(
     @Body() b: any,
@@ -107,8 +193,12 @@ class ApiController {
   @Put('requests/:id') update(@Req() r: AuthRequest, @Param('id') id: string, @Body() b: any) {
     return this.requests.update(r.actor, id, b);
   }
-  @Post('requests/:id/submit') submit(@Req() r: AuthRequest, @Param('id') id: string) {
-    return this.requests.submit(r.actor, id);
+  @Post('requests/:id/submit') submit(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.requests.submit(r.actor, id, b);
   }
   @Post('requests/:id/decision') decide(
     @Req() r: AuthRequest,
@@ -120,6 +210,9 @@ class ApiController {
   @Post('requests/:id/cancel') cancel(@Req() r: AuthRequest, @Param('id') id: string) {
     return this.requests.cancel(r.actor, id);
   }
+  @Post('requests/:id/retry') retry(@Req() r: AuthRequest, @Param('id') id: string) {
+    return this.requests.retry(r.actor, id);
+  }
   @Get('forms') formList(@Req() r: AuthRequest) {
     return this.forms.list(r.actor);
   }
@@ -130,16 +223,24 @@ class ApiController {
     return this.forms.reviewers(r.actor);
   }
   @Get('forms/:id/revisions') formRevisions(@Req() r: AuthRequest, @Param('id') id: string) {
-    return this.forms.revisions(r.actor,id);
+    return this.forms.revisions(r.actor, id);
   }
   @Put('forms/:id') formUpdate(@Req() r: AuthRequest, @Param('id') id: string, @Body() b: any) {
     return this.forms.update(r.actor, id, b);
   }
-  @Post('forms/:id/submit') formSubmit(@Req() r: AuthRequest, @Param('id') id: string, @Body() b: any) {
-    return this.forms.submit(r.actor,id,b);
+  @Post('forms/:id/submit') formSubmit(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.forms.submit(r.actor, id, b);
   }
-  @Post('forms/:id/review') formReview(@Req() r: AuthRequest, @Param('id') id: string, @Body() b: any) {
-    return this.forms.review(r.actor,id,b);
+  @Post('forms/:id/review') formReview(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.forms.review(r.actor, id, b);
   }
   @Patch('forms/:id/status') formStatus(
     @Req() r: AuthRequest,
@@ -149,7 +250,58 @@ class ApiController {
     return this.forms.status(r.actor, id, b);
   }
   @Get('workflows') workflows(@Req() r: AuthRequest) {
-    return this.forms.workflows(r.actor);
+    return this.workflowDefinitions.list(r.actor);
+  }
+  @Get('workflows/directory') workflowDirectory(@Req() r: AuthRequest) {
+    return this.workflowDefinitions.directory(r.actor);
+  }
+  @Get('workflows/:id') workflowDetail(@Req() r: AuthRequest, @Param('id') id: string) {
+    return this.workflowDefinitions.detail(r.actor, id);
+  }
+  @Get('workflows/:id/versions') workflowVersions(@Req() r: AuthRequest, @Param('id') id: string) {
+    return this.workflowDefinitions.versions(r.actor, id);
+  }
+  @Put('workflows/:id/draft') workflowSave(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.workflowDefinitions.save(r.actor, id, b);
+  }
+  @Post('workflows/:id/validate') workflowValidate(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.workflowDefinitions.validate(r.actor, id, b);
+  }
+  @Post('workflows/:id/simulate') workflowSimulate(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.workflowDefinitions.simulate(r.actor, id, b);
+  }
+  @Post('workflows/:id/publish') workflowPublish(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.workflowDefinitions.publish(r.actor, id, b);
+  }
+  @Post('workflows/:id/restore') workflowRestore(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.workflowDefinitions.restore(r.actor, id, b);
+  }
+  @Patch('workflows/:id/status') workflowStatus(
+    @Req() r: AuthRequest,
+    @Param('id') id: string,
+    @Body() b: any,
+  ) {
+    return this.workflowDefinitions.status(r.actor, id, b);
   }
   @Put('workflows/:id') workflow(@Req() r: AuthRequest, @Param('id') id: string, @Body() b: any) {
     return this.forms.workflow(r.actor, id, b);
@@ -217,12 +369,34 @@ class ApiController {
 }
 @Module({
   controllers: [ApiController],
-  providers: [Database, AuthService, SessionGuard, RequestsService, FormsService, AdminService],
+  providers: [
+    Database,
+    AuthService,
+    SessionGuard,
+    RequestsService,
+    FormsService,
+    AdminService,
+    WorkflowsService,
+    WorkflowEngine,
+    OperationsService,
+  ],
 })
 class AppModule {}
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
-  app.use(json({ limit: '256kb' }));
+  app.use((req: any, res: any, next: any) => {
+    req.requestId = randomUUID();
+    res.setHeader('X-Request-Id', req.requestId);
+    next();
+  });
+  app.use((req: any, res: any, next: any) =>
+    json({
+      limit:
+        /^\/api\/requests\/[0-9a-f-]+\/attachments$/i.test(req.path) && req.method === 'POST'
+          ? '3mb'
+          : '256kb',
+    })(req, res, next),
+  );
   app.use((req: any, res: any, next: any) => {
     if (
       !['GET', 'HEAD', 'OPTIONS'].includes(req.method) &&

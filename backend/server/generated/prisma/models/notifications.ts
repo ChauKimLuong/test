@@ -27,37 +27,37 @@ export type AggregateNotifications = {
 export type NotificationsMinAggregateOutputType = {
   id: string | null
   request_id: string | null
-  form_template_id: string | null
   recipient_assignment_id: string | null
   type: string | null
   title: string | null
   message: string | null
   created_at: Date | null
   read_at: Date | null
+  form_template_id: string | null
 }
 
 export type NotificationsMaxAggregateOutputType = {
   id: string | null
   request_id: string | null
-  form_template_id: string | null
   recipient_assignment_id: string | null
   type: string | null
   title: string | null
   message: string | null
   created_at: Date | null
   read_at: Date | null
+  form_template_id: string | null
 }
 
 export type NotificationsCountAggregateOutputType = {
   id: number
   request_id: number
-  form_template_id: number
   recipient_assignment_id: number
   type: number
   title: number
   message: number
   created_at: number
   read_at: number
+  form_template_id: number
   _all: number
 }
 
@@ -65,37 +65,37 @@ export type NotificationsCountAggregateOutputType = {
 export type NotificationsMinAggregateInputType = {
   id?: true
   request_id?: true
-  form_template_id?: true
   recipient_assignment_id?: true
   type?: true
   title?: true
   message?: true
   created_at?: true
   read_at?: true
+  form_template_id?: true
 }
 
 export type NotificationsMaxAggregateInputType = {
   id?: true
   request_id?: true
-  form_template_id?: true
   recipient_assignment_id?: true
   type?: true
   title?: true
   message?: true
   created_at?: true
   read_at?: true
+  form_template_id?: true
 }
 
 export type NotificationsCountAggregateInputType = {
   id?: true
   request_id?: true
-  form_template_id?: true
   recipient_assignment_id?: true
   type?: true
   title?: true
   message?: true
   created_at?: true
   read_at?: true
+  form_template_id?: true
   _all?: true
 }
 
@@ -174,13 +174,13 @@ export type notificationsGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type NotificationsGroupByOutputType = {
   id: string
   request_id: string | null
-  form_template_id: string | null
   recipient_assignment_id: string
   type: string
   title: string
   message: string
   created_at: Date
   read_at: Date | null
+  form_template_id: string | null
   _count: NotificationsCountAggregateOutputType | null
   _min: NotificationsMinAggregateOutputType | null
   _max: NotificationsMaxAggregateOutputType | null
@@ -207,31 +207,31 @@ export type notificationsWhereInput = {
   NOT?: Prisma.notificationsWhereInput | Prisma.notificationsWhereInput[]
   id?: Prisma.UuidFilter<"notifications"> | string
   request_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
-  form_template_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
   recipient_assignment_id?: Prisma.UuidFilter<"notifications"> | string
   type?: Prisma.StringFilter<"notifications"> | string
   title?: Prisma.StringFilter<"notifications"> | string
   message?: Prisma.StringFilter<"notifications"> | string
   created_at?: Prisma.DateTimeFilter<"notifications"> | Date | string
   read_at?: Prisma.DateTimeNullableFilter<"notifications"> | Date | string | null
+  form_template_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
+  form_templates?: Prisma.XOR<Prisma.Form_templatesNullableScalarRelationFilter, Prisma.form_templatesWhereInput> | null
   employee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsScalarRelationFilter, Prisma.employee_assignmentsWhereInput>
   requests?: Prisma.XOR<Prisma.RequestsNullableScalarRelationFilter, Prisma.requestsWhereInput> | null
-  form_templates?: Prisma.XOR<Prisma.Form_templatesNullableScalarRelationFilter, Prisma.form_templatesWhereInput> | null
 }
 
 export type notificationsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   request_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  form_template_id?: Prisma.SortOrderInput | Prisma.SortOrder
   recipient_assignment_id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   read_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  form_template_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  form_templates?: Prisma.form_templatesOrderByWithRelationInput
   employee_assignments?: Prisma.employee_assignmentsOrderByWithRelationInput
   requests?: Prisma.requestsOrderByWithRelationInput
-  form_templates?: Prisma.form_templatesOrderByWithRelationInput
 }
 
 export type notificationsWhereUniqueInput = Prisma.AtLeast<{
@@ -240,28 +240,28 @@ export type notificationsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.notificationsWhereInput[]
   NOT?: Prisma.notificationsWhereInput | Prisma.notificationsWhereInput[]
   request_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
-  form_template_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
   recipient_assignment_id?: Prisma.UuidFilter<"notifications"> | string
   type?: Prisma.StringFilter<"notifications"> | string
   title?: Prisma.StringFilter<"notifications"> | string
   message?: Prisma.StringFilter<"notifications"> | string
   created_at?: Prisma.DateTimeFilter<"notifications"> | Date | string
   read_at?: Prisma.DateTimeNullableFilter<"notifications"> | Date | string | null
+  form_template_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
+  form_templates?: Prisma.XOR<Prisma.Form_templatesNullableScalarRelationFilter, Prisma.form_templatesWhereInput> | null
   employee_assignments?: Prisma.XOR<Prisma.Employee_assignmentsScalarRelationFilter, Prisma.employee_assignmentsWhereInput>
   requests?: Prisma.XOR<Prisma.RequestsNullableScalarRelationFilter, Prisma.requestsWhereInput> | null
-  form_templates?: Prisma.XOR<Prisma.Form_templatesNullableScalarRelationFilter, Prisma.form_templatesWhereInput> | null
 }, "id">
 
 export type notificationsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   request_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  form_template_id?: Prisma.SortOrderInput | Prisma.SortOrder
   recipient_assignment_id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   read_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  form_template_id?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.notificationsCountOrderByAggregateInput
   _max?: Prisma.notificationsMaxOrderByAggregateInput
   _min?: Prisma.notificationsMinOrderByAggregateInput
@@ -273,13 +273,13 @@ export type notificationsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.notificationsScalarWhereWithAggregatesInput | Prisma.notificationsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"notifications"> | string
   request_id?: Prisma.UuidNullableWithAggregatesFilter<"notifications"> | string | null
-  form_template_id?: Prisma.UuidNullableWithAggregatesFilter<"notifications"> | string | null
   recipient_assignment_id?: Prisma.UuidWithAggregatesFilter<"notifications"> | string
   type?: Prisma.StringWithAggregatesFilter<"notifications"> | string
   title?: Prisma.StringWithAggregatesFilter<"notifications"> | string
   message?: Prisma.StringWithAggregatesFilter<"notifications"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"notifications"> | Date | string
   read_at?: Prisma.DateTimeNullableWithAggregatesFilter<"notifications"> | Date | string | null
+  form_template_id?: Prisma.UuidNullableWithAggregatesFilter<"notifications"> | string | null
 }
 
 export type notificationsCreateInput = {
@@ -289,21 +289,21 @@ export type notificationsCreateInput = {
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
+  form_templates?: Prisma.form_templatesCreateNestedOneWithoutNotificationsInput
   employee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutNotificationsInput
   requests?: Prisma.requestsCreateNestedOneWithoutNotificationsInput
-  form_templates?: Prisma.form_templatesCreateNestedOneWithoutNotificationsInput
 }
 
 export type notificationsUncheckedCreateInput = {
   id?: string
   request_id?: string | null
-  form_template_id?: string | null
   recipient_assignment_id: string
   type: string
   title: string
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
+  form_template_id?: string | null
 }
 
 export type notificationsUpdateInput = {
@@ -313,33 +313,33 @@ export type notificationsUpdateInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  form_templates?: Prisma.form_templatesUpdateOneWithoutNotificationsNestedInput
   employee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutNotificationsNestedInput
   requests?: Prisma.requestsUpdateOneWithoutNotificationsNestedInput
-  form_templates?: Prisma.form_templatesUpdateOneWithoutNotificationsNestedInput
 }
 
 export type notificationsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipient_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type notificationsCreateManyInput = {
   id?: string
   request_id?: string | null
-  form_template_id?: string | null
   recipient_assignment_id: string
   type: string
   title: string
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
+  form_template_id?: string | null
 }
 
 export type notificationsUpdateManyMutationInput = {
@@ -354,13 +354,13 @@ export type notificationsUpdateManyMutationInput = {
 export type notificationsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipient_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type NotificationsListRelationFilter = {
@@ -376,37 +376,37 @@ export type notificationsOrderByRelationAggregateInput = {
 export type notificationsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   request_id?: Prisma.SortOrder
-  form_template_id?: Prisma.SortOrder
   recipient_assignment_id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   read_at?: Prisma.SortOrder
+  form_template_id?: Prisma.SortOrder
 }
 
 export type notificationsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   request_id?: Prisma.SortOrder
-  form_template_id?: Prisma.SortOrder
   recipient_assignment_id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   read_at?: Prisma.SortOrder
+  form_template_id?: Prisma.SortOrder
 }
 
 export type notificationsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   request_id?: Prisma.SortOrder
-  form_template_id?: Prisma.SortOrder
   recipient_assignment_id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   read_at?: Prisma.SortOrder
+  form_template_id?: Prisma.SortOrder
 }
 
 export type notificationsCreateNestedManyWithoutEmployee_assignmentsInput = {
@@ -542,19 +542,19 @@ export type notificationsCreateWithoutEmployee_assignmentsInput = {
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
-  requests?: Prisma.requestsCreateNestedOneWithoutNotificationsInput
   form_templates?: Prisma.form_templatesCreateNestedOneWithoutNotificationsInput
+  requests?: Prisma.requestsCreateNestedOneWithoutNotificationsInput
 }
 
 export type notificationsUncheckedCreateWithoutEmployee_assignmentsInput = {
   id?: string
   request_id?: string | null
-  form_template_id?: string | null
   type: string
   title: string
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
+  form_template_id?: string | null
 }
 
 export type notificationsCreateOrConnectWithoutEmployee_assignmentsInput = {
@@ -589,13 +589,13 @@ export type notificationsScalarWhereInput = {
   NOT?: Prisma.notificationsScalarWhereInput | Prisma.notificationsScalarWhereInput[]
   id?: Prisma.UuidFilter<"notifications"> | string
   request_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
-  form_template_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
   recipient_assignment_id?: Prisma.UuidFilter<"notifications"> | string
   type?: Prisma.StringFilter<"notifications"> | string
   title?: Prisma.StringFilter<"notifications"> | string
   message?: Prisma.StringFilter<"notifications"> | string
   created_at?: Prisma.DateTimeFilter<"notifications"> | Date | string
   read_at?: Prisma.DateTimeNullableFilter<"notifications"> | Date | string | null
+  form_template_id?: Prisma.UuidNullableFilter<"notifications"> | string | null
 }
 
 export type notificationsCreateWithoutForm_templatesInput = {
@@ -653,19 +653,19 @@ export type notificationsCreateWithoutRequestsInput = {
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
-  employee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutNotificationsInput
   form_templates?: Prisma.form_templatesCreateNestedOneWithoutNotificationsInput
+  employee_assignments: Prisma.employee_assignmentsCreateNestedOneWithoutNotificationsInput
 }
 
 export type notificationsUncheckedCreateWithoutRequestsInput = {
   id?: string
-  form_template_id?: string | null
   recipient_assignment_id: string
   type: string
   title: string
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
+  form_template_id?: string | null
 }
 
 export type notificationsCreateOrConnectWithoutRequestsInput = {
@@ -697,12 +697,12 @@ export type notificationsUpdateManyWithWhereWithoutRequestsInput = {
 export type notificationsCreateManyEmployee_assignmentsInput = {
   id?: string
   request_id?: string | null
-  form_template_id?: string | null
   type: string
   title: string
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
+  form_template_id?: string | null
 }
 
 export type notificationsUpdateWithoutEmployee_assignmentsInput = {
@@ -712,30 +712,30 @@ export type notificationsUpdateWithoutEmployee_assignmentsInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requests?: Prisma.requestsUpdateOneWithoutNotificationsNestedInput
   form_templates?: Prisma.form_templatesUpdateOneWithoutNotificationsNestedInput
+  requests?: Prisma.requestsUpdateOneWithoutNotificationsNestedInput
 }
 
 export type notificationsUncheckedUpdateWithoutEmployee_assignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type notificationsUncheckedUpdateManyWithoutEmployee_assignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   request_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type notificationsCreateManyForm_templatesInput = {
@@ -784,13 +784,13 @@ export type notificationsUncheckedUpdateManyWithoutForm_templatesInput = {
 
 export type notificationsCreateManyRequestsInput = {
   id?: string
-  form_template_id?: string | null
   recipient_assignment_id: string
   type: string
   title: string
   message: string
   created_at?: Date | string
   read_at?: Date | string | null
+  form_template_id?: string | null
 }
 
 export type notificationsUpdateWithoutRequestsInput = {
@@ -800,30 +800,30 @@ export type notificationsUpdateWithoutRequestsInput = {
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  employee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutNotificationsNestedInput
   form_templates?: Prisma.form_templatesUpdateOneWithoutNotificationsNestedInput
+  employee_assignments?: Prisma.employee_assignmentsUpdateOneRequiredWithoutNotificationsNestedInput
 }
 
 export type notificationsUncheckedUpdateWithoutRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipient_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type notificationsUncheckedUpdateManyWithoutRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipient_assignment_id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   read_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  form_template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -831,94 +831,94 @@ export type notificationsUncheckedUpdateManyWithoutRequestsInput = {
 export type notificationsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   request_id?: boolean
-  form_template_id?: boolean
   recipient_assignment_id?: boolean
   type?: boolean
   title?: boolean
   message?: boolean
   created_at?: boolean
   read_at?: boolean
+  form_template_id?: boolean
+  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   requests?: boolean | Prisma.notifications$requestsArgs<ExtArgs>
-  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
 }, ExtArgs["result"]["notifications"]>
 
 export type notificationsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   request_id?: boolean
-  form_template_id?: boolean
   recipient_assignment_id?: boolean
   type?: boolean
   title?: boolean
   message?: boolean
   created_at?: boolean
   read_at?: boolean
+  form_template_id?: boolean
+  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   requests?: boolean | Prisma.notifications$requestsArgs<ExtArgs>
-  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
 }, ExtArgs["result"]["notifications"]>
 
 export type notificationsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   request_id?: boolean
-  form_template_id?: boolean
   recipient_assignment_id?: boolean
   type?: boolean
   title?: boolean
   message?: boolean
   created_at?: boolean
   read_at?: boolean
+  form_template_id?: boolean
+  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   requests?: boolean | Prisma.notifications$requestsArgs<ExtArgs>
-  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
 }, ExtArgs["result"]["notifications"]>
 
 export type notificationsSelectScalar = {
   id?: boolean
   request_id?: boolean
-  form_template_id?: boolean
   recipient_assignment_id?: boolean
   type?: boolean
   title?: boolean
   message?: boolean
   created_at?: boolean
   read_at?: boolean
+  form_template_id?: boolean
 }
 
-export type notificationsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "request_id" | "form_template_id" | "recipient_assignment_id" | "type" | "title" | "message" | "created_at" | "read_at", ExtArgs["result"]["notifications"]>
+export type notificationsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "request_id" | "recipient_assignment_id" | "type" | "title" | "message" | "created_at" | "read_at" | "form_template_id", ExtArgs["result"]["notifications"]>
 export type notificationsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   requests?: boolean | Prisma.notifications$requestsArgs<ExtArgs>
-  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
 }
 export type notificationsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   requests?: boolean | Prisma.notifications$requestsArgs<ExtArgs>
-  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
 }
 export type notificationsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
   employee_assignments?: boolean | Prisma.employee_assignmentsDefaultArgs<ExtArgs>
   requests?: boolean | Prisma.notifications$requestsArgs<ExtArgs>
-  form_templates?: boolean | Prisma.notifications$form_templatesArgs<ExtArgs>
 }
 
 export type $notificationsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "notifications"
   objects: {
+    form_templates: Prisma.$form_templatesPayload<ExtArgs> | null
     employee_assignments: Prisma.$employee_assignmentsPayload<ExtArgs>
     requests: Prisma.$requestsPayload<ExtArgs> | null
-    form_templates: Prisma.$form_templatesPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     request_id: string | null
-    form_template_id: string | null
     recipient_assignment_id: string
     type: string
     title: string
     message: string
     created_at: Date
     read_at: Date | null
+    form_template_id: string | null
   }, ExtArgs["result"]["notifications"]>
   composites: {}
 }
@@ -1313,9 +1313,9 @@ readonly fields: notificationsFieldRefs;
  */
 export interface Prisma__notificationsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  form_templates<T extends Prisma.notifications$form_templatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.notifications$form_templatesArgs<ExtArgs>>): Prisma.Prisma__form_templatesClient<runtime.Types.Result.GetResult<Prisma.$form_templatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   employee_assignments<T extends Prisma.employee_assignmentsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.employee_assignmentsDefaultArgs<ExtArgs>>): Prisma.Prisma__employee_assignmentsClient<runtime.Types.Result.GetResult<Prisma.$employee_assignmentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   requests<T extends Prisma.notifications$requestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.notifications$requestsArgs<ExtArgs>>): Prisma.Prisma__requestsClient<runtime.Types.Result.GetResult<Prisma.$requestsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  form_templates<T extends Prisma.notifications$form_templatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.notifications$form_templatesArgs<ExtArgs>>): Prisma.Prisma__form_templatesClient<runtime.Types.Result.GetResult<Prisma.$form_templatesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1347,13 +1347,13 @@ export interface Prisma__notificationsClient<T, Null = never, ExtArgs extends ru
 export interface notificationsFieldRefs {
   readonly id: Prisma.FieldRef<"notifications", 'String'>
   readonly request_id: Prisma.FieldRef<"notifications", 'String'>
-  readonly form_template_id: Prisma.FieldRef<"notifications", 'String'>
   readonly recipient_assignment_id: Prisma.FieldRef<"notifications", 'String'>
   readonly type: Prisma.FieldRef<"notifications", 'String'>
   readonly title: Prisma.FieldRef<"notifications", 'String'>
   readonly message: Prisma.FieldRef<"notifications", 'String'>
   readonly created_at: Prisma.FieldRef<"notifications", 'DateTime'>
   readonly read_at: Prisma.FieldRef<"notifications", 'DateTime'>
+  readonly form_template_id: Prisma.FieldRef<"notifications", 'String'>
 }
     
 
@@ -1755,25 +1755,6 @@ export type notificationsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
- * notifications.requests
- */
-export type notifications$requestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the requests
-   */
-  select?: Prisma.requestsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the requests
-   */
-  omit?: Prisma.requestsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.requestsInclude<ExtArgs> | null
-  where?: Prisma.requestsWhereInput
-}
-
-/**
  * notifications.form_templates
  */
 export type notifications$form_templatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1790,6 +1771,25 @@ export type notifications$form_templatesArgs<ExtArgs extends runtime.Types.Exten
    */
   include?: Prisma.form_templatesInclude<ExtArgs> | null
   where?: Prisma.form_templatesWhereInput
+}
+
+/**
+ * notifications.requests
+ */
+export type notifications$requestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the requests
+   */
+  select?: Prisma.requestsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the requests
+   */
+  omit?: Prisma.requestsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.requestsInclude<ExtArgs> | null
+  where?: Prisma.requestsWhereInput
 }
 
 /**

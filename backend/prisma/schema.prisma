@@ -27,31 +27,42 @@ model audit_logs {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model employee_assignments {
-  form_template_revisions form_template_revisions[]
-  id                                                                           String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id                                                                      String                 @unique(map: "primary_assignment", where: raw("(is_primary AND (ended_at IS NULL))")) @db.Uuid
-  organizational_unit_id                                                       String                 @db.Uuid
-  position_id                                                                  String                 @db.Uuid
-  manager_assignment_id                                                        String?                @db.Uuid
-  type                                                                         String                 @default("REGULAR")
-  is_primary                                                                   Boolean                @default(true)
-  is_unit_head                                                                 Boolean                @default(false)
-  started_at                                                                   DateTime               @default(now()) @db.Timestamptz(6)
-  ended_at                                                                     DateTime?              @db.Timestamptz(6)
-  audit_logs                                                                   audit_logs[]
-  employee_assignments                                                         employee_assignments?  @relation("employee_assignmentsToemployee_assignments", fields: [manager_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  other_employee_assignments                                                   employee_assignments[] @relation("employee_assignmentsToemployee_assignments")
-  organizational_units                                                         organizational_units   @relation(fields: [organizational_unit_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  positions                                                                    positions              @relation(fields: [position_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users                                                                        users                  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  form_review_events                                                           form_review_events[]
-  form_templates_form_templates_created_by_assignment_idToemployee_assignments form_templates[]       @relation("form_templates_created_by_assignment_idToemployee_assignments")
-  form_templates_form_templates_reviewer_assignment_idToemployee_assignments   form_templates[]       @relation("form_templates_reviewer_assignment_idToemployee_assignments")
-  notifications                                                                notifications[]
-  requests_requests_approver_assignment_idToemployee_assignments               requests[]             @relation("requests_approver_assignment_idToemployee_assignments")
-  requests_requests_requester_assignment_idToemployee_assignments              requests[]             @relation("requests_requester_assignment_idToemployee_assignments")
-  role_assignments                                                             role_assignments[]
-  sessions                                                                     sessions[]
+  id                                                                                     String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                                                                                String                    @unique(map: "primary_assignment", where: raw("(is_primary AND (ended_at IS NULL))")) @db.Uuid
+  organizational_unit_id                                                                 String                    @db.Uuid
+  position_id                                                                            String                    @db.Uuid
+  manager_assignment_id                                                                  String?                   @db.Uuid
+  type                                                                                   String                    @default("REGULAR")
+  is_primary                                                                             Boolean                   @default(true)
+  is_unit_head                                                                           Boolean                   @default(false)
+  started_at                                                                             DateTime                  @default(now()) @db.Timestamptz(6)
+  ended_at                                                                               DateTime?                 @db.Timestamptz(6)
+  approval_delegations_approval_delegations_delegate_assignment_idToemployee_assignments approval_delegations[]    @relation("approval_delegations_delegate_assignment_idToemployee_assignments")
+  approval_delegations_approval_delegations_owner_assignment_idToemployee_assignments    approval_delegations[]    @relation("approval_delegations_owner_assignment_idToemployee_assignments")
+  approval_tasks                                                                         approval_tasks[]
+  approval_tasks_approval_tasks_escalation_assignment_idToemployee_assignments           approval_tasks[]          @relation("approval_tasks_escalation_assignment_idToemployee_assignments")
+  audit_logs                                                                             audit_logs[]
+  employee_assignments                                                                   employee_assignments?     @relation("employee_assignmentsToemployee_assignments", fields: [manager_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_employee_assignments                                                             employee_assignments[]    @relation("employee_assignmentsToemployee_assignments")
+  organizational_units                                                                   organizational_units      @relation(fields: [organizational_unit_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  positions                                                                              positions                 @relation(fields: [position_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users                                                                                  users                     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  form_review_events                                                                     form_review_events[]
+  form_template_revisions                                                                form_template_revisions[]
+  form_templates_form_templates_created_by_assignment_idToemployee_assignments           form_templates[]          @relation("form_templates_created_by_assignment_idToemployee_assignments")
+  form_templates_form_templates_reviewer_assignment_idToemployee_assignments             form_templates[]          @relation("form_templates_reviewer_assignment_idToemployee_assignments")
+  mutation_receipts                                                                      mutation_receipts[]
+  notifications                                                                          notifications[]
+  request_attachments                                                                    request_attachments[]
+  request_comments                                                                       request_comments[]
+  request_submissions                                                                    request_submissions[]
+  requests_requests_approver_assignment_idToemployee_assignments                         requests[]                @relation("requests_approver_assignment_idToemployee_assignments")
+  requests_requests_requester_assignment_idToemployee_assignments                        requests[]                @relation("requests_requester_assignment_idToemployee_assignments")
+  role_assignments                                                                       role_assignments[]
+  sessions                                                                               sessions[]
+  task_decisions                                                                         task_decisions[]
+  task_transfers                                                                         task_transfers[]
+  workflow_versions                                                                      workflow_versions[]
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -86,54 +97,56 @@ model form_review_events {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model form_templates {
-  form_template_revisions form_template_revisions[]
-  version                                                                            Int                   @default(1)
-  id                                                                                 String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  code                                                                               String                @unique
+  id                                                                                 String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code                                                                               String                    @unique
   name                                                                               String
-  description                                                                        String                @default("")
-  status                                                                             String                @default("DRAFT")
-  created_at                                                                         DateTime              @default(now()) @db.Timestamptz(6)
-  created_by_assignment_id                                                           String?               @db.Uuid
-  reviewer_assignment_id                                                             String?               @db.Uuid
-  submitted_at                                                                       DateTime?             @db.Timestamptz(6)
-  reviewed_at                                                                        DateTime?             @db.Timestamptz(6)
+  description                                                                        String                    @default("")
+  status                                                                             String                    @default("DRAFT")
+  created_at                                                                         DateTime                  @default(now()) @db.Timestamptz(6)
+  created_by_assignment_id                                                           String?                   @db.Uuid
+  reviewer_assignment_id                                                             String?                   @db.Uuid
+  submitted_at                                                                       DateTime?                 @db.Timestamptz(6)
+  reviewed_at                                                                        DateTime?                 @db.Timestamptz(6)
   review_comment                                                                     String?
+  version                                                                            Int                       @default(1)
   form_fields                                                                        form_fields[]
   form_review_events                                                                 form_review_events[]
+  form_template_revisions                                                            form_template_revisions[]
+  employee_assignments_form_templates_created_by_assignment_idToemployee_assignments employee_assignments?     @relation("form_templates_created_by_assignment_idToemployee_assignments", fields: [created_by_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments   employee_assignments?     @relation("form_templates_reviewer_assignment_idToemployee_assignments", fields: [reviewer_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   notifications                                                                      notifications[]
-  employee_assignments_form_templates_created_by_assignment_idToemployee_assignments employee_assignments? @relation("form_templates_created_by_assignment_idToemployee_assignments", fields: [created_by_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  employee_assignments_form_templates_reviewer_assignment_idToemployee_assignments   employee_assignments? @relation("form_templates_reviewer_assignment_idToemployee_assignments", fields: [reviewer_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   workflows                                                                          workflows?
 }
 
 model form_template_revisions {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  form_template_id String @db.Uuid
-  version Int
-  snapshot Json
-  actor_assignment_id String? @db.Uuid
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  form_templates form_templates @relation(fields:[form_template_id],references:[id],onDelete:NoAction,onUpdate:NoAction)
-  employee_assignments employee_assignments? @relation(fields:[actor_assignment_id],references:[id],onDelete:NoAction,onUpdate:NoAction)
-  @@unique([form_template_id,version])
+  id                   String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  form_template_id     String                @db.Uuid
+  version              Int
+  snapshot             Json
+  actor_assignment_id  String?               @db.Uuid
+  created_at           DateTime              @default(now()) @db.Timestamptz(6)
+  employee_assignments employee_assignments? @relation(fields: [actor_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  form_templates       form_templates        @relation(fields: [form_template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([form_template_id, version])
 }
 
 model notifications {
   id                      String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   request_id              String?              @db.Uuid
-  form_template_id        String?              @db.Uuid
   recipient_assignment_id String               @db.Uuid
   type                    String
   title                   String
   message                 String
   created_at              DateTime             @default(now()) @db.Timestamptz(6)
   read_at                 DateTime?            @db.Timestamptz(6)
+  form_template_id        String?              @db.Uuid
+  form_templates          form_templates?      @relation(fields: [form_template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   employee_assignments    employee_assignments @relation(fields: [recipient_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   requests                requests?            @relation(fields: [request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  form_templates          form_templates?      @relation(fields: [form_template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([recipient_assignment_id, created_at(sort: Desc)], map: "notifications_recipient")
+  @@index([form_template_id], map: "notifications_form")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -170,7 +183,6 @@ model positions {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model requests {
-  template_snapshot                                                           Json
   id                                                                          String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   request_code                                                                String?               @unique
   workflow_id                                                                 String                @db.Uuid
@@ -182,11 +194,19 @@ model requests {
   created_at                                                                  DateTime              @default(now()) @db.Timestamptz(6)
   submitted_at                                                                DateTime?             @db.Timestamptz(6)
   decided_at                                                                  DateTime?             @db.Timestamptz(6)
+  template_snapshot                                                           Json
+  revision                                                                    Int                   @default(0)
+  last_submitted_at                                                           DateTime?             @db.Timestamptz(6)
   audit_logs                                                                  audit_logs[]
+  mutation_receipts                                                           mutation_receipts[]
   notifications                                                               notifications[]
+  request_attachments                                                         request_attachments[]
+  request_comments                                                            request_comments[]
+  request_submissions                                                         request_submissions[]
   employee_assignments_requests_approver_assignment_idToemployee_assignments  employee_assignments? @relation("requests_approver_assignment_idToemployee_assignments", fields: [approver_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   employee_assignments_requests_requester_assignment_idToemployee_assignments employee_assignments  @relation("requests_requester_assignment_idToemployee_assignments", fields: [requester_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   workflows                                                                   workflows             @relation(fields: [workflow_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workflow_instances                                                          workflow_instances?
 
   @@index([approver_assignment_id, status], map: "requests_approver")
   @@index([requester_assignment_id, created_at(sort: Desc)], map: "requests_requester")
@@ -214,11 +234,6 @@ model role_permissions {
   system_roles   system_roles @relation(fields: [system_role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([system_role_id, permission_id])
-}
-
-model schema_migrations {
-  version    String    @id
-  applied_at DateTime? @default(now()) @db.Timestamptz(6)
 }
 
 model sessions {
@@ -250,20 +265,245 @@ model users {
   status               String                @default("ACTIVE")
   last_login_at        DateTime?             @db.Timestamptz(6)
   created_at           DateTime              @default(now()) @db.Timestamptz(6)
-  employee_assignments employee_assignments?
+  approval_tasks       approval_tasks[]
+  employee_assignments employee_assignments[]
   sessions             sessions[]
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model workflows {
-  id                 String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  form_template_id   String         @unique @db.Uuid
-  approver_type      String
-  target_position_id String?        @db.Uuid
-  status             String         @default("ACTIVE")
-  updated_at         DateTime       @default(now()) @db.Timestamptz(6)
-  audit_logs         audit_logs[]
-  requests           requests[]
-  form_templates     form_templates @relation(fields: [form_template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  positions          positions?     @relation(fields: [target_position_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                                                                     String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  form_template_id                                                       String              @unique @db.Uuid
+  approver_type                                                          String
+  target_position_id                                                     String?             @db.Uuid
+  status                                                                 String              @default("ACTIVE")
+  updated_at                                                             DateTime            @default(now()) @db.Timestamptz(6)
+  draft_definition                                                       Json?
+  draft_revision                                                         Int                 @default(0)
+  published_version_id                                                   String?             @db.Uuid
+  audit_logs                                                             audit_logs[]
+  requests                                                               requests[]
+  workflow_versions_workflow_versions_workflow_idToworkflows             workflow_versions[] @relation("workflow_versions_workflow_idToworkflows")
+  workflow_versions_workflows_id_published_version_idToworkflow_versions workflow_versions?  @relation("workflows_id_published_version_idToworkflow_versions", fields: [id, published_version_id], references: [workflow_id, id], onDelete: NoAction, onUpdate: NoAction, map: "published_version_owner")
+  form_templates                                                         form_templates      @relation(fields: [form_template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  positions                                                              positions?          @relation(fields: [target_position_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([id, published_version_id], map: "workflow_published_pair")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model approval_tasks {
+  id                                                                                 String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  step_run_id                                                                        String                @db.Uuid
+  assignee_assignment_id                                                             String                @db.Uuid
+  assignee_user_id                                                                   String                @db.Uuid
+  assignee_snapshot                                                                  Json
+  status                                                                             String                @default("PENDING")
+  created_at                                                                         DateTime              @default(now()) @db.Timestamptz(6)
+  decided_at                                                                         DateTime?             @db.Timestamptz(6)
+  due_at                                                                             DateTime?             @db.Timestamptz(6)
+  remind_at                                                                          DateTime?             @db.Timestamptz(6)
+  escalation_assignment_id                                                           String?               @db.Uuid
+  employee_assignments                                                               employee_assignments  @relation(fields: [assignee_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users                                                                              users                 @relation(fields: [assignee_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employee_assignments_approval_tasks_escalation_assignment_idToemployee_assignments employee_assignments? @relation("approval_tasks_escalation_assignment_idToemployee_assignments", fields: [escalation_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workflow_step_runs                                                                 workflow_step_runs    @relation(fields: [step_run_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sla_events                                                                         sla_events[]
+  task_decisions                                                                     task_decisions?
+  task_transfers_task_transfers_from_task_idToapproval_tasks                         task_transfers?       @relation("task_transfers_from_task_idToapproval_tasks")
+  task_transfers_task_transfers_to_task_idToapproval_tasks                           task_transfers?       @relation("task_transfers_to_task_idToapproval_tasks")
+
+  @@unique([step_run_id, assignee_user_id])
+  @@index([assignee_assignment_id, status, created_at], map: "tasks_inbox")
+  @@index([due_at], map: "pending_task_due", where: raw("(status = 'PENDING'::text)"))
+}
+
+model mutation_receipts {
+  actor_assignment_id  String               @db.Uuid
+  request_id           String               @db.Uuid
+  action               String
+  key                  String
+  payload_hash         String
+  created_at           DateTime             @default(now()) @db.Timestamptz(6)
+  employee_assignments employee_assignments @relation(fields: [actor_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  requests             requests             @relation(fields: [request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([actor_assignment_id, request_id, action, key])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model request_submissions {
+  id                         String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  request_id                 String                   @db.Uuid
+  round                      Int
+  form_data_snapshot         Json
+  requester_snapshot         Json
+  submitted_by_assignment_id String                   @db.Uuid
+  submitted_at               DateTime                 @default(now()) @db.Timestamptz(6)
+  requests                   requests                 @relation(fields: [request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employee_assignments       employee_assignments     @relation(fields: [submitted_by_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  submission_attachments     submission_attachments[]
+
+  @@unique([request_id, round])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model task_decisions {
+  id                   String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task_id              String               @unique @db.Uuid
+  actor_assignment_id  String               @db.Uuid
+  decision             String
+  comment              String?
+  occurred_at          DateTime             @default(now()) @db.Timestamptz(6)
+  employee_assignments employee_assignments @relation(fields: [actor_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approval_tasks       approval_tasks       @relation(fields: [task_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model workflow_instances {
+  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  request_id          String               @unique @db.Uuid
+  workflow_version_id String               @db.Uuid
+  current_round       Int                  @default(1)
+  current_step        Int                  @default(0)
+  status              String
+  blocked_reason      String?
+  started_at          DateTime             @default(now()) @db.Timestamptz(6)
+  completed_at        DateTime?            @db.Timestamptz(6)
+  requests            requests             @relation(fields: [request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workflow_versions   workflow_versions    @relation(fields: [workflow_version_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workflow_step_runs  workflow_step_runs[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model workflow_step_runs {
+  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  instance_id        String             @db.Uuid
+  round              Int
+  step_id            String
+  step_index         Int
+  name               String
+  mode               String
+  condition_result   Json?
+  status             String
+  entered_at         DateTime           @default(now()) @db.Timestamptz(6)
+  completed_at       DateTime?          @db.Timestamptz(6)
+  approval_tasks     approval_tasks[]
+  workflow_instances workflow_instances @relation(fields: [instance_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([instance_id, round, step_id])
+  @@index([instance_id, round, step_index], map: "step_instance")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model workflow_versions {
+  id                                                             String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workflow_id                                                    String                @db.Uuid
+  version                                                        Int
+  template_version                                               Int
+  definition                                                     Json
+  published_by_assignment_id                                     String?               @db.Uuid
+  change_note                                                    String                @default("")
+  published_at                                                   DateTime              @default(now()) @db.Timestamptz(6)
+  workflow_instances                                             workflow_instances[]
+  employee_assignments                                           employee_assignments? @relation(fields: [published_by_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workflows_workflow_versions_workflow_idToworkflows             workflows             @relation("workflow_versions_workflow_idToworkflows", fields: [workflow_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  workflows_workflows_id_published_version_idToworkflow_versions workflows?            @relation("workflows_id_published_version_idToworkflow_versions")
+
+  @@unique([workflow_id, id])
+  @@unique([workflow_id, version])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model approval_delegations {
+  id                                                                                     String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner_assignment_id                                                                    String               @db.Uuid
+  delegate_assignment_id                                                                 String               @db.Uuid
+  starts_at                                                                              DateTime             @db.Timestamptz(6)
+  ends_at                                                                                DateTime             @db.Timestamptz(6)
+  reason                                                                                 String
+  created_at                                                                             DateTime             @default(now()) @db.Timestamptz(6)
+  revoked_at                                                                             DateTime?            @db.Timestamptz(6)
+  employee_assignments_approval_delegations_delegate_assignment_idToemployee_assignments employee_assignments @relation("approval_delegations_delegate_assignment_idToemployee_assignments", fields: [delegate_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employee_assignments_approval_delegations_owner_assignment_idToemployee_assignments    employee_assignments @relation("approval_delegations_owner_assignment_idToemployee_assignments", fields: [owner_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  task_transfers                                                                         task_transfers[]
+
+  @@index([owner_assignment_id, starts_at, ends_at], map: "delegation_window", where: raw("(revoked_at IS NULL)"))
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model request_attachments {
+  id                        String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  request_id                String                   @db.Uuid
+  document_id               String                   @db.Uuid
+  version                   Int
+  filename                  String
+  mime_type                 String
+  byte_size                 Int
+  sha256                    String
+  content                   Bytes
+  uploaded_by_assignment_id String                   @db.Uuid
+  created_at                DateTime                 @default(now()) @db.Timestamptz(6)
+  archived_at               DateTime?                @db.Timestamptz(6)
+  requests                  requests                 @relation(fields: [request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employee_assignments      employee_assignments     @relation(fields: [uploaded_by_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  submission_attachments    submission_attachments[]
+
+  @@unique([request_id, document_id, version])
+  @@index([request_id, created_at], map: "attachment_request")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model request_comments {
+  id                   String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  request_id           String               @db.Uuid
+  actor_assignment_id  String               @db.Uuid
+  body                 String
+  created_at           DateTime             @default(now()) @db.Timestamptz(6)
+  employee_assignments employee_assignments @relation(fields: [actor_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  requests             requests             @relation(fields: [request_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model sla_events {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task_id        String         @db.Uuid
+  event          String
+  detail         String?
+  occurred_at    DateTime       @default(now()) @db.Timestamptz(6)
+  approval_tasks approval_tasks @relation(fields: [task_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([task_id, event])
+}
+
+model submission_attachments {
+  submission_id       String              @db.Uuid
+  attachment_id       String              @db.Uuid
+  request_attachments request_attachments @relation(fields: [attachment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  request_submissions request_submissions @relation(fields: [submission_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([submission_id, attachment_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model task_transfers {
+  id                                                         String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  from_task_id                                               String                @unique @db.Uuid
+  to_task_id                                                 String                @unique @db.Uuid
+  actor_assignment_id                                        String?               @db.Uuid
+  delegation_id                                              String?               @db.Uuid
+  kind                                                       String
+  reason                                                     String
+  occurred_at                                                DateTime              @default(now()) @db.Timestamptz(6)
+  employee_assignments                                       employee_assignments? @relation(fields: [actor_assignment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approval_delegations                                       approval_delegations? @relation(fields: [delegation_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approval_tasks_task_transfers_from_task_idToapproval_tasks approval_tasks        @relation("task_transfers_from_task_idToapproval_tasks", fields: [from_task_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approval_tasks_task_transfers_to_task_idToapproval_tasks   approval_tasks        @relation("task_transfers_to_task_idToapproval_tasks", fields: [to_task_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+
+
+model schema_migrations {
+ version String @id
+ applied_at DateTime? @default(now()) @db.Timestamptz(6)
 }

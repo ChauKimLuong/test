@@ -32,6 +32,7 @@ import { Dashboard, RequestsList, Notifications, Settings } from './workspace';
 import { RequestEditor, RequestDetail } from './request-pages';
 import { FormLibrary, FormBuilder, Workflows } from './form-pages';
 import { Organization, People, Roles, Audit } from './admin-pages';
+import { Delegations, WorkflowMetrics } from './operations-pages';
 const navigation = [
   {
     title: 'KHÔNG GIAN LÀM VIỆC',
@@ -39,6 +40,18 @@ const navigation = [
       { path: '/dashboard', label: 'Tổng quan', icon: SquaresFour },
       { path: '/requests', label: 'Yêu cầu của tôi', icon: Files },
       { path: '/inbox', label: 'Hộp phê duyệt', icon: CheckSquare, permission: 'REQUEST_APPROVE' },
+      {
+        path: '/delegations',
+        label: 'Ủy quyền phê duyệt',
+        icon: Users,
+        permission: 'TASK_DELEGATE',
+      },
+      {
+        path: '/metrics',
+        label: 'Thời hạn & điểm chậm',
+        icon: ClockCounterClockwise,
+        permission: 'METRICS_VIEW',
+      },
       { path: '/forms', label: 'Thư viện biểu mẫu', icon: Stack, permission: 'FORM_VIEW' },
     ],
   },
@@ -140,7 +153,7 @@ export default function Application() {
   if (loading)
     return (
       <div className="page-loading">
-        <div className="brand-mark">F</div>
+        <div className="brand-mark">O</div>
         <span className="spinner" />
         Đang mở không gian làm việc…
       </div>
@@ -167,7 +180,9 @@ export default function Application() {
     unread = notifications.filter((n) => !n.read_at).length;
   const allowed = (permission?: string) => !permission || can(actor, permission);
   const navItems = navigation.flatMap((g) => g.items);
-  const active = navItems.filter((n) => path === n.path || path.startsWith(n.path + '/')).sort((a, b) => b.path.length - a.path.length)[0];
+  const active = navItems
+    .filter((n) => path === n.path || path.startsWith(n.path + '/'))
+    .sort((a, b) => b.path.length - a.path.length)[0];
   const current =
     active?.label ||
     (path === '/notifications'
@@ -186,6 +201,8 @@ export default function Application() {
   else if (segments[0] === 'forms' && segments[1]) content = <FormBuilder id={segments[1]} />;
   else if (path === '/forms') content = <FormLibrary />;
   else if (path === '/workflows') content = <Workflows />;
+  else if (path === '/delegations') content = <Delegations />;
+  else if (path === '/metrics') content = <WorkflowMetrics />;
   else if (path === '/organization') content = <Organization />;
   else if (path === '/people') content = <People />;
   else if (path === '/roles') content = <Roles />;
@@ -233,10 +250,10 @@ export default function Application() {
         <aside className={'sidebar ' + (mobile ? 'open' : '')}>
           <Link href="/dashboard" className="brand">
             <span className="brand-mark">
-              F<span />
+              O<span />
             </span>
             <span>
-              FlowPilot<span className="brand-subtitle">APPROVAL WORKSPACE</span>
+              ORVA<span className="brand-subtitle">APPROVAL WORKSPACE</span>
             </span>
           </Link>
           <div className="workspace-switch">
@@ -338,7 +355,7 @@ export default function Application() {
             {content}
           </main>
           <footer className="app-footer">
-            <span>FlowPilot · Hệ thống phê duyệt nội bộ</span>
+            <span>ORVA · Hệ thống phê duyệt nội bộ</span>
             <span>Rõ ràng trong từng quyết định</span>
           </footer>
         </div>
@@ -387,7 +404,8 @@ export default function Application() {
   );
 }
 function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
-  const path = usePathname(), register = path === '/register';
+  const path = usePathname(),
+    register = path === '/register';
   const [email, setEmail] = useState(''),
     [fullName, setFullName] = useState(''),
     [password, setPassword] = useState(''),
@@ -401,10 +419,10 @@ function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
       <section className="login-story">
         <Link href="/" className="brand inverse">
           <span className="brand-mark">
-            F<span />
+            O<span />
           </span>
           <span>
-            FlowPilot<span className="brand-subtitle">APPROVAL WORKSPACE</span>
+            ORVA<span className="brand-subtitle">APPROVAL WORKSPACE</span>
           </span>
         </Link>
         <div className="login-message">
@@ -445,10 +463,20 @@ function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
       </section>
       <section className="login-form-panel">
         <div className="login-form">
-          <span className="eyebrow">{register ? 'THAM GIA FLOWPILOT' : 'CHÀO MỪNG TRỞ LẠI'}</span>
+          <span className="eyebrow">{register ? 'THAM GIA ORVA' : 'CHÀO MỪNG TRỞ LẠI'}</span>
           <h2>{register ? 'Đăng ký tài khoản' : 'Đăng nhập không gian làm việc'}</h2>
-          <p>{register ? 'Tạo tài khoản, sau đó CEO sẽ phân công và kích hoạt quyền truy cập.' : 'Sử dụng tài khoản doanh nghiệp để tiếp tục.'}</p>
-          {complete && <div className="info-banner"><CheckCircle size={21}/>Đã đăng ký thành công. CEO sẽ phân công, cấp vai trò và kích hoạt tài khoản. <Link href="/login">Về đăng nhập</Link></div>}
+          <p>
+            {register
+              ? 'Tạo tài khoản, sau đó CEO sẽ phân công và kích hoạt quyền truy cập.'
+              : 'Sử dụng tài khoản doanh nghiệp để tiếp tục.'}
+          </p>
+          {complete && (
+            <div className="info-banner">
+              <CheckCircle size={21} />
+              Đã đăng ký thành công. CEO sẽ phân công, cấp vai trò và kích hoạt tài khoản.{' '}
+              <Link href="/login">Về đăng nhập</Link>
+            </div>
+          )}
           <form
             onSubmit={async (e) => {
               e.preventDefault();
@@ -457,7 +485,7 @@ function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
               try {
                 if (register) {
                   if (password !== repeat) throw new Error('Mật khẩu xác nhận không khớp.');
-                  await api('auth/register','POST',{fullName,email,password});
+                  await api('auth/register', 'POST', { fullName, email, password });
                   setComplete(true);
                 } else onSuccess(await api('auth/login', 'POST', { email, password }));
               } catch (err: any) {
@@ -467,7 +495,19 @@ function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
               }
             }}
           >
-            {register && <label className="field-label">Họ và tên<input required maxLength={150} value={fullName} onChange={e=>setFullName(e.target.value)} autoComplete="name" placeholder="Nguyễn Văn A"/></label>}
+            {register && (
+              <label className="field-label">
+                Họ và tên
+                <input
+                  required
+                  maxLength={150}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  autoComplete="name"
+                  placeholder="Nguyễn Văn A"
+                />
+              </label>
+            )}
             <label className="field-label">
               Email công việc
               <input
@@ -500,7 +540,19 @@ function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
                 </button>
               </span>
             </label>
-            {register && <label className="field-label">Xác nhận mật khẩu<input type="password" required minLength={10} value={repeat} onChange={e=>setRepeat(e.target.value)} autoComplete="new-password"/></label>}
+            {register && (
+              <label className="field-label">
+                Xác nhận mật khẩu
+                <input
+                  type="password"
+                  required
+                  minLength={10}
+                  value={repeat}
+                  onChange={(e) => setRepeat(e.target.value)}
+                  autoComplete="new-password"
+                />
+              </label>
+            )}
             <ErrorBox message={error} />
             <button className="button primary full-button" disabled={busy}>
               {busy ? (
@@ -518,7 +570,11 @@ function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
           <div className="login-help">
             <ShieldCheck size={20} />
             <span>
-              {register ? <Link href="/login">Đã có tài khoản? Đăng nhập</Link> : <Link href="/register">Chưa có tài khoản? Đăng ký tại đây</Link>}
+              {register ? (
+                <Link href="/login">Đã có tài khoản? Đăng nhập</Link>
+              ) : (
+                <Link href="/register">Chưa có tài khoản? Đăng ký tại đây</Link>
+              )}
             </span>
           </div>
           <div className="demo-hint">
@@ -526,7 +582,7 @@ function Login({ onSuccess }: { onSuccess: (value: any) => void }) {
             <p>Tài khoản dùng thử và hướng dẫn nằm trong README của dự án.</p>
           </div>
         </div>
-        <span className="login-copyright">© {new Date().getFullYear()} FlowPilot</span>
+        <span className="login-copyright">© {new Date().getFullYear()} ORVA</span>
       </section>
     </div>
   );

@@ -1,0 +1,66 @@
+{
+  "title": "FlowPilot — Domain class diagram",
+  "subtitle": "Bản điều chỉnh theo góp ý giảng viên · 05/11/2026",
+  "groups": [
+    {"id":"org","title":"01 · TỔ CHỨC VÀ PHÂN QUYỀN","x":40,"color":"#e8f0fc"},
+    {"id":"form","title":"02 · BIỂU MẪU VÀ QUY TRÌNH","x":1820,"color":"#f1eafa"},
+    {"id":"request","title":"03 · ĐƠN VÀ XỬ LÝ PHÊ DUYỆT","x":3600,"color":"#e5f4ed"}
+  ],
+  "classes": [
+    {"id":"User","group":"org","x":70,"y":440,"fields":["id: UUID","fullName: String","email: String","status: UserStatus","passwordHash: String"],"methods":["isActive(): Boolean"],"purpose":"Người dùng và tài khoản đăng nhập; một người có thể có nhiều phân công."},
+    {"id":"OrganizationalUnit","group":"org","x":1040,"y":440,"fields":["id: UUID","name: String","type: OrganizationalUnitType","status: OrganizationalUnitStatus","parent: OrganizationalUnit?"],"purpose":"Đơn vị trong cây tổ chức. parent là vai trò của cùng self-association; đơn vị gốc không có cha."},
+    {"id":"EmployeeAssignment","group":"org","x":600,"y":950,"fields":["id: UUID","type: AssignmentType","isPrimary: Boolean","startedAt: DateTime","endedAt: DateTime?","userId: UUID"],"purpose":"Một lần người dùng giữ chức danh tại đơn vị trong khoảng thời gian cụ thể; userId xác định người đảm nhận, không vẽ thêm đường tới User."},
+    {"id":"Position","group":"org","x":1040,"y":1530,"fields":["id: UUID","name: String","type: PositionType","status: PositionStatus"],"purpose":"Chức danh công việc; tách khỏi quyền thao tác phần mềm."},
+    {"id":"Permission","group":"org","x":70,"y":1010,"fields":["id: UUID","code: PermissionCode","name: String"],"purpose":"Một quyền thao tác cụ thể; không đưa lớp nối RolePermission vào domain model."},
+    {"id":"SystemRole","group":"org","x":70,"y":1530,"fields":["id: UUID","name: String","description: String?","code: SystemRoleCode","isActive: Boolean"],"purpose":"Định nghĩa gói quyền dùng chung cho các lần cấp quyền."},
+    {"id":"RoleAssignment","group":"org","x":600,"y":1530,"fields":["id: UUID","scopeType: RoleScopeType","validFrom: DateTime","validUntil: DateTime?","revokedAt: DateTime?"],"methods":["revoke(time: DateTime): void"],"purpose":"Một lần cấp SystemRole cho EmployeeAssignment, có phạm vi và thời hạn riêng. Phạm vi đơn vị lấy từ phân công nhận quyền."},
+    {"id":"FormTemplate","group":"form","x":70,"y":440,"fields":["id: UUID","code: String","name: String","status: FormTemplateStatus","version: Int","createdByAssignmentId: UUID","reviewerAssignmentId: UUID?","reviewComment: String?","reviewedAt: DateTime?","fields: List<FormField>"],"purpose":"Mẫu đơn và thông tin kiểm duyệt hiện tại; lịch sử revision và sự kiện kiểm duyệt được lưu ở tầng triển khai, không tách thêm class trên hình này."},
+    {"id":"FormField","group":"form","x":70,"y":1170,"fields":["id: UUID","key: String","label: String","type: FieldType","isRequired: Boolean","order: Int","options: List<String>"],"purpose":"Một ô nhập có kiểu và ràng buộc của mẫu; key duy nhất trong mẫu."},
+    {"id":"Workflow","group":"form","x":900,"y":440,"fields":["id: UUID","version: Int","templateVersion: Int","status: WorkflowStatus","createdAt: DateTime","steps: List<WorkflowStep>"],"purpose":"Một bản cấu hình quy trình đã lưu; mỗi lần đổi cấu hình tạo bản mới. Mỗi mẫu có tối đa một bản ACTIVE cho đơn mới; đơn cũ giữ đúng Workflow đã chốt."},
+    {"id":"WorkflowStep","group":"form","x":900,"y":1170,"fields":["id: String","name: String","mode: StepMode","approverRules: JSON","conditionMode: ConditionMode","conditions: JSON?","slaMinutes: Int?","remindBeforeMinutes: Int?","escalationAssignmentId: UUID?"],"purpose":"Một bước duyệt có thứ tự. Gộp chọn người, nhóm điều kiện và SLA vào cấu hình bước; không tạo các class Selector, ConditionGroup, Condition, SlaPolicy độc lập trên domain model."},
+    {"id":"Request","group":"request","x":70,"y":440,"fields":["id: UUID","requestCode: String?","requesterAssignmentId: UUID","formData: JSON","status: RequestStatus","createdAt: DateTime","submittedAt: DateTime?","decidedAt: DateTime?","stepRuns: List<WorkflowStepRun>"],"purpose":"Một hồ sơ yêu cầu; formData chứa snapshot mẫu và câu trả lời. Chỉ DRAFT được sửa; bổ sung sau từ chối phải tạo Request mới, không có vòng gửi lại cùng hồ sơ."},
+    {"id":"WorkflowStepRun","group":"request","x":900,"y":440,"fields":["id: UUID","step: WorkflowStep","status: StepRunStatus","conditionMatched: Boolean","blockedReason: String?","enteredAt: DateTime","completedAt: DateTime?","tasks: List<ApprovalTask>"],"purpose":"Kết quả xét/thực thi một bước cấu hình trên một Request. Giữ lớp này vì một bước có thể bị bỏ qua, bị chặn hoặc giao nhiều nhiệm vụ ALL/ANY."},
+    {"id":"ApprovalTask","group":"request","x":900,"y":1170,"fields":["id: UUID","assigneeAssignmentId: UUID","status: ApprovalTaskStatus","createdAt: DateTime","dueAt: DateTime?","actorAssignmentId: UUID?","decisionComment: String?","decidedAt: DateTime?"],"purpose":"Nhiệm vụ duyệt và quyết định duy nhất của nhiệm vụ được gộp chung. PENDING/CANCELLED có thể chưa có actor/decidedAt; APPROVED/REJECTED phải có người quyết định và thời điểm, từ chối phải có nhận xét."},
+    {"id":"Notification","group":"request","x":70,"y":1170,"fields":["id: UUID","requestId: UUID","recipientAssignmentId: UUID","type: NotificationType","message: String","createdAt: DateTime","readAt: DateTime?"],"purpose":"Thông báo tới một phân công nhân sự, có trạng thái đã đọc riêng; các ID là tham chiếu được lược đường."}
+  ],
+  "relationships": [
+    {"from":"OrganizationalUnit","to":"OrganizationalUnit","a":"0..1","b":"0..*","label":"parent / children","kind":"association"},
+    {"from":"OrganizationalUnit","to":"EmployeeAssignment","a":"1","b":"0..*","label":"belongs to","kind":"association"},
+    {"from":"Position","to":"EmployeeAssignment","a":"1","b":"0..*","label":"holds","kind":"association"},
+    {"from":"EmployeeAssignment","to":"EmployeeAssignment","a":"0..1","b":"0..*","label":"manager / subordinates","kind":"association"},
+    {"from":"EmployeeAssignment","to":"RoleAssignment","a":"1","b":"0..*","label":"receives","kind":"association"},
+    {"from":"SystemRole","to":"RoleAssignment","a":"1","b":"0..*","label":"is granted through","kind":"association"},
+    {"from":"SystemRole","to":"Permission","a":"0..*","b":"0..*","label":"includes","kind":"association"},
+    {"from":"FormTemplate","to":"FormField","a":"1","b":"0..*","label":"contains","kind":"composition","property":"fields: List<FormField>"},
+    {"from":"FormTemplate","to":"Workflow","a":"1","b":"0..*","label":"uses template","kind":"association"},
+    {"from":"Workflow","to":"WorkflowStep","a":"1","b":"1..*","label":"contains {ordered}","kind":"composition","property":"steps: List<WorkflowStep>"},
+    {"from":"Request","to":"WorkflowStepRun","a":"1","b":"0..*","label":"records steps","kind":"composition","property":"stepRuns: List<WorkflowStepRun>"},
+    {"from":"WorkflowStepRun","to":"ApprovalTask","a":"1","b":"0..*","label":"assigns","kind":"composition","property":"tasks: List<ApprovalTask>"},
+    {"from":"Workflow","to":"Request","a":"0..1","b":"0..*","label":"uses workflow","kind":"association","bridge":true},
+    {"from":"WorkflowStep","to":"WorkflowStepRun","a":"1","b":"0..*","label":"executes step","kind":"association","bridge":true}
+  ],
+  "rules": [
+    "Theo quy ước trình bày của giảng viên: composition nhiều con có List<T> ở cha; thuộc tính và đường nối mô tả cùng một quan hệ.",
+    "User liên kết qua EmployeeAssignment.userId; giữ User độc lập trên hình như bản đã được cô chỉnh.",
+    "Mỗi FormTemplate có tối đa một Workflow ACTIVE; cặp FormTemplate + Workflow.version phải duy nhất. Cấu hình đã lưu không bị sửa nội dung.",
+    "Request DRAFT chưa bắt buộc chốt Workflow; sau gửi phải chốt đúng một cấu hình phù hợp templateVersion và không đổi về sau.",
+    "Request bị REJECTED giữ nguyên; làm lại là Request mới. Không có RETURNED, round, RequestSubmission hoặc WorkflowInstance.",
+    "WorkflowStepRun.step phải thuộc Workflow được Request chốt; mỗi bước được xét tối đa một lần trong một hồ sơ ở luồng tuần tự hiện tại.",
+    "approverRules là mảng các quy tắc {type, level?, positionId?, assignmentId?, roleId?}; vẫn hỗ trợ nhiều quy tắc trên một bước.",
+    "conditions là mảng {fieldKey, operator, value}; trống nghĩa là bước luôn chạy. conditionMode ALL/ANY chỉ kết hợp các điều kiện, không thay thế StepMode.",
+    "slaMinutes trống thì remindBeforeMinutes và escalationAssignmentId cũng trống. Quá hạn không tự phê duyệt.",
+    "ApprovalTask chỉ có một quyết định; người quyết định phải đúng phân công được giao trong phạm vi hiện tại. Task bị hủy bởi ANY có thể không có quyết định.",
+    "FormTemplateRevision, FormReviewEvent và AuditLog không vẽ thành class trong góc nhìn miền này; cơ chế lưu lịch sử/nhật ký vẫn được triển khai ở tầng dưới."
+  ],
+  "stepExample": {
+    "id":"cfo-review",
+    "name":"CFO phê duyệt",
+    "mode":"ANY",
+    "approverRules":[{"type":"POSITION","positionId":"ID chức danh CFO"}],
+    "conditionMode":"ALL",
+    "conditions":[{"fieldKey":"amount","operator":"GTE","value":20000000}],
+    "slaMinutes":2880,
+    "remindBeforeMinutes":240,
+    "escalationAssignmentId":null
+  }
+}

@@ -83,11 +83,6 @@ export type role_assignments = Prisma.role_assignmentsModel
  */
 export type role_permissions = Prisma.role_permissionsModel
 /**
- * Model schema_migrations
- * 
- */
-export type schema_migrations = Prisma.schema_migrationsModel
-/**
  * Model sessions
  * 
  */
@@ -107,3 +102,73 @@ export type users = Prisma.usersModel
  * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
  */
 export type workflows = Prisma.workflowsModel
+/**
+ * Model approval_tasks
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type approval_tasks = Prisma.approval_tasksModel
+/**
+ * Model mutation_receipts
+ * 
+ */
+export type mutation_receipts = Prisma.mutation_receiptsModel
+/**
+ * Model request_submissions
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type request_submissions = Prisma.request_submissionsModel
+/**
+ * Model task_decisions
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type task_decisions = Prisma.task_decisionsModel
+/**
+ * Model workflow_instances
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type workflow_instances = Prisma.workflow_instancesModel
+/**
+ * Model workflow_step_runs
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type workflow_step_runs = Prisma.workflow_step_runsModel
+/**
+ * Model workflow_versions
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type workflow_versions = Prisma.workflow_versionsModel
+/**
+ * Model approval_delegations
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type approval_delegations = Prisma.approval_delegationsModel
+/**
+ * Model request_attachments
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type request_attachments = Prisma.request_attachmentsModel
+/**
+ * Model request_comments
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type request_comments = Prisma.request_commentsModel
+/**
+ * Model sla_events
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type sla_events = Prisma.sla_eventsModel
+/**
+ * Model submission_attachments
+ * 
+ */
+export type submission_attachments = Prisma.submission_attachmentsModel
+/**
+ * Model task_transfers
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ */
+export type task_transfers = Prisma.task_transfersModel
+/**
+ * Model schema_migrations
+ * 
+ */
+export type schema_migrations = Prisma.schema_migrationsModel

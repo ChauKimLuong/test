@@ -22,3 +22,25 @@ Nhân viên lưu nháp rồi gửi đề xuất. Người thẩm định xem, ch
 Sửa nội dung tăng phiên bản. API từ chối ghi đè hoặc duyệt một phiên bản đã lỗi thời. Mỗi đơn lưu một bản nội dung mẫu bất biến khi tạo, bao gồm tên, mô tả, danh sách trường và số phiên bản. Đơn nháp cũ cũng giữ mẫu cũ; muốn dùng phiên bản mới cần tạo đơn mới. Lịch sử phiên bản có trong **Xem mẫu → Lịch sử phiên bản**, và bảng `form_template_revisions` trong Prisma Studio.
 
 Ban hành mẫu và duyệt yêu cầu là hai thao tác riêng. Yêu cầu của lãnh đạo vẫn cần người duyệt độc lập; không được tự duyệt. Khi CEO dùng mẫu theo quản lý trực tiếp mà không có cấp trên, cần cấu hình workflow theo chức danh người duyệt phù hợp.
+
+## Quyền quy trình bổ sung (01/10/2026)
+
+- WORKFLOW_VIEW/UPDATE: xem, chỉnh nháp, kiểm tra/mô phỏng; phạm vi toàn tổ chức ở đợt này.
+- WORKFLOW_PUBLISH: ban hành version, khác thao tác lưu nháp; cấp SYSTEM_ADMIN/WORKFLOW_MANAGER/FORM_PUBLISHER.
+- WORKFLOW_OPERATE: retry instance BLOCKED sau khắc phục; không chuyển task hoặc duyệt thay.
+- REQUEST_RETURN: trả task để bổ sung trong phạm vi; cấp role có REQUEST_REJECT. Người xử lý vẫn phải đúng assignment của task.
+- Inbox/quyền quyết định dùng approval_tasks; khóa/kết thúc phân công/thu hồi role duyệt bị chặn khi còn task PENDING.
+- Owner sửa/gửi lại RETURNED giữ mã, mẫu và workflow version; người có quyền quản trị không sửa dữ liệu đơn thay owner.
+
+
+## Quyền vận hành bổ sung
+
+TASK_DELEGATE cấp mặc định cho role có REQUEST_APPROVE; chỉ lập/thu hồi lịch của mình, chuyển task của mình. TASK_TRANSFER/SLA_OPERATE/METRICS_VIEW cấp cho SYSTEM_ADMIN, WORKFLOW_MANAGER, FORM_PUBLISHER; APPROVER có thêm METRICS_VIEW. REQUEST_COMMENT/REQUEST_ATTACH cấp cho role có REQUEST_CREATE.
+
+- Transfer: kiểm tra scope quyền theo đơn vị người gửi, target có REQUEST_APPROVE và REQUEST_REJECT đang hiệu lực, đúng phạm vi và khác User người gửi; target không được có task khác ở cùng bước.
+- Delegation: không sao chép hoặc cấp thêm role, kiểm tra target từng hồ sơ. Không nối chuỗi tự động. Thu hồi/hết hạn không thu hồi task đã giao.
+- SLA_OPERATE cần ORGANIZATION. Timer là hệ thống; không biến người nhắc hạn thành người đã quyết định.
+- Metrics: giao của scope METRICS_VIEW và visibility REQUEST_VIEW/chủ/task; không mở thêm quyền hồ sơ thông qua báo cáo.
+- Attachments: chỉ chủ DRAFT/RETURNED; download vẫn kiểm tra visibility, kể cả version cũ. Comment append-only cần visibility và REQUEST_COMMENT, có thể trao đổi sau kết thúc.
+
+Xem [hướng dẫn nghiệp vụ](WORKFLOW_GUIDE.md) để đối chiếu hành vi từng chức năng.
